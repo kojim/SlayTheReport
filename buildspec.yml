@@ -3,16 +3,12 @@ version: 0.1
 phases:
   install:
     commands:
-      - ehco aaa
   pre_build:
     commands:
-      - ehco aaa
   build:
     commands:
-      - echo Build started on `date`
   post_build:
     commands:
-      - echo Build finished
 artifacts:
   type: zip
   files:
