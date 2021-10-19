@@ -9,9 +9,9 @@ hooks:
 #     timeout: 300
 #     runas: root
   AfterInstall:
-#   - location: /usr/bin/ls
-#     timeout: 300
-#     runas: root
+    - location: bundle install
+      timeout: 300
+      runas: root
   ApplicationStart:
 #   - location: /usr/bin/ls
 #     timeout: 300
