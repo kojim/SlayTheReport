@@ -1,0 +1,19 @@
+version: 0.0
+os: linux
+files:
+  - source: /
+    destination: /home/ec2-user/environment/app
+hooks:
+  BeforeInstall:
+    - location: ls
+      timeout: 300
+      runas: root
+  AfterInstall:
+    - location: ls
+      timeout: 300
+      runas: root
+  ApplicationStart:
+    - location: ls
+      timeout: 300
+      runas: root
+
