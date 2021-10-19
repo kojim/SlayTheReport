@@ -5,15 +5,15 @@ files:
     destination: /home/ec2-user/environment/app
 hooks:
   BeforeInstall:
-    - location: /usr/bin/ls
-      timeout: 300
-      runas: root
+#   - location: /usr/bin/ls
+#     timeout: 300
+#     runas: root
   AfterInstall:
-    - location: /usr/bin/ls
-      timeout: 300
-      runas: root
+#   - location: /usr/bin/ls
+#     timeout: 300
+#     runas: root
   ApplicationStart:
-    - location: /usr/bin/ls
-      timeout: 300
-      runas: root
+#   - location: /usr/bin/ls
+#     timeout: 300
+#     runas: root
 
