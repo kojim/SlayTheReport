@@ -2,7 +2,7 @@ version: 0.0
 os: linux
 files:
   - source: /
-    destination: /home/ec2-user/environment/app
+    destination: /home/ubuntu/app
 hooks:
   BeforeInstall:
 #   - location: /usr/bin/ls
