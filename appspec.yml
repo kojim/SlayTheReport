@@ -9,11 +9,11 @@ hooks:
 #     timeout: 300
 #     runas: root
   AfterInstall:
-    - location: bundle install
+    - location: scripts/install.sh
       timeout: 300
       runas: root
   ApplicationStart:
-    - location: bundle exec ruby app.rb
+    - location: scripts/start.sh
       timeout: 300
       runas: root
 
