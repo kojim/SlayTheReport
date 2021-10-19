@@ -13,7 +13,7 @@ hooks:
       timeout: 300
       runas: root
   ApplicationStart:
-#   - location: /usr/bin/ls
-#     timeout: 300
-#     runas: root
+    - location: bundle exec ruby app.rb
+      timeout: 300
+      runas: root
 
