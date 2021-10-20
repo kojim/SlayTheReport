@@ -1,0 +1,11 @@
+version: '3'
+services:
+  sinatra:
+    image: mycontainer:1.0
+    volumes:
+      - /home/ubuntu/app/app:/app
+    working_dir: /app
+    command: bundle exec ruby app.rb
+    ports:
+    - 127.0.0.1:4567:4567
+
