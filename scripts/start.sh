@@ -1,5 +1,3 @@
 #!/bin/sh
 
-cd /home/ubuntu/app && bundle exec ruby app.rb
-
-
+cd /home/ubuntu/SlayTheReport/docker && docker-compose up sinatra

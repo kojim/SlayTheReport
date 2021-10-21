@@ -1,11 +1,11 @@
 version: '3'
 services:
   sinatra:
-    build: .
+    image: ruby:2.7-slim
     volumes:
-      - /home/ubuntu/app/app:/app
+      - /home/ubuntu/SlayTheReport/app:/app
     working_dir: /app
-    command: bundle exec ruby app.rb
+    command: bash start.sh
     ports:
     - 127.0.0.1:4567:4567
 
