@@ -2,7 +2,12 @@ version: 0.0
 os: linux
 files:
   - source: /
-    destination: /home/ubuntu/app
+    destination: /home/ubuntu/SlayTheReport
+permissions:
+  - object: /home/ubuntu/SlayTheReport
+    pattern: "**"
+    owner: ubuntu
+
 hooks:
   BeforeInstall:
 #   - location: /usr/bin/ls

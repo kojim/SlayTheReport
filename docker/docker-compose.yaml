@@ -1,7 +1,7 @@
 version: '3'
 services:
   sinatra:
-    image: mycontainer:1.0
+    build: .
     volumes:
       - /home/ubuntu/app/app:/app
     working_dir: /app
