@@ -7,5 +7,5 @@ services:
     working_dir: /app
     command: bash start.sh
     ports:
-    - 127.0.0.1:4567:4567
+    - 127.0.0.1:80:80
 
