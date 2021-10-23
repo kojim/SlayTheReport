@@ -9,3 +9,12 @@ services:
     ports:
     - 127.0.0.1:80:80
 
+  sinatra-dev:
+    image: ruby:2.7-slim
+    volumes:
+      - /home/ubuntu/SlayTheReport-dev/app:/app
+    working_dir: /app
+    command: bash start.sh
+    ports:
+    - 127.0.0.1:81:80
+
