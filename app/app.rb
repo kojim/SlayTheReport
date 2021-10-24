@@ -6,6 +6,7 @@ require 'sinatra/reloader'
 require 'aws-sdk'
 
 also_reload File.dirname(__FILE__) + "/floor.rb"
+also_reload File.dirname(__FILE__) + "/image.rb"
 
 require_relative './floor'
 

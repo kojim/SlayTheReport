@@ -1,3 +1,5 @@
+<% require_relative '../image' %>
+
 <h1>GameInfo</h1>
 <p>player: <%= @player %></p>
 <p>runid: <%= @runid %></p>
@@ -5,10 +7,20 @@
 <h1>Floors</h1>
 <% @run.floors.each do |f| %>
   <h2> floor <%= f.floor_id %> </h2>
+  <p>
+  <%= img('hp', 30) %> <%= f.hp %> / <%= f.max_hp %>
+  <%= img('gold', 30) %> <%= f.gold %> (<%= f.gold_diff %>)
+  </p>
+  <p> <%= img(f.image) %> </p>
   <p> text: <%= f.text %> </p>
   <% f.obtain_chosen_cards.each do |c| %>
     <p> picked: <%= c['picked'] %></p>
     <p> not picked: <%= c['not_picked'] %></p>
+  <% end %>
+  <% f.obtain_relics.each do |c| %>
+    <p> relic:
+    <%= img(c) %>
+    </p>
   <% end %>
 <% end %>
 
