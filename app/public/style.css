@@ -1,0 +1,33 @@
+.f_container {
+  border: 2px dotted;
+  width: 800px;
+}
+.f_events {
+  display: flex;
+}
+.f_event_summary {
+}
+.f_event_image {
+}
+.f_event_text {
+}
+.f_player_action {
+}
+.f_player_choise {
+}
+.f_life_gold {
+}
+.f_chosen_cards {
+  display: flex;
+}
+.f_chosen_cards div.picked {
+  border: 3px solid blue;
+}
+.f_obtain_objects {
+}
+.f_upgrade_cards {
+}
+.f_remove_cards {
+}
+.f_comment {
+}

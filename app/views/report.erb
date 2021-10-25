@@ -1,3 +1,9 @@
+<html>
+<head>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+
+<body>
 <% require_relative '../image' %>
 
 <h1>GameInfo</h1>
@@ -5,23 +11,66 @@
 <p>runid: <%= @runid %></p>
 
 <h1>Floors</h1>
+
 <% @run.floors.each do |f| %>
-  <h2> floor <%= f.floor_id %> </h2>
-  <p>
-  <%= img('hp', 30) %> <%= f.hp %> / <%= f.max_hp %>
-  <%= img('gold', 30) %> <%= f.gold %> (<%= f.gold_diff %>)
-  </p>
-  <p> <%= img(f.image) %> </p>
-  <p> text: <%= f.text %> </p>
-  <% f.obtain_chosen_cards.each do |c| %>
-    <p> picked: <%= c['picked'] %></p>
-    <p> not picked: <%= c['not_picked'] %></p>
-  <% end %>
-  <% f.obtain_relics.each do |c| %>
-    <p> relic:
-    <%= img(c) %>
-    </p>
-  <% end %>
+
+  <h2> Floor <%= f.floor_id %> </h2>
+  <div class='f_container'>
+    <div class='f_events'>
+      <div class='f_event_summary'>
+        <div class='f_event_image'><%= img(f.image, 250) %></div>
+        <div class='f_event_text'></div>
+      </div>
+      <div class='f_player_action'>
+        <div class='f_player_choise'>
+          <% if f.player_choise != nil then %>
+            行動選択: <%= f.player_choise %>
+          <% end %>
+        </div>
+        <div class='f_life_gold'>
+          <%= img('hp', 30) %> <%= f.hp %> / <%= f.max_hp %> (<%= sprintf("%+d", f.hp_diff) %>)
+          <%= img('gold', 30) %> <%= f.gold %> (<%= sprintf("%+d", f.gold_diff) %>)
+        </div>
+        <div class='f_chosen_cards'>
+          <% f.obtain_chosen_cards.each do |c| %>
+            <div class='picked'>
+              <%= img(c['picked'], 80) %>
+            <p> picked</p> 
+            </div>
+            <% c['not_picked'].each do |np| %>
+              <div>
+                <%= img(np, 80) %>
+                <p> not picked</p> 
+              </div>
+            <% end %>
+            </p>
+          <% end %>
+        </div>
+        <div class='f_obtain_objects'>
+          <% f.obtain_objects.each do |c| %>
+            <%= img(c, 80) %>
+            </p>
+          <% end %>
+        </div>
+        <div class='f_upgrade_cards'>
+          <% f.upgrade_cards.each do |c| %>
+            <%= img(c, 80) %>
+            ⇒
+            <%= img(c+'+1', 80) %>
+          <% end %>
+        </div>
+        <div class='f_remove_cards'>
+          <% f.remove_cards.each do |c| %>
+            <%= img(c, 80) %>
+            </p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <div class='f_comment'> <p> player comment: snecko snecko snecko snecko snecko snecko snecko snecko snecko snecko snecko snecko snecko snecko snecko snecko snecko snecko snecko </p> </div>
+  </div>
 <% end %>
 
+</body>
+</html>
 
