@@ -40,6 +40,8 @@ class Run
   attr_accessor :player
   attr_accessor :key_cards
   attr_accessor :key_relics
+  attr_accessor :master_deck
+  attr_accessor :relics
   attr_accessor :floors
 
   def self.generate_from_json(run_json)
@@ -124,6 +126,8 @@ class Run
       result.floors[e['floor'].to_i].obtain_objects << e['key']
     end
 
+    result.master_deck = run_data['master_deck']
+    result.relics = run_data['relics']
     result
 
   end

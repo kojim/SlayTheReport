@@ -10,6 +10,20 @@
 <p>player: <%= @player %></p>
 <p>runid: <%= @runid %></p>
 
+<h2>deck</h2>
+<div class='master_deck'>
+<% @run.master_deck.each do |c| %>
+  <%= img(c,80) %>
+<% end %>
+</div>
+<h2>relics</h2>
+<div class='master_relic'>
+<% @run.relics.each do |c| %>
+  <%= img(c,60) %>
+<% end %>
+</div>
+
+
 <h1>Floors</h1>
 
 <% @run.floors.each do |f| %>
