@@ -120,6 +120,10 @@ class Run
       result.floors[e.to_i].remove_cards << run_data['items_purged'][idx]
     end
 
+    run_data['potions_obtained'].each do |e|
+      result.floors[e['floor'].to_i].obtain_objects << e['key']
+    end
+
     result
 
   end
