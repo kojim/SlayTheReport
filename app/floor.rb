@@ -77,6 +77,9 @@ class Run
     run_data['event_choices'].each do |e|
       result.floors[e['floor'].to_i].image = e['event_name']
       result.floors[e['floor'].to_i].player_choise = e['player_choice']
+      if e['cards_removed'] != nil then
+        result.floors[e['floor'].to_i].remove_cards += e['cards_removed']
+      end
     end
 
     run_data['campfire_choices'].each do |e|
@@ -107,6 +110,14 @@ class Run
 
     run_data['max_hp_per_floor'].each_with_index do |e, idx|
       result.floors[idx+1].max_hp = e
+    end
+
+    run_data['item_purchase_floors'].each_with_index do |e, idx|
+      result.floors[e.to_i].obtain_objects << run_data['items_purchased'][idx]
+    end
+
+    run_data['items_purged_floors'].each_with_index do |e, idx|
+      result.floors[e.to_i].obtain_objects << run_data['items_purged'][idx]
     end
 
     result
