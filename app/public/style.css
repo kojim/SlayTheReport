@@ -28,6 +28,10 @@
 .f_upgrade_cards {
 }
 .f_remove_cards {
+  display: flex;
+}
+.f_remove_cards div.removed {
+  border: 3px solid red;
 }
 .f_comment {
 }

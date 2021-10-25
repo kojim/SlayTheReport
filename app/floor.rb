@@ -117,7 +117,7 @@ class Run
     end
 
     run_data['items_purged_floors'].each_with_index do |e, idx|
-      result.floors[e.to_i].obtain_objects << run_data['items_purged'][idx]
+      result.floors[e.to_i].remove_cards << run_data['items_purged'][idx]
     end
 
     result

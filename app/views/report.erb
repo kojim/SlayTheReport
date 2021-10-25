@@ -33,10 +33,12 @@
         </div>
         <div class='f_chosen_cards'>
           <% f.obtain_chosen_cards.each do |c| %>
-            <div class='picked'>
-              <%= img(c['picked'], 80) %>
-            <p> picked</p> 
-            </div>
+            <% if c['picked'] != 'SKIP' %>
+              <div class='picked'>
+                <%= img(c['picked'], 80) %>
+                <p> picked</p> 
+              </div>
+            <% end %>
             <% c['not_picked'].each do |np| %>
               <div>
                 <%= img(np, 80) %>
@@ -49,7 +51,6 @@
         <div class='f_obtain_objects'>
           <% f.obtain_objects.each do |c| %>
             <%= img(c, 80) %>
-            </p>
           <% end %>
         </div>
         <div class='f_upgrade_cards'>
@@ -61,8 +62,10 @@
         </div>
         <div class='f_remove_cards'>
           <% f.remove_cards.each do |c| %>
-            <%= img(c, 80) %>
-            </p>
+            <div class='removed'>
+              <%= img(c, 80) %>
+              <p> removed</p> 
+            </div>
           <% end %>
         </div>
       </div>
