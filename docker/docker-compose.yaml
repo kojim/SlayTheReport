@@ -1,7 +1,7 @@
 version: '3'
 services:
   sinatra:
-    image: ruby:2.7-slim
+    build: .
     volumes:
       - /home/ubuntu/SlayTheReport/app:/app
     working_dir: /app
