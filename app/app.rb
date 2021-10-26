@@ -44,7 +44,7 @@ get '/auth' do
             :access_token_path => '/oauth/access_token',
             :authorize_path => '/oauth/authorize'
           )
-  request_token = oauth.get_request_token(:oauth_callback => 'https://slaythereport.kojim.net/auth2')
+  request_token = oauth.get_request_token(:oauth_callback => "https://#{request.host}:#{request.port}/auth2")
   session[:token] = request_token.token
   session[:secret] = request_token.secret
   redirect request_token.authorize_url
