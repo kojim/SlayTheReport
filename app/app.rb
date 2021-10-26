@@ -4,19 +4,68 @@ require 'rubygems'
 require 'sinatra'
 require 'sinatra/reloader'
 require 'aws-sdk'
+require 'twitter'
+require 'oauth'
 
 also_reload File.dirname(__FILE__) + "/floor.rb"
 also_reload File.dirname(__FILE__) + "/image.rb"
+also_reload File.dirname(__FILE__) + "/keymanager.rb"
 
 require_relative './floor'
+require_relative './keymanager'
 
-# client = Aws::S3::Client.new( :region => 'ap-northeast-1')
-#
-# end
+configure do
+  use Rack::Session::Cookie
+end
 
 get '/' do
-  @text = "hello text3"
+  @text = "hello anonymous user"
+
+  if session[:twitter_token] != nil and session[:twitter_secret] != nil then
+    twitter_client = Twitter::REST::Client.new do |config|
+      config.consumer_key = $Key['TwitterAPIKey']
+      config.consumer_secret = $Key['TwitterAPIKeySecret']
+      config.access_token = session[:twitter_token]
+      config.access_token_secret = session[:twitter_secret]
+    end
+    @text = "hello #{twitter_client.user.name}"
+  end
   erb :index
+end
+
+get '/auth' do
+  oauth = OAuth::Consumer.new(
+            $Key['TwitterAPIKey'],
+            $Key['TwitterAPIKeySecret'],
+            :site => 'https://api.twitter.com',
+            :schema => :header,
+            :method => :post,
+            :request_token_path => '/oauth/request_token',
+            :access_token_path => '/oauth/access_token',
+            :authorize_path => '/oauth/authorize'
+          )
+  request_token = oauth.get_request_token(:oauth_callback => 'https://slaythereport.kojim.net:445/auth2')
+  session[:token] = request_token.token
+  session[:secret] = request_token.secret
+  redirect request_token.authorize_url
+end
+
+get '/auth2' do
+  oauth = OAuth::Consumer.new(
+            $Key['TwitterAPIKey'],
+            $Key['TwitterAPIKeySecret'],
+            :site => 'https://api.twitter.com',
+            :schema => :header,
+            :method => :post,
+            :request_token_path => '/oauth/request_token',
+            :access_token_path => '/oauth/access_token',
+            :authorize_path => '/oauth/authorize'
+          )
+  request_token = OAuth::RequestToken.new(oauth, session[:token], session[:secret])
+  access_token = oauth.get_access_token(request_token, :oauth_verifier => params[:oauth_verifier])
+  session[:twitter_token] = access_token.token
+  session[:twitter_secret] = access_token.secret
+  redirect '/'
 end
 
 get '/mypage' do
