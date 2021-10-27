@@ -74,6 +74,17 @@ class Run
       result.floors[e['floor'].to_i].obtain_chosen_cards << e
     end
 
+    if run_data['boss_relics'] != nil then
+      if run_data['boss_relics'].size >= 1 then
+        result.floors[17].image = 'boss_chest'
+        result.floors[17].obtain_chosen_cards << run_data['boss_relics'][0]
+      end
+      if run_data['boss_relics'].size >= 2 then
+        result.floors[34].image = 'boss_chest'
+        result.floors[34].obtain_chosen_cards << run_data['boss_relics'][1]
+      end
+    end
+
     run_data['damage_taken'].each do |e|
       result.floors[e['floor'].to_i].image = e['enemies']
     end

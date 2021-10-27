@@ -6,7 +6,8 @@ def img(raw_key, size=200)
     'neow' =>  'misc/neow.png',
     'shop' =>  'misc/shop.png',
     'campfire' =>  'misc/campfire.png',
-    'chest' => 'misc/largeChest.png',
+    'chest' => 'misc/chest.png',
+    'boss_chest' => 'misc/boss_chest.png',
     # graphics
     'hp'   =>  'misc/hp.png',
     'gold' =>  'misc/gold.png',
@@ -16,7 +17,7 @@ def img(raw_key, size=200)
   if map.key?(raw_key) then
     v = map[raw_key]
   else
-    key = raw_key.gsub(/ /, '')
+    key = raw_key.gsub(/ /, '').gsub(/\u0027/, '')
     if key.include? "+" then
       key = key.gsub(/\+.*/, 'Plus')
     end
