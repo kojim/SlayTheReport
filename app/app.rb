@@ -107,17 +107,17 @@ end
 get '/report/:player_id/:runid' do |player_id, run_id|
   @player = player_id
   @runid = run_id
-  @text = 'a'
   result = ddb.get_item(
     table_name: 'SlayTheReport',
     key: {
-      author: twitter.user.screen_name,
+      author: player_id,
       runid: run_id
     }
   )
   @run = Run.generate_from_json(result['item']['runfile'])
-  #@text = result['item']['runfile']
   erb :report
+  #@text = result
+  #erb :debug
 end
 
 
