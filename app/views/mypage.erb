@@ -9,11 +9,18 @@
     </ul>
   </li>
   <li>
+    <form action='/mypage/newreport' method="post" enctype="multipart/form-data">
+      <input type="file" name="runfile", accept=".run">
+      <button type="submit">upload</button>
+    </form>
+  </li>
+  <li>
     <h3>my reports</h3>
     <ul>
-      <li><a href="/edit/kojim/100">report1</a></li>
-      <li><a href="/edit/kojim/101">report2</a></li>
-      <li><a href="/edit/kojim/102">report3</a></li>
+      <li><a href="/edit/kojim/100">report3</a></li>
+      <% @reports.each do |r| %>
+        <li><a href="/report/<%= r['author'] %>/<%= r['runid'] %>"><%= r['runid'] %></a></li>
+      <% end %>
     </ul>
   </li>
 </ul>

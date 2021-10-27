@@ -2,14 +2,18 @@
 <h2>top page</h2>
 
 <ul>
-  <li><a href="/mypage">mypage</a></li>
-  <li><a href="/auth">auth</a></li>
+  <% if session[:twitter_token] != nil and session[:twitter_secret] != nil then %>
+    <li><a href="/mypage">mypage</a></li>
+  <% else %>
+    <li><a href="/auth">auth</a></li>
+  <% end %>
   <li>
     <h3>reports</h3>
     <ul>
-      <li><a href="/report/kojim/100">report1</a></li>
-      <li><a href="/report/kojim/101">report2</a></li>
-      <li><a href="/report/kojim/102">report3</a></li>
+      <li><a href="/edit/kojim/100">report3</a></li>
+      <% @reports.each do |r| %>
+        <li><a href="/report/<%= r['author'] %>/<%= r['runid'] %>"><%= r['runid'] %></a> by <%= r['author'] %></li>
+      <% end %>
     </ul>
   </li>
   <img src='https://slaythereport-images.s3.ap-northeast-1.amazonaws.com/akabeko.png'></img>

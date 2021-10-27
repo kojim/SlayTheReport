@@ -53,8 +53,10 @@ class Run
 
     result.floors = []
     result.floors << Floor.new
-    result.floors[0].image = 'neow'
-    result.floors[0].player_choise = run_data['neow_bonus'] + '/' + run_data['neow_cost']
+    if run_data['neow_bonus'] != nil and run_data['neow_cost'] then
+      result.floors[0].image = 'neow'
+      result.floors[0].player_choise = run_data['neow_bonus'] + '/' + run_data['neow_cost']
+    end
     run_data['path_per_floor'].each_with_index do |t,idx|
       f = Floor.new
       case t
