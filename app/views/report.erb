@@ -27,7 +27,7 @@
 
 <h1>Floors</h1>
 
-<% @run.floors.each do |f| %>
+<% @run.floors.each_with_index do |f,idx| %>
 
   <h2> Floor <%= f.floor_id %> </h2>
   <div class='f_container'>
@@ -85,7 +85,13 @@
         </div>
       </div>
     </div>
-    <div class='f_comment'> <p> player comment: snecko snecko snecko snecko snecko snecko snecko snecko snecko snecko snecko snecko snecko snecko snecko snecko snecko snecko snecko </p> </div>
+    <div class='f_comment'> <p>
+      <% if @run.reports[idx] != nil %>
+        <%= @run.reports[idx] %>
+      <% else %>
+        player comment: snecko snecko snecko snecko snecko snecko snecko snecko snecko snecko snecko snecko snecko snecko snecko snecko snecko snecko snecko
+      <% end %>
+    </p> </div>
   </div>
 <% end %>
 

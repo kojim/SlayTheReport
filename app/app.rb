@@ -92,7 +92,8 @@ post '/mypage/newreport' do
     item:  {
       author: twitter.user.screen_name,
       runid:  params[:runfile][:filename],
-      runfile: @text
+      runfile: @text,
+      report: '[]'
     }
   )
   redirect '/mypage'
@@ -113,7 +114,7 @@ get '/report/:player_id/:runid' do |player_id, run_id|
       runid: run_id
     }
   )
-  @run = Run.generate_from_json(result['item']['runfile'])
+  @run = Run.new(result['item']['runfile'], JSON.parse(result['item']['report']))
   erb :report
   #@text = result
   #erb :debug
