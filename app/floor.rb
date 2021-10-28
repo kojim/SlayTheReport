@@ -116,6 +116,9 @@ class Run
       if e['cards_upgraded'] != nil then
         result.floors[e['floor'].to_i].upgrade_cards += e['cards_upgraded']
       end
+      if e['relics_obtained'] != nil then
+        result.floors[e['floor'].to_i].obtain_objects += e['relics_obtained']
+      end
     end
 
     run_data['campfire_choices'].each do |e|
