@@ -38,11 +38,9 @@ def twitter
     config.access_token_secret = session[:twitter_secret]
   end
 end
-def ddb
-  Aws::DynamoDB::Client.new(
+ddb = Aws::DynamoDB::Client.new(
     region: 'ap-northeast-1'
-  )
-end
+)
 
 get '/' do
   @text = "hello anonymous user"
