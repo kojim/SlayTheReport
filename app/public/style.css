@@ -35,3 +35,6 @@
 }
 .f_comment {
 }
+.f_comment textarea {
+  width: 100%;
+}

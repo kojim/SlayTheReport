@@ -99,12 +99,45 @@ post '/mypage/newreport' do
   redirect '/mypage'
 end
 
-get '/mypage/edit/:runid' do
-  @text = "hello text3"
-  erb :edit
+get '/mypage/edit/:run_id' do |run_id|
+  @is_edit_mode = true
+  @player = twitter.user.screen_name
+  @runid = run_id
+  result = ddb.get_item(
+    table_name: 'SlayTheReport',
+    key: {
+      author: @player,
+      runid: run_id
+    }
+  )
+  @run = Run.new(result['item']['runfile'], JSON.parse(result['item']['report']))
+  erb :report
 end
 
-get '/report/:player_id/:runid' do |player_id, run_id|
+post '/mypage/edit/:run_id' do |run_id|
+  @player = twitter.user.screen_name
+  reports = []
+  params.keys.filter{|k| k.start_with?('report_')}.sort.each do |key|
+    reports << params[key]
+  end
+  ddb.update_item(
+    table_name: 'SlayTheReport',
+    key: {
+      author: @player,
+      runid: run_id
+    },
+    attribute_updates: {
+      "report" => {
+        "value" => JSON.generate(reports),
+        "action" => "PUT"
+      }
+    }
+  )
+
+  redirect '/mypage'
+end
+
+get '/report/:player_id/:run_id' do |player_id, run_id|
   @player = player_id
   @runid = run_id
   result = ddb.get_item(
