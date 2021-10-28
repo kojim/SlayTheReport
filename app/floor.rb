@@ -15,7 +15,6 @@ class Floor
   attr_accessor :obtain_chosen_cards
   attr_accessor :upgrade_cards
   attr_accessor :remove_cards
-  attr_accessor :player_comment
 
   def initialize
     @floor_id            = 0
@@ -31,30 +30,23 @@ class Floor
     @obtain_chosen_cards = []
     @upgrade_cards       = []
     @remove_cards        = []
-    @player_comment      = 'no comment'
   end
 
 end
 
 class Run
   attr_accessor :ascension_level
-  attr_accessor :key_cards
-  attr_accessor :key_relics
   attr_accessor :master_deck
   attr_accessor :relics
   attr_accessor :floors
-  attr_accessor :reports
 
 
-  def initialize(run_json, report=[])
-    @reports = report
+  def initialize(run_json)
     run_data = JSON.parse(run_json)
     @ascension_level = 0
     if run_data['ascension_level'] != nil then
       @ascension_level = run_data['ascension_level']
     end
-    @key_cards  = ['sugoku tsuyoi card1', '2', '3']
-    @key_relics = ['snecko eye']
 
     @floors = []
     @floors << Floor.new
@@ -166,6 +158,29 @@ class Run
 
     @master_deck = run_data['master_deck']
     @relics = run_data['relics']
+  end
+end
+
+class Report
+  attr_accessor :author
+  attr_accessor :run_id
+  attr_accessor :title
+  attr_accessor :key_cards
+  attr_accessor :key_relics
+  attr_accessor :floor_comment
+
+  def initialize(author, run_id, report2)
+    @author        = author
+    @run_id        = run_id
+    @title         = report2.fetch('title', run_id)
+    @key_cards     = report2.fetch('key_cards', [])
+    @key_relics    = report2.fetch('key_relics', [])
+    if report2['floor_comment'] == nil then
+      @floor_comment = []
+    else
+      #@floor_comment = JSON.parse(report2['floor_comment'])
+      @floor_comment = report2['floor_comment']
+    end
   end
 end
 

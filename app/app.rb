@@ -57,8 +57,9 @@ get '/' do
   resp = ddb.scan(
     table_name: 'SlayTheReport', 
   )
-  @reports = resp.items
-# @reports = []
+  @reports = resp.items.map {|e|
+    Report.new(e['author'], e['runid'], JSON.parse(e['report2']))
+  }
   erb :index
 end
 
@@ -81,12 +82,14 @@ get '/mypage' do
   resp = ddb.query(
     table_name: 'SlayTheReport', 
     key_condition_expression: 'author = :author',
-    expression_attribute_values: { ':author' => twitter.user.screen_name }
+    expression_attribute_values: { ':author' => twitter.user.screen_name },
   )
-  @reports = []
-  @reports = resp.items
-  @text = "hello text3"
+  @reports = resp.items.map {|e|
+    Report.new(e['author'], e['runid'], JSON.parse(e['report2']))
+  }
   erb :mypage
+# @text = resp.items[0]['report2']
+# erb :debug
 end
 
 post '/mypage/newreport' do
@@ -98,7 +101,7 @@ post '/mypage/newreport' do
       author: twitter.user.screen_name,
       runid:  params[:runfile][:filename],
       runfile: @text,
-      report: '[]'
+      report2: '{}'
     }
   )
   redirect '/mypage'
@@ -115,8 +118,8 @@ get '/mypage/edit/:run_id' do |run_id|
       runid: run_id
     }
   )
-  @run = Run.new(result['item']['runfile'], JSON.parse(result['item']['report']))
-  @summary = JSON.parse(result['item']['summary'])
+  @run = Run.new(result['item']['runfile'])
+  @report = Report.new(result['item']['author'], result['item']['runid'], JSON.parse(result['item']['report2']))
   erb :report
 end
 
@@ -136,14 +139,13 @@ post '/mypage/edit/:run_id' do |run_id|
       runid: run_id
     },
     attribute_updates: {
-      "report" => {
-        "value" => JSON.generate(reports),
+      "report2" => {
+        "value" => JSON.generate({
+          "title" => params['title'],
+          "floor_comment" => reports
+        }),
         "action" => "PUT"
       },
-      "summary" => {
-        "value" => JSON.generate(summary),
-        "action" => "PUT"
-      }
     }
   )
 
@@ -160,8 +162,8 @@ get '/report/:player_id/:run_id' do |player_id, run_id|
       runid: run_id
     }
   )
-  @run = Run.new(result['item']['runfile'], JSON.parse(result['item']['report']))
-  @summary = JSON.parse(result['item']['summary'])
+  @run = Run.new(result['item']['runfile'])
+  @report = Report.new(result['item']['author'], result['item']['runid'], JSON.parse(result['item']['report2']))
   erb :report
   #@text = JSON.parse(result['item']['report'])
   #erb :debug

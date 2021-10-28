@@ -11,7 +11,7 @@
     <h3>reports</h3>
     <ul>
       <% @reports.each do |r| %>
-        <li><a href="/report/<%= r['author'] %>/<%= r['runid'] %>"><%= r['runid'] %></a> by <%= r['author'] %></li>
+        <li><a href="/report/<%= r.author %>/<%= r.run_id %>"><%= h(r.title) %></a> by <%= r.author %></li>
       <% end %>
     </ul>
   </li>

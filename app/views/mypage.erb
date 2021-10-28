@@ -17,11 +17,10 @@
   <li>
     <h3>my reports</h3>
     <ul>
-      <li><a href="/edit/kojim/100">report3</a></li>
       <% @reports.each do |r| %>
         <li>
-          <a href="/report/<%= r['author'] %>/<%= r['runid'] %>"><%= r['runid'] %></a> / 
-          <a href="/mypage/edit/<%=r['runid']%>">edit</a>
+          <a href="/report/<%= r.author %>/<%= r.run_id %>"> <%= h(r.title) %> / <%= r.run_id %></a> / 
+          <a href="/mypage/edit/<%=r.run_id%>">edit</a>
         </li>
       <% end %>
     </ul>

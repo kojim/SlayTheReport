@@ -11,12 +11,12 @@
 <% end %>
 <h1>GameInfo</h1>
 <% if @is_edit_mode then %>
-  <p>title: <input type='text' name='title' value='<%= h(@summary.fetch('title', 'no title')) %>' /></p>
+  <p>title: <input type='text' name='title' value='<%= h(@report.title) %>' /></p>
 <% else %>
-  <p>title: <%= h(@summary.fetch('title', 'no title')) %> </p>
+  <p>title: <%= h(@report.title) %> </p>
 <% end %>
-<p>player: <%= h(@player) %></p>
-<p>runid: <%= h(@runid) %></p>
+<p>player: <%= h(@report.author) %></p>
+<p>runid: <%= h(@report.run_id) %></p>
 <p>AscensionLevel: <%= h(@run.ascension_level) %></p>
 
 <h2>deck</h2>
@@ -95,14 +95,14 @@
     </div>
     <div class='f_comment'>
       <% if @is_edit_mode then %>
-        <% if @run.reports[idx] != nil %>
-          <textarea rows='3' name='report_<%= format("%03d", idx) %>'><%= h(@run.reports[idx]) %></textarea>
+        <% if @report.floor_comment[idx] != nil %>
+          <textarea rows='3' name='report_<%= format("%03d", idx) %>'><%= h(@report.floor_comment[idx]) %></textarea>
         <% else %>
           <textarea rows='3' name='report_<%= format("%03d", idx) %>'></textarea>
         <% end %>
       <% else %>
-        <% if @run.reports[idx] != nil %>
-          <p><%= h(@run.reports[idx]) %></p>
+        <% if @report.floor_comment[idx] != nil %>
+          <p><%= h(@report.floor_comment[idx]) %></p>
         <% else %>
           <p></p>
         <% end %>
