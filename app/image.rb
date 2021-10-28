@@ -8,6 +8,7 @@ def img(raw_key, size=200)
     'campfire' =>  'misc/campfire.png',
     'chest' => 'misc/chest.png',
     'boss_chest' => 'misc/boss_chest.png',
+    'door' => 'misc/door.png',
     # graphics
     'hp'   =>  'misc/hp.png',
     'gold' =>  'misc/gold.png',

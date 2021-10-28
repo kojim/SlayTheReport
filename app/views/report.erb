@@ -68,21 +68,21 @@
             <%= img(c, 80) %>
           <% end %>
         </div>
-        <div class='f_upgrade_cards'>
-          <% f.upgrade_cards.each do |c| %>
+        <% f.upgrade_cards.each do |c| %>
+          <div class='f_upgrade_cards'>
             <%= img(c, 80) %>
             ⇒
             <%= img(c+'+1', 80) %>
-          <% end %>
-        </div>
-        <div class='f_remove_cards'>
-          <% f.remove_cards.each do |c| %>
+          </div>
+        <% end %>
+        <% f.remove_cards.each do |c| %>
+          <div class='f_remove_cards'>
             <div class='removed'>
               <%= img(c, 80) %>
               <p> removed</p> 
             </div>
-          <% end %>
-        </div>
+          </div>
+        <% end %>
       </div>
     </div>
     <div class='f_comment'> <p> player comment: snecko snecko snecko snecko snecko snecko snecko snecko snecko snecko snecko snecko snecko snecko snecko snecko snecko snecko snecko </p> </div>

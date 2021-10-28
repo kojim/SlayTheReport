@@ -62,6 +62,7 @@ class Run
       result.floors[0].image = 'neow'
       result.floors[0].player_choise = run_data['neow_bonus'] + '/' + run_data['neow_cost']
     end
+
     run_data['path_per_floor'].each_with_index do |t,idx|
       f = Floor.new
       case t
@@ -73,6 +74,12 @@ class Run
       f.text = t
       f.floor_id = idx+1
       result.floors << f
+    end
+
+    if result.ascension_level < 20 and result.floors.size >= 52 then
+      result.floors[51].image = 'door'
+    elsif result.ascension_level >= 20 and result.floors.size >= 53 then
+      result.floors[52].image = 'door'
     end
 
     run_data['card_choices'].each do |e|
@@ -130,13 +137,14 @@ class Run
       pre_gold = e
     end
 
-    pre_hp = 0
+    pre_hp = result.floors[0].hp = run_data['current_hp_per_floor'][0]
     run_data['current_hp_per_floor'].each_with_index do |e, idx|
       result.floors[idx+1].hp = e
       result.floors[idx+1].hp_diff = e - pre_hp
       pre_hp = e
     end
 
+    result.floors[0].max_hp = run_data['max_hp_per_floor'][0]
     run_data['max_hp_per_floor'].each_with_index do |e, idx|
       result.floors[idx+1].max_hp = e
     end

@@ -55,6 +55,7 @@ get '/' do
     table_name: 'SlayTheReport', 
   )
   @reports = resp.items
+# @reports = []
   erb :index
 end
 
