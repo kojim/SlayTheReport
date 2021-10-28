@@ -37,7 +37,6 @@ class Floor
 end
 
 class Run
-  attr_accessor :player
   attr_accessor :ascension_level
   attr_accessor :key_cards
   attr_accessor :key_relics
@@ -50,7 +49,6 @@ class Run
   def initialize(run_json, report=[])
     @reports = report
     run_data = JSON.parse(run_json)
-    @player     = 'kojim2'
     @ascension_level = 0
     if run_data['ascension_level'] != nil then
       @ascension_level = run_data['ascension_level']

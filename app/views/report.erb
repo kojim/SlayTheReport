@@ -10,9 +10,14 @@
   <form target='.' method='post'>
 <% end %>
 <h1>GameInfo</h1>
-<p>player: <%= @player %></p>
-<p>runid: <%= @runid %></p>
-<p>AscensionLevel: <%= @run.ascension_level %></p>
+<% if @is_edit_mode then %>
+  <p>title: <input type='text' name='title' value='<%= h(@summary.fetch('title', 'no title')) %>' /></p>
+<% else %>
+  <p>title: <%= h(@summary.fetch('title', 'no title')) %> </p>
+<% end %>
+<p>player: <%= h(@player) %></p>
+<p>runid: <%= h(@runid) %></p>
+<p>AscensionLevel: <%= h(@run.ascension_level) %></p>
 
 <h2>deck</h2>
 <div class='master_deck'>
@@ -91,13 +96,13 @@
     <div class='f_comment'>
       <% if @is_edit_mode then %>
         <% if @run.reports[idx] != nil %>
-          <textarea rows='3' name='report_<%= format("%03d", idx) %>'><%= @run.reports[idx] %></textarea>
+          <textarea rows='3' name='report_<%= format("%03d", idx) %>'><%= h(@run.reports[idx]) %></textarea>
         <% else %>
           <textarea rows='3' name='report_<%= format("%03d", idx) %>'></textarea>
         <% end %>
       <% else %>
         <% if @run.reports[idx] != nil %>
-          <p><%= @run.reports[idx] %></p>
+          <p><%= h(@run.reports[idx]) %></p>
         <% else %>
           <p></p>
         <% end %>

@@ -17,6 +17,11 @@ require_relative './keymanager'
 configure do
   use Rack::Session::Cookie
 end
+helpers do
+  def h(text)
+    Rack::Utils.escape_html(text)
+  end
+end
 
 def oauth
   OAuth::Consumer.new(
@@ -111,6 +116,7 @@ get '/mypage/edit/:run_id' do |run_id|
     }
   )
   @run = Run.new(result['item']['runfile'], JSON.parse(result['item']['report']))
+  @summary = JSON.parse(result['item']['summary'])
   erb :report
 end
 
@@ -120,6 +126,9 @@ post '/mypage/edit/:run_id' do |run_id|
   params.keys.filter{|k| k.start_with?('report_')}.sort.each do |key|
     reports << params[key]
   end
+  summary = {
+    "title" => params['title']
+  }
   ddb.update_item(
     table_name: 'SlayTheReport',
     key: {
@@ -129,6 +138,10 @@ post '/mypage/edit/:run_id' do |run_id|
     attribute_updates: {
       "report" => {
         "value" => JSON.generate(reports),
+        "action" => "PUT"
+      },
+      "summary" => {
+        "value" => JSON.generate(summary),
         "action" => "PUT"
       }
     }
@@ -148,8 +161,9 @@ get '/report/:player_id/:run_id' do |player_id, run_id|
     }
   )
   @run = Run.new(result['item']['runfile'], JSON.parse(result['item']['report']))
+  @summary = JSON.parse(result['item']['summary'])
   erb :report
-  #@text = result
+  #@text = JSON.parse(result['item']['report'])
   #erb :debug
 end
 
