@@ -75,14 +75,14 @@
             <%= img(c+'+1', 80) %>
           </div>
         <% end %>
-        <% f.remove_cards.each do |c| %>
-          <div class='f_remove_cards'>
+        <div class='f_remove_cards'>
+          <% f.remove_cards.each do |c| %>
             <div class='removed'>
               <%= img(c, 80) %>
               <p> removed</p> 
             </div>
-          </div>
-        <% end %>
+          <% end %>
+        </div>
       </div>
     </div>
     <div class='f_comment'> <p> player comment: snecko snecko snecko snecko snecko snecko snecko snecko snecko snecko snecko snecko snecko snecko snecko snecko snecko snecko snecko </p> </div>
