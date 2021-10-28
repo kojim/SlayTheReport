@@ -9,6 +9,7 @@
 <h1>GameInfo</h1>
 <p>player: <%= @player %></p>
 <p>runid: <%= @runid %></p>
+<p>AscensionLevel: <%= @run.ascension_level %></p>
 
 <h2>deck</h2>
 <div class='master_deck'>
@@ -45,8 +46,8 @@
           <%= img('hp', 30) %> <%= f.hp %> / <%= f.max_hp %> (<%= sprintf("%+d", f.hp_diff) %>)
           <%= img('gold', 30) %> <%= f.gold %> (<%= sprintf("%+d", f.gold_diff) %>)
         </div>
-        <div class='f_chosen_cards'>
-          <% f.obtain_chosen_cards.each do |c| %>
+        <% f.obtain_chosen_cards.each do |c| %>
+          <div class='f_chosen_cards'>
             <% if c['picked'] != 'SKIP' %>
               <div class='picked'>
                 <%= img(c['picked'], 80) %>
@@ -60,8 +61,8 @@
               </div>
             <% end %>
             </p>
-          <% end %>
-        </div>
+          </div>
+        <% end %>
         <div class='f_obtain_objects'>
           <% f.obtain_objects.each do |c| %>
             <%= img(c, 80) %>

@@ -38,6 +38,7 @@ end
 
 class Run
   attr_accessor :player
+  attr_accessor :ascension_level
   attr_accessor :key_cards
   attr_accessor :key_relics
   attr_accessor :master_deck
@@ -48,6 +49,10 @@ class Run
     run_data = JSON.parse(run_json)
     result = Run.new
     result.player     = 'kojim2'
+    result.ascension_level = 0
+    if run_data['ascension_level'] != nil then
+      result.ascension_level = run_data['ascension_level']
+    end
     result.key_cards  = ['sugoku tsuyoi card1', '2', '3']
     result.key_relics = ['snecko eye']
 
@@ -94,6 +99,15 @@ class Run
       result.floors[e['floor'].to_i].player_choise = e['player_choice']
       if e['cards_removed'] != nil then
         result.floors[e['floor'].to_i].remove_cards += e['cards_removed']
+      end
+      if e['cards_transformed'] != nil then
+        result.floors[e['floor'].to_i].remove_cards += e['cards_transformed']
+      end
+      if e['cards_obtained'] != nil then
+        result.floors[e['floor'].to_i].obtain_objects += e['cards_obtained']
+      end
+      if e['cards_upgraded'] != nil then
+        result.floors[e['floor'].to_i].upgrade_cards += e['cards_upgraded']
       end
     end
 
