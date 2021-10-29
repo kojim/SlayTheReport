@@ -36,6 +36,7 @@ end
 
 class Run
   attr_accessor :ascension_level
+  attr_accessor :seed_text
   attr_accessor :master_deck
   attr_accessor :relics
   attr_accessor :floors
@@ -158,7 +159,29 @@ class Run
 
     @master_deck = run_data['master_deck']
     @relics = run_data['relics']
+    @seed_text = convert_raw_seed_to_string(run_data['seed_played'].to_i)
   end
+
+  # 4205495799455053197 should convert to 18JIMLWZV7HTH
+  # -3363429452019887060 should convert to 4G7UMG8L17P0W
+  def convert_raw_seed_to_string(seed)
+    char_string = "0123456789ABCDEFGHIJKLMNPQRSTUVWXYZ"
+ 
+    # Convert to unsigned
+    seed = seed + 2**64 if seed < 0
+    leftover = seed
+    char_count = char_string.size
+    result = []
+    while leftover != 0
+      remainder = leftover % char_count
+      leftover = leftover / char_count
+      index = remainder.to_i
+      c = char_string[index]
+      result << c
+    end
+    return result.reverse.join
+  end
+
 end
 
 class Report
