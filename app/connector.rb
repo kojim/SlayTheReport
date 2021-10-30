@@ -6,7 +6,6 @@ require 'json'
 require 'twitter'
 
 require_relative './floor'
-require_relative './keymanager'
 
 class RunDataService
 
