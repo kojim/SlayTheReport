@@ -1,0 +1,19 @@
+# 行数や一行の長さは数値目標とすることに意味を感じないので無視 
+Metrics/BlockLength:
+  Exclude:
+    - '*'
+     
+Layout/LineLength:
+  Exclude:
+    - '*'
+
+Metrics/ClassLength:
+  Exclude:
+    - '*'
+
+Metrics/MethodLength:
+  Exclude:
+    - '*'
+
+AllCops:
+  NewCops: enable
