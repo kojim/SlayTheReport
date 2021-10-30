@@ -23,10 +23,10 @@ configure do
 
   if ENV['STR_STANDALONE'] != nil then
     ddb = RunDataServiceMock.new
-    twitterService = TwitterServiceMock.new($Key['TwitterAPIKey'], $Key['TwitterAPIKeySecret'])
+    twitterService = TwitterServiceMock.new()
   else
     ddb = RunDataService.new
-    twitterService = TwitterService.new($Key['TwitterAPIKey'], $Key['TwitterAPIKeySecret'])
+    twitterService = TwitterService.new()
   end
 
 end

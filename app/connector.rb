@@ -81,7 +81,7 @@ class RunDataService
 end
 
 class TwitterService
-  def initialize(api_key, api_secret)
+  def initialize()
     smc = Aws::SecretsManager::Client.new(region: 'ap-northeast-1')
     secrets = JSON.parse(smc.get_secret_value(secret_id: 'TwitterAPIKey')['secret_string'])
     @api_key =    secrets['TwitterAPIKey']
