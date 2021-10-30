@@ -9,12 +9,10 @@ require 'oauth'
 
 also_reload File.dirname(__FILE__) + "/floor.rb"
 also_reload File.dirname(__FILE__) + "/image.rb"
-also_reload File.dirname(__FILE__) + "/keymanager.rb"
 also_reload File.dirname(__FILE__) + "/connector.rb"
 also_reload File.dirname(__FILE__) + "/connector_mock.rb"
 
 require_relative './floor'
-require_relative './keymanager'
 require_relative './connector'
 require_relative './connector_mock'
 
