@@ -9,15 +9,11 @@ require_relative './floor'
 
 class RunDataService
   def initialize
-    @ddb = Aws::DynamoDB::Client.new(
-      region: 'ap-northeast-1'
-    )
+    @ddb = Aws::DynamoDB::Client.new(region: 'ap-northeast-1')
   end
 
   def query_all
-    resp = @ddb.scan(
-      table_name: 'SlayTheReport'
-    )
+    resp = @ddb.scan(table_name: 'SlayTheReport')
     resp.items.map do |e|
       Report.new(e['author'], e['runid'], JSON.parse(e['report2']))
     end
@@ -37,10 +33,7 @@ class RunDataService
   def get_item(author, runid)
     result = @ddb.get_item(
       table_name: 'SlayTheReport',
-      key: {
-        author: author,
-        runid: runid
-      }
+      key: { author: author, runid: runid }
     )
     run = Run.new(result['item']['runfile'])
     report = Report.new(result['item']['author'], result['item']['runid'], JSON.parse(result['item']['report2']))
@@ -62,16 +55,10 @@ class RunDataService
   def update_item(author, runid, title, floor_comment)
     @ddb.update_item(
       table_name: 'SlayTheReport',
-      key: {
-        author: author,
-        runid: runid
-      },
+      key: { author: author, runid: runid },
       attribute_updates: {
         'report2' => {
-          'value' => JSON.generate({
-                                     'title' => title,
-                                     'floor_comment' => floor_comment
-                                   }),
+          'value' => JSON.generate({ 'title' => title, 'floor_comment' => floor_comment }),
           'action' => 'PUT'
         }
       }
