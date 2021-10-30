@@ -1,4 +1,4 @@
-# encoding: utf-8
+# frozen_string_literal: true
 
 require 'rubygems'
 require 'sinatra'
@@ -7,10 +7,10 @@ require 'aws-sdk'
 require 'twitter'
 require 'oauth'
 
-also_reload File.dirname(__FILE__) + "/floor.rb"
-also_reload File.dirname(__FILE__) + "/image.rb"
-also_reload File.dirname(__FILE__) + "/connector.rb"
-also_reload File.dirname(__FILE__) + "/connector_mock.rb"
+also_reload "#{File.dirname(__FILE__)}/floor.rb"
+also_reload "#{File.dirname(__FILE__)}/image.rb"
+also_reload "#{File.dirname(__FILE__)}/connector.rb"
+also_reload "#{File.dirname(__FILE__)}/connector_mock.rb"
 
 require_relative './floor'
 require_relative './connector'
@@ -21,14 +21,15 @@ twitterService = nil
 configure do
   use Rack::Session::Cookie
 
-  if ENV['STR_STANDALONE'] != nil then
+  if !ENV['STR_STANDALONE'].nil?
+    puts('sntandalone')
     ddb = RunDataServiceMock.new
-    twitterService = TwitterServiceMock.new()
+    twitterService = TwitterServiceMock.new
   else
+    puts('normal')
     ddb = RunDataService.new
-    twitterService = TwitterService.new()
+    twitterService = TwitterService.new
   end
-
 end
 helpers do
   def h(text)
@@ -40,23 +41,23 @@ def oauth
   OAuth::Consumer.new(
     $Key['TwitterAPIKey'],
     $Key['TwitterAPIKeySecret'],
-    :site => 'https://api.twitter.com',
-    :schema => :header,
-    :method => :post,
-    :request_token_path => '/oauth/request_token',
-    :access_token_path => '/oauth/access_token',
-    :authorize_path => '/oauth/authorize'
+    site: 'https://api.twitter.com',
+    schema: :header,
+    method: :post,
+    request_token_path: '/oauth/request_token',
+    access_token_path: '/oauth/access_token',
+    authorize_path: '/oauth/authorize'
   )
 end
 
 get '/' do
   @twitter = twitterService.token_authenticate(session[:twitter_token], session[:twitter_secret])
-  @reports = ddb.query_all()
+  @reports = ddb.query_all
   erb :index
 end
 
 get '/auth' do
-  request_token = oauth.get_request_token(:oauth_callback => "https://#{request.host}:#{request.port}/auth2")
+  request_token = oauth.get_request_token(oauth_callback: "https://#{request.host}:#{request.port}/auth2")
   session[:token] = request_token.token
   session[:secret] = request_token.secret
   redirect request_token.authorize_url
@@ -64,7 +65,7 @@ end
 
 get '/auth2' do
   request_token = OAuth::RequestToken.new(oauth, session[:token], session[:secret])
-  access_token = oauth.get_access_token(request_token, :oauth_verifier => params[:oauth_verifier])
+  access_token = oauth.get_access_token(request_token, oauth_verifier: params[:oauth_verifier])
   session[:twitter_token] = access_token.token
   session[:twitter_secret] = access_token.secret
   redirect '/'
@@ -103,7 +104,7 @@ end
 post '/mypage/edit/:run_id' do |run_id|
   @twitter = twitterService.token_authenticate(session[:twitter_token], session[:twitter_secret])
   reports = []
-  params.keys.filter{|k| k.start_with?('report_')}.sort.each do |key|
+  params.keys.filter { |k| k.start_with?('report_') }.sort.each do |key|
     reports << params[key]
   end
   ddb.update_item(
@@ -125,4 +126,3 @@ get '/report/:player_id/:run_id' do |player_id, run_id|
   )
   erb :report
 end
-
