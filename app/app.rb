@@ -17,16 +17,16 @@ require_relative './connector'
 require_relative './connector_mock'
 
 ddb = nil
-twitterservice = nil
+twitter_service = nil
 configure do
   use Rack::Session::Cookie
 
   if ENV['STR_STANDALONE'].nil?
     ddb = RunDataService.new
-    twitterservice = TwitterService.new
+    twitter_service = TwitterService.new
   else
     ddb = RunDataServiceMock.new
-    twitterservice = TwitterServiceMock.new
+    twitter_service = TwitterServiceMock.new
   end
 end
 helpers do
@@ -36,7 +36,7 @@ helpers do
 end
 
 def oauth
-  key, secret = twitterservice.get_api_keys
+  key, secret = twitter_service.get_api_keys
   OAuth::Consumer.new(
     key,
     secret,
@@ -50,7 +50,7 @@ def oauth
 end
 
 get '/' do
-  @twitter = twitterservice.token_authenticate(session[:twitter_token], session[:twitter_secret])
+  @twitter = twitter_service.token_authenticate(session[:twitter_token], session[:twitter_secret])
   @reports = ddb.query_all
   erb :index
 end
@@ -71,21 +71,21 @@ get '/auth2' do
 end
 
 get '/mypage' do
-  @twitter = twitterservice.token_authenticate(session[:twitter_token], session[:twitter_secret])
+  @twitter = twitter_service.token_authenticate(session[:twitter_token], session[:twitter_secret])
   @reports = ddb.query_by_author(@twitter.user.screen_name)
   erb :mypage
 end
 
 post '/mypage/newreport' do
   runfile = File.read(params[:runfile][:tempfile])
-  twitter = twitterservice.token_authenticate(session[:twitter_token], session[:twitter_secret])
+  twitter = twitter_service.token_authenticate(session[:twitter_token], session[:twitter_secret])
   ddb.put_item(twitter.user.screen_name, params[:runfile][:filename], runfile)
   redirect '/mypage'
 end
 
 get '/mypage/edit/:run_id' do |run_id|
   @is_edit_mode = true
-  twitter = twitterservice.token_authenticate(session[:twitter_token], session[:twitter_secret])
+  twitter = twitter_service.token_authenticate(session[:twitter_token], session[:twitter_secret])
   @runid = run_id
   @run, @report = ddb.get_item(
     twitter.user.screen_name,
@@ -95,7 +95,7 @@ get '/mypage/edit/:run_id' do |run_id|
 end
 
 post '/mypage/edit/:run_id' do |run_id|
-  @twitter = twitterservice.token_authenticate(session[:twitter_token], session[:twitter_secret])
+  @twitter = twitter_service.token_authenticate(session[:twitter_token], session[:twitter_secret])
   reports = []
   params.keys.filter { |k| k.start_with?('report_') }.sort.each do |key|
     reports << params[key]
