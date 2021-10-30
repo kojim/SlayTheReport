@@ -75,11 +75,17 @@ class TwitterService
   end
 
   def token_authenticate(token, secret)
+    return nil if token.nil? || secret.nil?
+
     Twitter::REST::Client.new do |config|
       config.consumer_key = @api_key
       config.consumer_secret = @api_secret
       config.access_token = token
       config.access_token_secret = secret
     end
+  end
+
+  def get_api_keys
+    [@api_key, @api_secret]
   end
 end
