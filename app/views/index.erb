@@ -2,7 +2,7 @@
 <h2>top page</h2>
 
 <ul>
-  <% if session[:twitter_token] != nil and session[:twitter_secret] != nil then %>
+  <% if @twitter != nil then %>
     <li><a href="/mypage">mypage</a></li>
   <% else %>
     <li><a href="/auth">auth</a></li>
@@ -68,5 +68,3 @@
     </ul>
   </li>
 </ul>
-<%= @text %>
-

@@ -10,12 +10,27 @@ require 'oauth'
 also_reload File.dirname(__FILE__) + "/floor.rb"
 also_reload File.dirname(__FILE__) + "/image.rb"
 also_reload File.dirname(__FILE__) + "/keymanager.rb"
+also_reload File.dirname(__FILE__) + "/connector.rb"
+also_reload File.dirname(__FILE__) + "/connector_mock.rb"
 
 require_relative './floor'
 require_relative './keymanager'
+require_relative './connector'
+require_relative './connector_mock'
 
+ddb = nil
+twitterService = nil
 configure do
   use Rack::Session::Cookie
+
+  if ENV['STR_STANDALONE'] != nil then
+    ddb = RunDataServiceMock.new
+    twitterService = TwitterServiceMock.new($Key['TwitterAPIKey'], $Key['TwitterAPIKeySecret'])
+  else
+    ddb = RunDataService.new
+    twitterService = TwitterService.new($Key['TwitterAPIKey'], $Key['TwitterAPIKeySecret'])
+  end
+
 end
 helpers do
   def h(text)
@@ -35,31 +50,10 @@ def oauth
     :authorize_path => '/oauth/authorize'
   )
 end
-def twitter
-  Twitter::REST::Client.new do |config|
-    config.consumer_key = $Key['TwitterAPIKey']
-    config.consumer_secret = $Key['TwitterAPIKeySecret']
-    config.access_token = session[:twitter_token]
-    config.access_token_secret = session[:twitter_secret]
-  end
-end
-ddb = Aws::DynamoDB::Client.new(
-    region: 'ap-northeast-1'
-)
 
 get '/' do
-  @text = "hello anonymous user"
-
-  if session[:twitter_token] != nil and session[:twitter_secret] != nil then
-    @text = "hello #{twitter.user.name}/#{twitter.user.screen_name}"
-  end
-
-  resp = ddb.scan(
-    table_name: 'SlayTheReport', 
-  )
-  @reports = resp.items.map {|e|
-    Report.new(e['author'], e['runid'], JSON.parse(e['report2']))
-  }
+  @twitter = twitterService.token_authenticate(session[:twitter_token], session[:twitter_secret])
+  @reports = ddb.query_all()
   erb :index
 end
 
@@ -79,74 +73,46 @@ get '/auth2' do
 end
 
 get '/mypage' do
-  resp = ddb.query(
-    table_name: 'SlayTheReport', 
-    key_condition_expression: 'author = :author',
-    expression_attribute_values: { ':author' => twitter.user.screen_name },
+  @twitter = twitterService.token_authenticate(session[:twitter_token], session[:twitter_secret])
+  @reports = ddb.query_by_author(
+    @twitter.user.screen_name
   )
-  @reports = resp.items.map {|e|
-    Report.new(e['author'], e['runid'], JSON.parse(e['report2']))
-  }
   erb :mypage
-# @text = resp.items[0]['report2']
-# erb :debug
 end
 
 post '/mypage/newreport' do
-  @text = "hello text3"
-  @text = File.read(params[:runfile][:tempfile])
+  runfile = File.read(params[:runfile][:tempfile])
+  twitter = twitterService.token_authenticate(session[:twitter_token], session[:twitter_secret])
   ddb.put_item(
-    table_name: 'SlayTheReport',
-    item:  {
-      author: twitter.user.screen_name,
-      runid:  params[:runfile][:filename],
-      runfile: @text,
-      report2: '{}'
-    }
+    twitter.user.screen_name,
+    params[:runfile][:filename],
+    runfile
   )
   redirect '/mypage'
 end
 
 get '/mypage/edit/:run_id' do |run_id|
   @is_edit_mode = true
-  @player = twitter.user.screen_name
+  twitter = twitterService.token_authenticate(session[:twitter_token], session[:twitter_secret])
   @runid = run_id
-  result = ddb.get_item(
-    table_name: 'SlayTheReport',
-    key: {
-      author: @player,
-      runid: run_id
-    }
+  @run, @report = ddb.get_item(
+    twitter.user.screen_name,
+    run_id
   )
-  @run = Run.new(result['item']['runfile'])
-  @report = Report.new(result['item']['author'], result['item']['runid'], JSON.parse(result['item']['report2']))
   erb :report
 end
 
 post '/mypage/edit/:run_id' do |run_id|
-  @player = twitter.user.screen_name
+  @twitter = twitterService.token_authenticate(session[:twitter_token], session[:twitter_secret])
   reports = []
   params.keys.filter{|k| k.start_with?('report_')}.sort.each do |key|
     reports << params[key]
   end
-  summary = {
-    "title" => params['title']
-  }
   ddb.update_item(
-    table_name: 'SlayTheReport',
-    key: {
-      author: @player,
-      runid: run_id
-    },
-    attribute_updates: {
-      "report2" => {
-        "value" => JSON.generate({
-          "title" => params['title'],
-          "floor_comment" => reports
-        }),
-        "action" => "PUT"
-      },
-    }
+    @twitter.user.screen_name,
+    run_id,
+    params['title'],
+    reports
   )
 
   redirect '/mypage'
@@ -155,18 +121,10 @@ end
 get '/report/:player_id/:run_id' do |player_id, run_id|
   @player = player_id
   @runid = run_id
-  result = ddb.get_item(
-    table_name: 'SlayTheReport',
-    key: {
-      author: player_id,
-      runid: run_id
-    }
+  @run, @report = ddb.get_item(
+    player_id,
+    run_id
   )
-  @run = Run.new(result['item']['runfile'])
-  @report = Report.new(result['item']['author'], result['item']['runid'], JSON.parse(result['item']['report2']))
   erb :report
-  #@text = JSON.parse(result['item']['report'])
-  #erb :debug
 end
-
 
