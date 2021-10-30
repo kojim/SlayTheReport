@@ -21,14 +21,12 @@ twitter_service = nil
 configure do
   use Rack::Session::Cookie
 
-  if !ENV['STR_STANDALONE'].nil?
-    puts('sntandalone')
-    ddb = RunDataServiceMock.new
-    twitter_service = TwitterServiceMock.new
-  else
-    puts('normal')
+  if ENV['STR_STANDALONE'].nil?
     ddb = RunDataService.new
     twitter_service = TwitterService.new
+  else
+    ddb = RunDataServiceMock.new
+    twitter_service = TwitterServiceMock.new
   end
 end
 helpers do
