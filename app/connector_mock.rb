@@ -41,7 +41,7 @@ class TwitterUserMock
   end
 end
 class TwitterServiceMock
-  def initialize(api_key, api_secret)
+  def initialize()
   end
   def token_authenticate(token, secret)
     TwitterClientMock.new
