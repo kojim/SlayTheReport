@@ -113,9 +113,14 @@ end
 get '/report/:player_id/:run_id' do |player_id, run_id|
   @player = player_id
   @runid = run_id
+  @show_rawfile = params[:raw]
   @run, @report = ddb.get_item(
     player_id,
     run_id
   )
-  erb :report
+  if @show_rawfile
+    @run.raw_json
+  else
+    erb :report
+  end
 end
