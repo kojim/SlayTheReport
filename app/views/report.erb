@@ -21,13 +21,13 @@
 <p>seed: <%= h(@run.seed_text) %></p>
 <p>AscensionLevel: <%= h(@run.ascension_level) %></p>
 
-<h2>deck</h2>
+<h2>deck(<%=@run.master_deck.size%>) </h2>
 <div class='master_deck'>
 <% @run.master_deck.each do |c| %>
   <%= img(c,80) %>
 <% end %>
 </div>
-<h2>relics</h2>
+<h2>relics(<%=@run.relics.size%>)</h2>
 <div class='master_relic'>
 <% @run.relics.each do |c| %>
   <%= img(c,60) %>
