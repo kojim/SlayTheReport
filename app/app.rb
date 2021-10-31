@@ -120,7 +120,7 @@ get '/report/:player_id/:run_id' do |player_id, run_id|
     run_id
   )
   if @show_rawfile
-    "<pre>#{h(JSON.pretty_generate(@run.raw_json))}</pre>"
+    erb :report_rawjson
   else
     erb :report
   end
