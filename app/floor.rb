@@ -28,6 +28,7 @@ class Run
 
   def initialize(run_json)
     run_data = JSON.parse(run_json)
+    @raw_json = run_data
     @ascension_level = 0
     @ascension_level = run_data['ascension_level'] unless run_data['ascension_level'].nil?
 
@@ -135,6 +136,8 @@ class Run
     @relics = run_data['relics']
     @seed_text = convert_raw_seed_to_string(run_data['seed_played'].to_i)
   end
+
+  attr_reader :raw_json
 
   # 4205495799455053197 should convert to 18JIMLWZV7HTH
   # -3363429452019887060 should convert to 4G7UMG8L17P0W

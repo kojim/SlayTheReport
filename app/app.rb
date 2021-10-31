@@ -6,6 +6,7 @@ require 'sinatra/reloader'
 require 'aws-sdk'
 require 'twitter'
 require 'oauth'
+require 'json'
 
 also_reload "#{File.dirname(__FILE__)}/floor.rb"
 also_reload "#{File.dirname(__FILE__)}/image.rb"
@@ -117,5 +118,10 @@ get '/report/:player_id/:run_id' do |player_id, run_id|
     player_id,
     run_id
   )
-  erb :report
+  @raw_run_json = (h(JSON.pretty_generate(@run.raw_json)) if params[:raw])
+  if @raw_run_json
+    erb :report_rawjson
+  else
+    erb :report
+  end
 end
