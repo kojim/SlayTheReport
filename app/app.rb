@@ -119,7 +119,7 @@ get '/report/:player_id/:run_id' do |player_id, run_id|
     run_id
   )
   if @show_rawfile
-    @run.raw_json
+    h(@run.raw_json)
   else
     erb :report
   end
