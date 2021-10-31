@@ -38,3 +38,16 @@
 .f_comment textarea {
   width: 100%;
 }
+.f_header {
+  width: 100%;
+  border-bottom: 1px solid;
+  display:flex;
+  justify-content: space-between;
+}
+body {
+  margin: 0px;
+  padding: 0px;
+}
+.contents {
+  margin: 8px;
+}

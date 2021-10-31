@@ -1,13 +1,25 @@
-<h1>SlayTheReport</h1>
+<html>
+<head>
+  <link rel="stylesheet" href="<%= url('style.css') %>" type="text/css" />
+</head>
+<body>
+<header class="f_header">
+  <div>
+  Slay the report
+  </div>
+  <div>
+  <% if @twitter != nil then %>
+    <a href="/mypage">mypage</a>
+  <% else %>
+    <a href="/auth">auth</a>
+  <% end %>
+  </div>
+
+</header>
+<div class="contents">
 <h2>top page</h2>
 
 <ul>
-  <% if @twitter != nil then %>
-    <li><a href="/mypage">mypage</a></li>
-  <% else %>
-    <li><a href="/auth">auth</a></li>
-  <% end %>
-  <li>
     <h3>reports</h3>
     <ul>
       <% @reports.each do |r| %>
@@ -45,3 +57,6 @@
     </ul>
   </li>
 </ul>
+</div>
+</body>
+</html>

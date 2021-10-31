@@ -1,9 +1,10 @@
 <html>
 <head>
-  <link rel="stylesheet" href="/style.css" />
+  <!-- TODO 戻して動くかチェック-->
+  <link rel="stylesheet" href="<%= url('style.css') %>" type="text/css" />
 </head>
-
 <body>
+<div class="contents">
 <% require_relative '../image' %>
 
 <% if @is_edit_mode then %>
@@ -119,6 +120,7 @@
 <% else %>
   <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-text="<%= h(@report.title) %> by <%= h(@report.author) %>" data-hashtags="SlayTheReport" data-show-count="true">Tweet</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 <% end %>
+</div>
 </body>
 </html>
 
