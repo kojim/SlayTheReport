@@ -9,6 +9,7 @@
 <% if @is_edit_mode then %>
   <form target='.' method='post'>
 <% end %>
+<a href="/">top page</a>
 <h1>GameInfo</h1>
 <% if @is_edit_mode then %>
   <p>title: <input type='text' name='title' value='<%= h(@report.title) %>' /></p>
@@ -115,6 +116,8 @@
 <% if @is_edit_mode then %>
   <button type='submit'>submit</button>
   </form>
+<% else %>
+  <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-text="<%= h(@report.title) %> by <%= h(@report.author) %>" data-hashtags="SlayTheReport" data-show-count="true">Tweet</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 <% end %>
 </body>
 </html>
