@@ -14,8 +14,11 @@ def img(raw_key, size = 200)
     # graphics
     'hp' => 'misc/hp.png',
     'gold' => 'misc/gold.png',
-    # random events
-    'Liars Game' => 'events/liarsGame.jpg'
+    # win images
+    'IRONCLAD_win' => 'misc/IRONCLAD_win.png',
+    'THE_SILENT_win' => 'misc/THE_SILENT_win.png',
+    'DEFECT_win' => 'misc/DEFECT_win.png',
+    'WATCHER_win' => 'misc/WATCHER_win.png',
   }
   if map.key?(raw_key)
     v = map[raw_key]

@@ -30,6 +30,7 @@ class Run
     run_data = JSON.parse(run_json)
     @raw_json = run_data
     @ascension_level = 0
+    @charactor = run_data['character_chosen']
     @ascension_level = run_data['ascension_level'] unless run_data['ascension_level'].nil?
 
     @floors = []
@@ -46,6 +47,8 @@ class Run
         f.image = 'chest'
       when '$'
         f.image = 'shop'
+      when nil
+        f.image = "#{@charactor}_win"
       end
       f.text = t
       f.floor_id = idx + 1
