@@ -1,4 +1,4 @@
-# encoding: utf-8
+# frozen_string_literal: true
 
 require 'rubygems'
 require 'aws-sdk'
@@ -8,52 +8,44 @@ require 'twitter'
 require_relative './floor'
 
 class RunDataService
-
-  def initialize()
-    @ddb = Aws::DynamoDB::Client.new(
-        region: 'ap-northeast-1'
-    )
+  def initialize
+    @ddb = Aws::DynamoDB::Client.new(region: 'ap-northeast-1')
   end
 
-  def query_all()
-    resp = @ddb.scan(
-      table_name: 'SlayTheReport', 
-    )
-    return resp.items.map {|e|
+  def query_all
+    resp = @ddb.scan(table_name: 'SlayTheReport')
+    resp.items.map do |e|
       Report.new(e['author'], e['runid'], JSON.parse(e['report2']))
-    }
+    end
   end
 
   def query_by_author(name)
     resp = @ddb.query(
-      table_name: 'SlayTheReport', 
+      table_name: 'SlayTheReport',
       key_condition_expression: 'author = :author',
-      expression_attribute_values: { ':author' => name },
+      expression_attribute_values: { ':author' => name }
     )
-    return resp.items.map {|e|
+    resp.items.map do |e|
       Report.new(e['author'], e['runid'], JSON.parse(e['report2']))
-    }
+    end
   end
 
   def get_item(author, runid)
     result = @ddb.get_item(
       table_name: 'SlayTheReport',
-      key: {
-        author: author,
-        runid: runid
-      }
+      key: { author: author, runid: runid }
     )
     run = Run.new(result['item']['runfile'])
     report = Report.new(result['item']['author'], result['item']['runid'], JSON.parse(result['item']['report2']))
-    return run, report
+    [run, report]
   end
 
   def put_item(author, runid, runfile)
     @ddb.put_item(
       table_name: 'SlayTheReport',
-      item:  {
+      item: {
         author: author,
-        runid:  runid,
+        runid: runid,
         runfile: runfile,
         report2: '{}'
       }
@@ -63,32 +55,28 @@ class RunDataService
   def update_item(author, runid, title, floor_comment)
     @ddb.update_item(
       table_name: 'SlayTheReport',
-      key: {
-        author: author,
-        runid: runid
-      },
+      key: { author: author, runid: runid },
       attribute_updates: {
-        "report2" => {
-          "value" => JSON.generate({
-            "title" => title,
-            "floor_comment" => floor_comment
-          }),
-          "action" => "PUT"
-        },
+        'report2' => {
+          'value' => JSON.generate({ 'title' => title, 'floor_comment' => floor_comment }),
+          'action' => 'PUT'
+        }
       }
     )
   end
 end
 
 class TwitterService
-  def initialize()
+  def initialize
     smc = Aws::SecretsManager::Client.new(region: 'ap-northeast-1')
     secrets = JSON.parse(smc.get_secret_value(secret_id: 'TwitterAPIKey')['secret_string'])
     @api_key =    secrets['TwitterAPIKey']
     @api_secret = secrets['TwitterAPIKeySecret']
   end
+
   def token_authenticate(token, secret)
-    return nil if (token == nil or secret == nil)
+    return nil if token.nil? || secret.nil?
+
     Twitter::REST::Client.new do |config|
       config.consumer_key = @api_key
       config.consumer_secret = @api_secret
@@ -96,9 +84,8 @@ class TwitterService
       config.access_token_secret = secret
     end
   end
+
   def get_api_keys
-    return @api_key, @api_secret
+    [@api_key, @api_secret]
   end
 end
-
-
