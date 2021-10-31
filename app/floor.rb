@@ -28,7 +28,7 @@ class Run
 
   def initialize(run_json)
     run_data = JSON.parse(run_json)
-    @raw_json = run_json
+    @raw_json = run_data
     @ascension_level = 0
     @ascension_level = run_data['ascension_level'] unless run_data['ascension_level'].nil?
 
