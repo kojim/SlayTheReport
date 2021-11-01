@@ -20,11 +20,11 @@ hooks:
 #     timeout: 300
 #     runas: root
   ApplicationStart:
-    - location: scripts/start.sh
+    - location: buildpipeline/2.app_start.sh
       timeout: 300
       runas: root
   ApplicationStop:
-    - location: scripts/stop.sh
+    - location: buildpipeline/2.app_stop.sh
       timeout: 300
       runas: root
 

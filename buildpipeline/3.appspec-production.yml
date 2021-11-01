@@ -1,0 +1,30 @@
+version: 0.0
+os: linux
+files:
+  - source: /
+    destination: /home/ubuntu/SlayTheReport
+file_exists_behavior: OVERWRITE
+
+permissions:
+  - object: /home/ubuntu/SlayTheReport
+    pattern: "**"
+    owner: ubuntu
+
+hooks:
+  BeforeInstall:
+#   - location: /usr/bin/ls
+#     timeout: 300
+#     runas: root
+  AfterInstall:
+#   - location: scripts/install.sh
+#     timeout: 300
+#     runas: root
+  ApplicationStart:
+    - location: buildpipeline/3.app_start.sh
+      timeout: 300
+      runas: root
+  ApplicationStop:
+    - location: buildpipeline/3.app_stop.sh
+      timeout: 300
+      runas: root
+
