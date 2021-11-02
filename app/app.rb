@@ -125,3 +125,7 @@ get '/report/:player_id/:run_id' do |player_id, run_id|
     erb :report
   end
 end
+
+get '/debug' do
+  erb :debug
+end
