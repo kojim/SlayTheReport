@@ -8,3 +8,8 @@ gem 'rubocop', '~> 1.22', require: false
 gem 'sinatra'
 gem 'sinatra-contrib'
 gem 'twitter'
+
+group :test do
+  gem 'rack-test'
+  gem 'rspec'
+end
