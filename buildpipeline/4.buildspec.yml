@@ -1,0 +1,12 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - git clone echo Logging in to Amazon ECR...
+      - git clone https://$GIT_USER:$GIT_PASSWORD@github.com/kojim/SlayTheReport.git
+      - cd SlayTheReport
+      - git pull master
+      - git checkout master
+      - git merge develop
+      - git push origin master
