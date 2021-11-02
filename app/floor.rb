@@ -81,11 +81,12 @@ class Run
     end
 
     run_data['event_choices'].each do |e|
-      if ['Golden Idol', 'Mysterious Sphere'].include? e['event_name'] then
-        @floors[e['floor'].to_i].image = e['event_name'] + ' Event'
-      else
-        @floors[e['floor'].to_i].image = e['event_name']
-      end
+      @floors[e['floor'].to_i].image =
+        if ['Golden Idol', 'Mysterious Sphere'].include? e['event_name']
+          "#{e['event_name']} Event"
+        else
+          e['event_name']
+        end
       @floors[e['floor'].to_i].player_choise = e['player_choice']
       @floors[e['floor'].to_i].remove_cards += e['cards_removed'] unless e['cards_removed'].nil?
       @floors[e['floor'].to_i].remove_cards += e['cards_transformed'] unless e['cards_transformed'].nil?
