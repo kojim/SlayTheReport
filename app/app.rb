@@ -22,10 +22,14 @@ $twitter_service = nil
 configure do
   use Rack::Session::Cookie
 
-  if ENV['STR_STANDALONE'].nil?
-    ddb = RunDataService.new
+  case ENV['DB_MODE']
+  when 'staging' then
+    ddb = RunDataService.new('SlayTheReport-v3p')
     $twitter_service = TwitterService.new
-  else
+  when 'production' then
+    ddb = RunDataService.new('SlayTheReport-v3p')
+    $twitter_service = TwitterService.new
+  when 'standalone' then
     ddb = RunDataServiceMock.new
     $twitter_service = TwitterServiceMock.new
   end
@@ -80,7 +84,10 @@ end
 post '/mypage/newreport' do
   runfile = File.read(params[:runfile][:tempfile])
   twitter = $twitter_service.token_authenticate(session[:twitter_token], session[:twitter_secret])
-  ddb.put_item(twitter.user.screen_name, params[:runfile][:filename], runfile)
+  # Todo: runfileサイズ超過の例外対処
+  # Todo: 重複登録の例外対処
+  # Todo: Run.new でのパース失敗の例外対処
+  ddb.put_item(twitter.user.screen_name, params[:runfile][:filename], runfile, Run.new(runfile))
   redirect '/mypage'
 end
 
@@ -128,4 +135,37 @@ end
 
 get '/debug' do
   erb :debug
+end
+get '/batch' do
+# db = Aws::DynamoDB::Client.new(region: 'ap-northeast-1')
+# resp = db.scan(
+#   table_name: 'SlayTheReport',
+# )
+# resp.items.map do |e|
+#   r = JSON.parse(e['report2'])
+#   run = Run.new(e['runfile'])
+#   db.put_item(
+#     table_name: 'SlayTheReport-v3p',
+#     item: {
+#       author: e['author'],
+#       runid: e['runid'],
+#       last_modified: run.raw_json['timestamp']*1000,
+#       runfile: e['runfile'],
+#       run_summary: JSON.generate({
+#         victory: run.victory,
+#         floor_reached: run.floor_reached,
+#         ascension_level: run.ascension_level,
+#         character_chosen: run.character_chosen
+#       }),
+#       report_summary: JSON.generate({
+#         title: r.fetch('title', e['runid'])
+#       }),
+#       report_body: JSON.generate({
+#         floor_comment: r.fetch('floor_comment', [])
+#       }),
+#       pseudo_pk: 'dummy'
+#     }
+#   )
+# end
+
 end

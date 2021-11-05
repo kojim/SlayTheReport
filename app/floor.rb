@@ -24,14 +24,19 @@ class Floor
 end
 
 class Run
-  attr_accessor :ascension_level, :seed_text, :master_deck, :relics, :floors
+  attr_reader :raw_json
+  attr_accessor :victory, :floor_reached, :ascension_level, :character_chosen, :seed_text, :master_deck, :relics, :floors
 
   def initialize(run_json)
     run_data = JSON.parse(run_json)
     @raw_json = run_data
-    @ascension_level = 0
-    @charactor = run_data['character_chosen']
-    @ascension_level = run_data['ascension_level'] unless run_data['ascension_level'].nil?
+    @victory = run_data['victory']
+    @floor_reached = run_data['floor_reached']
+    @ascension_level = run_data.fetch('ascension_level', 0)
+    @character_chosen = run_data['character_chosen']
+    @seed_text = convert_raw_seed_to_string(run_data['seed_played'].to_i)
+    @master_deck = run_data['master_deck']
+    @relics = run_data['relics']
 
     @floors = []
     @floors << Floor.new
@@ -48,13 +53,14 @@ class Run
       when '$'
         f.image = 'shop'
       when nil
-        f.image = "#{@charactor}_win"
+        f.image = "#{@character_chosen}_win"
       end
       f.text = t
       f.floor_id = idx + 1
       @floors << f
     end
 
+    # Todo: 心臓にトライしない場合は別の画像を使う
     if (@ascension_level < 20) && (@floors.size >= 52)
       @floors[51].image = 'door'
     elsif (@ascension_level >= 20) && (@floors.size >= 53)
@@ -66,6 +72,7 @@ class Run
     end
 
     unless run_data['boss_relics'].nil?
+      # Todo: フロア数のハードコードをやめる(path_per_floorの値を活用する)
       if run_data['boss_relics'].size >= 1
         @floors[17].image = 'boss_chest'
         @floors[17].obtain_chosen_cards << run_data['boss_relics'][0]
@@ -136,12 +143,8 @@ class Run
       @floors[e['floor'].to_i].obtain_objects << e['key']
     end
 
-    @master_deck = run_data['master_deck']
-    @relics = run_data['relics']
-    @seed_text = convert_raw_seed_to_string(run_data['seed_played'].to_i)
   end
 
-  attr_reader :raw_json
 
   # 4205495799455053197 should convert to 18JIMLWZV7HTH
   # -3363429452019887060 should convert to 4G7UMG8L17P0W
@@ -165,19 +168,15 @@ class Run
 end
 
 class Report
-  attr_accessor :author, :run_id, :title, :key_cards, :key_relics, :floor_comment
+  attr_accessor :author, :run_id, :title, :description, :key_cards, :key_relics, :floor_comment
 
-  def initialize(author, run_id, report2)
+  def initialize(author, run_id, report_summary, report_body={})
     @author        = author
     @run_id        = run_id
-    @title         = report2.fetch('title', run_id)
-    @key_cards     = report2.fetch('key_cards', [])
-    @key_relics    = report2.fetch('key_relics', [])
-    @floor_comment = if report2['floor_comment'].nil?
-                       []
-                     else
-                       # @floor_comment = JSON.parse(report2['floor_comment'])
-                       report2['floor_comment']
-                     end
+    @title         = report_summary.fetch('title', run_id)
+    @description   = report_summary.fetch('description', '')
+    @key_cards     = report_summary.fetch('key_cards', [])
+    @key_relics    = report_summary.fetch('key_relics', [])
+    @floor_comment = report_body.fetch('floor_comment', [])
   end
 end
