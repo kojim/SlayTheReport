@@ -84,7 +84,7 @@
 <% @report.run.relics.each_with_index do |c,idx| %>
   <span>
   <%= img(c,60) %>
-  <input type='checkbox' name='key_relic_<%= idx %>' value=<%=c%> style='display:none' <%= if @report.key_relics_pos.include? idx.to_s then 'checked="checked"' else '' end %>/>
+  <input type='checkbox' name='key_relic_<%= idx %>' value='<%=c%>' style='display:none' <%= if @report.key_relics_pos.include? idx.to_s then 'checked="checked"' else '' end %>/>
   </span>
 <% end %>
 </div>
