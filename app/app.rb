@@ -17,23 +17,21 @@ require_relative './floor'
 require_relative './connector'
 require_relative './connector_mock'
 
-ddb = nil
-$twitter_service = nil
-configure do
-  use Rack::Session::Cookie
+ddb, $twitter_service =
+  configure do
+    use Rack::Session::Cookie
 
-  case ENV['DB_MODE']
-  when 'staging' then
-    ddb = RunDataService.new('SlayTheReport-v3p')
-    $twitter_service = TwitterService.new
-  when 'production' then
-    ddb = RunDataService.new('SlayTheReport-v3p')
-    $twitter_service = TwitterService.new
-  when 'standalone' then
-    ddb = RunDataServiceMock.new
-    $twitter_service = TwitterServiceMock.new
+    case ENV['DB_MODE']
+    when 'staging'
+      [RunDataService.new('SlayTheReport-v3p'), TwitterService.new]
+    when 'production'
+      [RunDataService.new('SlayTheReport-v3p'), TwitterService.new]
+    when 'local'
+      [RunDataServiceLocal.new('SlayTheReport-v3p'), TwitterServiceMock.new]
+    when 'standalone'
+      [RunDataServiceMock.new, TwitterServiceMock.new]
+    end
   end
-end
 helpers do
   def h(text)
     Rack::Utils.escape_html(text)
