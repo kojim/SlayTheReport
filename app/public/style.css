@@ -1,3 +1,36 @@
+table.reports {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ccc;
+    background: #fff;
+}
+table.reports thead {
+    color: #fff;
+    background: #009485;
+}
+table.reports thead tr,
+table.reports tbody tr {
+    display: flex;
+}
+table.reports tbody tr+tr {
+    border-top: 1px solid #ccc;
+}
+table.reports thead tr th,
+table.reports tbody tr td {
+    display: flex;
+    flex: 1;
+    padding: .5em;
+}
+
+
+.master_deck .selected {
+  border: 3px solid red;
+}
+.master_relic .selected {
+  border: 3px solid red;
+}
+.f_container {
+}
 .f_container {
   border: 2px dotted;
   width: 800px;

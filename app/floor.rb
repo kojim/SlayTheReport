@@ -23,6 +23,17 @@ class Floor
   end
 end
 
+class RunSummary
+  attr_accessor :victory, :floor_reached, :ascension_level, :character_chosen
+  def initialize(summary_json)
+    summary = JSON.parse(summary_json)
+    @victory = summary['victory']
+    @floor_reached = summary['floor_reached']
+    @ascension_level = summary['ascension_level']
+    @character_chosen = summary['character_chosen']
+  end
+end
+
 class Run
   attr_reader :raw_json
   attr_accessor :victory, :floor_reached, :ascension_level, :character_chosen, :seed_text, :master_deck, :relics, :floors
@@ -168,15 +179,18 @@ class Run
 end
 
 class Report
-  attr_accessor :author, :run_id, :title, :description, :key_cards, :key_relics, :floor_comment
+  attr_accessor :author, :run_id, :title, :description, :key_cards, :key_cards_pos, :key_relics, :key_relics_pos, :floor_comment, :run
 
-  def initialize(author, run_id, report_summary, report_body={})
+  def initialize(author, run_id, report_summary, report_body={}, run)
     @author        = author
     @run_id        = run_id
     @title         = report_summary.fetch('title', run_id)
     @description   = report_summary.fetch('description', '')
     @key_cards     = report_summary.fetch('key_cards', [])
+    @key_cards_pos = report_summary.fetch('key_cards_pos', [])
     @key_relics    = report_summary.fetch('key_relics', [])
+    @key_relics_pos= report_summary.fetch('key_relics_pos', [])
     @floor_comment = report_body.fetch('floor_comment', [])
+    @run           = run
   end
 end

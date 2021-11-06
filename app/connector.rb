@@ -28,7 +28,12 @@ class RunDataService
         key_condition_expression: 'author = :author and last_modified = :last_modified',
         expression_attribute_values: { ':author' => e['author'], ':last_modified' => e['last_modified'] }
       )
-      Report.new(resp2.items[0]['author'], resp2.items[0]['runid'], JSON.parse(resp2.items[0]['report_summary']))
+      Report.new(
+        resp2.items[0]['author'],
+        resp2.items[0]['runid'],
+        JSON.parse(resp2.items[0]['report_summary']),
+        RunSummary.new(resp2.items[0]['run_summary'])
+      )
     end
   end
 
@@ -41,7 +46,12 @@ class RunDataService
       expression_attribute_values: { ':author' => name }
     )
     resp.items.map do |e|
-      Report.new(e['author'], e['runid'], JSON.parse(e['report_summary']))
+      Report.new(
+        e['author'],
+        e['runid'],
+        JSON.parse(e['report_summary']),
+        RunSummary.new(e['run_summary'])
+      )
     end
   end
 
@@ -50,13 +60,13 @@ class RunDataService
       table_name: @table_name,
       key: { author: author, runid: runid }
     )
-    run = Run.new(result['item']['runfile'])
-    report = Report.new(
+    Report.new(
       result['item']['author'],
       result['item']['runid'],
       JSON.parse(result['item']['report_summary']),
-      JSON.parse(result['item']['report_body']))
-    [run, report]
+      JSON.parse(result['item']['report_body']),
+      Run.new(result['item']['runfile'])
+    )
   end
 
   def put_item(author, runid, runfile, run)
@@ -80,7 +90,7 @@ class RunDataService
     )
   end
 
-  def update_item(author, runid, title, floor_comment)
+  def update_item(author, runid, title, floor_comment, key_cards, key_cards_pos, key_relics, key_relics_pos)
     @ddb.update_item(
       table_name: @table_name,
       key: { author: author, runid: runid },
@@ -90,7 +100,13 @@ class RunDataService
           'action' => 'PUT'
         },
         'report_summary' => {
-          'value' => JSON.generate({ 'title' => title }),
+          'value' => JSON.generate({
+            'title' => title,
+            'key_cards' => key_cards,
+            'key_cards_pos' => key_cards_pos,
+            'key_relics' => key_relics,
+            'key_relics_pos' => key_relics_pos
+          }),
           'action' => 'PUT'
         },
         'report_body' => {

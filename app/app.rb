@@ -95,7 +95,7 @@ get '/mypage/edit/:run_id' do |run_id|
   @is_edit_mode = true
   twitter = $twitter_service.token_authenticate(session[:twitter_token], session[:twitter_secret])
   @runid = run_id
-  @run, @report = ddb.get_item(
+  @report = ddb.get_item(
     twitter.user.screen_name,
     run_id
   )
@@ -104,15 +104,34 @@ end
 
 post '/mypage/edit/:run_id' do |run_id|
   @twitter = $twitter_service.token_authenticate(session[:twitter_token], session[:twitter_secret])
-  reports = []
-  params.keys.filter { |k| k.start_with?('report_') }.sort.each do |key|
-    reports << params[key]
+
+  floor_comments = params.keys.filter { |k| k.start_with?('report_') }.sort.map do |key|
+    params[key]
   end
+
+  key_cards = []
+  key_cards_pos = []
+  params.keys.filter { |k| k.start_with?('key_card_') }.each do |key|
+    key_cards << params[key]
+    key_cards_pos << key.gsub(/key_card_/, '')
+  end
+
+  key_relics = []
+  key_relics_pos = []
+  params.keys.filter { |k| k.start_with?('key_relic_') }.each do |key|
+    key_relics << params[key]
+    key_relics_pos << key.gsub(/key_relic_/, '')
+  end
+
   ddb.update_item(
     @twitter.user.screen_name,
     run_id,
     params['title'],
-    reports
+    floor_comments,
+    key_cards,
+    key_cards_pos,
+    key_relics,
+    key_relics_pos
   )
 
   redirect '/mypage'
@@ -121,7 +140,7 @@ end
 get '/report/:player_id/:run_id' do |player_id, run_id|
   @player = player_id
   @runid = run_id
-  @run, @report = ddb.get_item(
+  @report = ddb.get_item(
     player_id,
     run_id
   )

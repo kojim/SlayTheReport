@@ -13,40 +13,39 @@
     $(function(){
       var deck_count = 0;
       var relic_count = 0;
-      $('.master_deck input:checked').each(function() {
-        $(this).parent().find('img').toggleClass('selected');
+      $('.master_deck input:checked').each(function(e) {
+        console.log($(e.target).parent().length);
+        $(e.target).parent().find('img').toggleClass('selected');
         deck_count++;
       });
-      $('.master_relic input:checked').each(function() {
-        $(this).parent().find('img').toggleClass('selected');
+      $('.master_relic input:checked').click(function(e) {
+        $(e.target).parent().find('img').toggleClass('selected');
         relic_count++;
       });
-      if (is_edit_mode) {
-        $('.master_deck img').click(function(e) {
-          var input = $(e.target).parent().find('input');
-          if (input.prop('checked')) {
-            input.prop('checked', false);
-            $(e.target).toggleClass('selected');
-            deck_count--;
-          } else if (deck_count < 3) {
-            input.prop('checked', true);
-            $(e.target).toggleClass('selected');
-            deck_count++;
-          }
-        });
-        $('.master_relic img').click(function(e) {
-          var input = $(e.target).parent().find('input');
-          if (input.prop('checked')) {
-            input.prop('checked', false);
-            $(e.target).toggleClass('selected');
-            relic_count--;
-          } else if (relic_count < 1) {
-            input.prop('checked', true);
-            $(e.target).toggleClass('selected');
-            relic_count++;
-          }
-        });
-      }
+      $('.master_deck img').click(function(e) {
+        var input = $(e.target).parent().find('input');
+        if (input.prop('checked')) {
+          input.prop('checked', false);
+          $(e.target).toggleClass('selected');
+          deck_count--;
+        } else if (deck_count < 3) {
+          input.prop('checked', true);
+          $(e.target).toggleClass('selected');
+          deck_count++;
+        }
+      });
+      $('.master_relic img').click(function(e) {
+        var input = $(e.target).parent().find('input');
+        if (input.prop('checked')) {
+          input.prop('checked', false);
+          $(e.target).toggleClass('selected');
+          relic_count--;
+        } else if (relic_count < 1) {
+          input.prop('checked', true);
+          $(e.target).toggleClass('selected');
+          relic_count++;
+        }
+      });
     })
   </script>
 
@@ -75,7 +74,7 @@
 <% @report.run.master_deck.each_with_index do |c,idx| %>
   <span>
   <%= img(c,80) %>
-  <input type='checkbox' name='key_card_<%= idx %>' value='<%=c%>' style='display:none' <%= if @report.key_cards_pos.include? idx.to_s then 'checked="checked"' else '' end %>/>
+  <input type='checkbox' name='key_card_<%= idx %>' value='<%=c%>' style='display:inline' <%= if @report.key_cards_pos.include? idx.to_s then 'checked="checked"' else '' end %>/>
   </span>
 <% end %>
 </div>
@@ -84,7 +83,7 @@
 <% @report.run.relics.each_with_index do |c,idx| %>
   <span>
   <%= img(c,60) %>
-  <input type='checkbox' name='key_relic_<%= idx %>' value=<%=c%> style='display:none' <%= if @report.key_relics_pos.include? idx.to_s then 'checked="checked"' else '' end %>/>
+  <input type='checkbox' name='key_relic_<%= idx %>' value=<%=c%> style='display:inline' <%= if @report.key_relics_pos.include? idx.to_s then 'checked="checked"' else '' end %>/>
   </span>
 <% end %>
 </div>

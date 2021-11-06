@@ -1,3 +1,12 @@
+<html>
+<head>
+  <title>SlayTheReport</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+
+<body>
+<% require_relative '../image' %>
+
 <h1>SlayTheReport</h1>
 <h2>top page</h2>
 
@@ -9,11 +18,36 @@
   <% end %>
   <li>
     <h3>reports</h3>
-    <ul>
+    <table class='reports'>
+      <thead>
+        <tr>
+          <th>タイトル</th>
+          <th>投稿者</th>
+          <th>概要</th>
+          <th>キーカード</th>
+          <th>キーレリック</th>
+        </tr>
+      </thead>
+      <tbody>
       <% @reports.each do |r| %>
-        <li><a href="/report/<%= r.author %>/<%= r.run_id %>"><%= h(r.title) %></a> by <%= r.author %></li>
+        <tr>
+          <td>
+            <a href="/report/<%= r.author %>/<%= r.run_id %>"><%= h(r.title) %></a>
+          </td>
+          <td><%= r.author %></td>
+          <td>
+            <ul>
+            <li>A<%= r.run.ascension_level %></li>
+            <li>floor: <%= r.run.floor_reached %></li>
+            <li><%= if r.run.victory then 'win' else 'lose' end %></li>
+            </ul>
+          </td>
+          <td><%= r.key_cards.map{|c| img(c, 50)}.join %></td>
+          <td><%= r.key_relics.map{|c| img(c, 50)}.join %></td>
+        </tr>
       <% end %>
-    </ul>
+      </tbody>
+    </table>
   </li>
   <img src='https://slaythereport-images.s3.ap-northeast-1.amazonaws.com/akabeko.png'></img>
   <li>
@@ -45,3 +79,6 @@
     </ul>
   </li>
 </ul>
+
+</body>
+</html>
