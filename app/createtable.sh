@@ -1,5 +1,6 @@
 #!/bin/sh
-aws --region=ap-northeast-1 --endpoint-url=http://dynamodb:8000 dynamodb create-table --table-name SlayTheReport \
+
+AWS_ACCESS_KEY_ID=fakeid AWS_SECRET_ACCESS_KEY=fakekey aws --region=ap-northeast-1 --endpoint-url=http://dynamodb:8000 dynamodb create-table --table-name SlayTheReport \
       --attribute-definitions '[
       {
           "AttributeName": "author",
