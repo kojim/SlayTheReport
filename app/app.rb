@@ -30,7 +30,7 @@ ddb, $twitter_service =
     when 'production'
       [RunDataService.new('SlayTheReport-v3p'), TwitterService.new]
     when 'local'
-      [RunDataServiceLocal.new('SlayTheReport-v3p'), TwitterServiceMock.new]
+      [RunDataServiceLocal.new('SlayTheReport'), TwitterServiceMock.new]
     when 'standalone'
       [RunDataServiceMock.new, TwitterServiceMock.new]
     end
