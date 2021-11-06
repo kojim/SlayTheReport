@@ -10,6 +10,6 @@ require_relative './floor'
 class RunDataServiceLocal < RunDataService
   def initialize(table_name)
     @table_name = table_name
-    @ddb = Aws::DynamoDB::Client.new(endpoint: 'http://localhost:8000', region: 'ap-northeast-1', acccess_key_id: 'fakeid', secret_access_key: 'fakekey')
+    @ddb = Aws::DynamoDB::Client.new(endpoint: 'http://dynamodb:8000', region: 'ap-northeast-1', access_key_id: 'fakeid', secret_access_key: 'fakekey')
   end
 end

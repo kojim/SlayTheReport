@@ -1,0 +1,18 @@
+version: '3'
+services:
+  dynamodb:
+    image: amazon/dynamodb-local
+    environment:
+      - AWS_ACCESS_KEY_ID=fakeid
+      - AWS_SECRET_ACCESS_KEY=fakekey
+    ports:
+      - 8000:8000
+
+  sinatra:
+    build: .
+    volumes: 
+      - .:/app
+    environment:
+      - DB_MODE=local
+    ports:
+      - 127.0.0.1:80:80
