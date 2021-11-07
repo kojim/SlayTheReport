@@ -18,7 +18,6 @@ require_relative './connector'
 require_relative './connector_local'
 require_relative './connector_mock'
 
-set :bind, '0.0.0.0'
 
 $stdout.sync = true
 
@@ -32,6 +31,7 @@ ddb, $twitter_service =
     when 'production'
       [RunDataService.new('SlayTheReport-v3p'), TwitterService.new]
     when 'local'
+      set :bind, '0.0.0.0'
       [RunDataServiceLocal.new('SlayTheReport'), TwitterServiceMock.new]
     when 'standalone'
       [RunDataServiceMock.new, TwitterServiceMock.new]
