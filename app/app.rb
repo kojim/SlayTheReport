@@ -20,6 +20,8 @@ require_relative './connector_mock'
 
 set :bind, '0.0.0.0'
 
+$stdout.sync = true
+
 ddb, $twitter_service =
   configure do
     use Rack::Session::Cookie
