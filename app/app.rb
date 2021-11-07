@@ -18,7 +18,6 @@ require_relative './connector'
 require_relative './connector_local'
 require_relative './connector_mock'
 
-
 $stdout.sync = true
 
 ddb, $twitter_service =
