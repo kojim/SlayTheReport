@@ -1,12 +1,14 @@
 version: '3'
 services:
   dynamodb:
-    image: amazon/dynamodb-local
+    build: docker/dynamodb-local
     ports:
       - 8000:8000
 
   sinatra:
-    build: .
+    build: 
+      context: .
+      dockerfile: docker/DockerfileLocaldb
     volumes: 
       - .:/app
     environment:
