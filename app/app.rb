@@ -127,6 +127,7 @@ post '/mypage/edit/:run_id' do |run_id|
     @twitter.user.screen_name,
     run_id,
     params['title'],
+    params['description'],
     floor_comments,
     key_cards,
     key_cards_pos,
