@@ -43,7 +43,7 @@ AWS_ACCESS_KEY_ID=fakeid AWS_SECRET_ACCESS_KEY=fakekey aws --region=ap-northeast
               }
           ],
           "Projection": {
-              "ProjectionType": "KEYS_ONLY"
+              "ProjectionType": "ALL"
           }
       }
     ]' \
