@@ -33,6 +33,7 @@
         <tr>
           <td>
             <a href="/report/<%= r.author %>/<%= r.run_id %>"><%= h(r.title) %></a>
+            <p><%= h( r.description) %></p>
           </td>
           <td><%= r.author %></td>
           <td>
@@ -42,8 +43,8 @@
             <li><%= if r.run.victory then 'win' else 'lose' end %></li>
             </ul>
           </td>
-          <td><%= r.key_cards.map{|c| img(c, 50)}.join %></td>
-          <td><%= r.key_relics.map{|c| img(c, 50)}.join %></td>
+          <td><%= r.key_cards.map{|c| img(c)}.join %></td>
+          <td><%= r.key_relics.map{|c| img(c)}.join %></td>
         </tr>
       <% end %>
       </tbody>

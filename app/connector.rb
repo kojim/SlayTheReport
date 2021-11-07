@@ -92,7 +92,7 @@ class RunDataService
     )
   end
 
-  def update_item(author, runid, title, floor_comment, key_cards, key_cards_pos, key_relics, key_relics_pos)
+  def update_item(author, runid, title, description, floor_comment, key_cards, key_cards_pos, key_relics, key_relics_pos)
     @ddb.update_item(
       table_name: @table_name,
       key: { author: author, runid: runid },
@@ -105,6 +105,7 @@ class RunDataService
           'value' => JSON.generate(
             {
               'title' => title,
+              'description' => description,
               'key_cards' => key_cards,
               'key_cards_pos' => key_cards_pos,
               'key_relics' => key_relics,

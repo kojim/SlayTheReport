@@ -1,5 +1,6 @@
 table.reports {
     display: flex;
+    max-width: 1200px;
     flex-direction: column;
     border: 1px solid #ccc;
     background: #fff;
@@ -19,13 +20,50 @@ table.reports thead tr th,
 table.reports tbody tr td {
     display: flex;
     flex: 1;
+    justify-content: flex-start;
     padding: .5em;
 }
-
-
-.master_deck .selected {
-  border: 3px solid red;
+/* タイトル列 */
+table.reports tbody tr td:nth-of-type(1) {
+  flex-direction: column;
 }
+/* 投稿者&概要列 */
+table.reports thead tr th:nth-of-type(2),
+table.reports tbody tr td:nth-of-type(2),
+table.reports thead tr th:nth-of-type(3),
+table.reports tbody tr td:nth-of-type(3) {
+  width: 120px;
+  flex: none;
+}
+table.reports thead tr th:nth-of-type(4),
+table.reports tbody tr td:nth-of-type(4) {
+  width: 250px;
+  flex: none;
+}
+table.reports thead tr th:nth-of-type(5),
+table.reports tbody tr td:nth-of-type(5) {
+  width: 100px;
+  flex: none;
+}
+table.reports tbody tr td:nth-of-type(4) img,
+table.reports tbody tr td:nth-of-type(5) img {
+  align-self: flex-start;
+  width: 80px;
+  height:auto;
+}
+
+
+/* デッキカード画像 */
+.master_deck img {
+  width: 100px;
+  height:auto;
+}
+/* デッキレリック画像 */
+.master_relic img {
+  width: 80px;
+  height:auto;
+}
+.master_deck .selected,
 .master_relic .selected {
   border: 3px solid red;
 }
@@ -42,10 +80,26 @@ table.reports tbody tr td {
 }
 .f_event_image {
 }
+/* イベント画像 */
+.f_event_image img {
+  width: 330px;
+  height:auto;
+}
 .f_event_text {
 }
 .f_player_action {
 }
+/* 本文カード&レリック画像 */
+.f_player_action img {
+  width: 100px;
+  height:auto;
+}
+/* ライフ & ゴールド画像 */
+.f_life_gold img {
+  width: 25px;
+  height:auto;
+}
+
 .f_player_choise {
 }
 .f_life_gold {
