@@ -62,13 +62,13 @@
 <h1>GameInfo</h1>
 
 <% if @is_edit_mode then %>
-  <p>タイトル: <input type='text' name='title' maxlength='80' value='<%= h(@report.title) %>' /></p>
+  <p>タイトル: <input type='text' name='title' maxlength='40' value='<%= h(@report.title) %>' /></p>
 <% else %>
   <p>タイトル: <%= h(@report.title) %> </p>
 <% end %>
 
 <% if @is_edit_mode then %>
-  <p>概要: <textarea rows='3' cols='100' maxlength='300' name='description'><%= h(@report.description) %></textarea>
+  <p>概要: <textarea rows='3' cols='60' maxlength='120' name='description'><%= h(@report.description) %></textarea>
 <% else %>
   <p>説明: <%= h(@report.description) %> </p>
 <% end %>
