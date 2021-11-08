@@ -4,7 +4,7 @@ require 'json'
 
 class Floor
   attr_accessor :floor_id, :image, :text, :gold, :gold_diff, :max_hp, :hp, :hp_diff, :player_choise, :obtain_objects,
-                :obtain_chosen_cards, :upgrade_cards, :remove_cards
+                :obtain_chosen_cards, :upgrade_cards, :remove_cards, :bottled_cards
 
   def initialize
     @floor_id            = 0
@@ -20,6 +20,7 @@ class Floor
     @obtain_chosen_cards = []
     @upgrade_cards       = []
     @remove_cards        = []
+    @bottled_cards       = []
   end
 end
 
@@ -154,6 +155,30 @@ class Run
     run_data['potions_obtained'].each do |e|
       @floors[e['floor'].to_i].obtain_objects << e['key']
     end
+
+    # StS本体のバグによる、戦闘後のカード選択画面を開いた回数分ログが重複して出力される問題の対処。
+    @floors.each do |e|
+      e.obtain_chosen_cards.uniq!
+    end
+
+    # MOD Relic Statsの情報を活用
+    if run_data['relic_stats'] != nil then
+      if run_data['relic_stats']["Pandora's Box"] != nil then
+        obtain_floor = run_data['relic_stats']['obtain_stats'][0]["Pandora's Box"].to_i
+        @floors[obtain_floor].obtain_objects += run_data['relic_stats']["Pandora's Box"]
+      end
+      if run_data['relic_stats']['Astrolabe'] != nil then
+        obtain_floor = run_data['relic_stats']['obtain_stats'][0]['Astrolabe'].to_i
+        @floors[obtain_floor].obtain_objects += run_data['relic_stats']['Astrolabe']
+      end
+      ['Bottled Frame', 'Bottled Lightning', 'Bottled Tornado'].each do |b|
+        if run_data['relic_stats'][b] != nil then
+          obtain_floor = run_data['relic_stats']['obtain_stats'][0][b].to_i
+          @floors[obtain_floor].bottled_cards << run_data['relic_stats'][b]
+        end
+      end
+    end
+
   end
 
   # 4205495799455053197 should convert to 18JIMLWZV7HTH

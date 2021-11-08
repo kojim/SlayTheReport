@@ -148,8 +148,7 @@ get '/report/:player_id/:run_id' do |player_id, run_id|
     player_id,
     run_id
   )
-  @raw_run_json = (h(JSON.pretty_generate(@run.raw_json)) if params[:raw])
-  if @raw_run_json
+  if params[:raw]
     erb :report_rawjson
   else
     erb :report
