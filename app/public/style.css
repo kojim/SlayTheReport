@@ -111,14 +111,24 @@ table.reports tbody tr td:nth-of-type(5) img {
   border: 3px solid blue;
 }
 .f_obtain_objects {
+  display: flex;
+  flex-wrap: wrap;
 }
 .f_upgrade_cards {
 }
 .f_remove_cards {
   display: flex;
+  flex-wrap: wrap;
 }
 .f_remove_cards div.removed {
   border: 3px solid red;
+}
+.f_bottled_cards {
+  display: flex;
+  flex-wrap: wrap;
+}
+.f_bottled_cards div.bottled {
+  border: 3px solid green;
 }
 .f_comment {
 }

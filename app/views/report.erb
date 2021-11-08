@@ -156,6 +156,14 @@
             </div>
           <% end %>
         </div>
+        <div class='f_bottled_cards'>
+          <% f.bottled_cards.each do |c| %>
+            <div class='bottled'>
+              <%= img(c, 80) %>
+              <p> bottled</p> 
+            </div>
+          <% end %>
+        </div>
       </div>
     </div>
     <div class='f_comment'>
