@@ -162,23 +162,22 @@ class Run
     end
 
     # MOD Relic Statsの情報を活用
-    if run_data['relic_stats'] != nil then
-      if run_data['relic_stats']["Pandora's Box"] != nil then
+    unless run_data['relic_stats'].nil?
+      if run_data['relic_stats']["Pandora's Box"] != nil
         obtain_floor = run_data['relic_stats']['obtain_stats'][0]["Pandora's Box"].to_i
         @floors[obtain_floor].obtain_objects += run_data['relic_stats']["Pandora's Box"]
       end
-      if run_data['relic_stats']['Astrolabe'] != nil then
+      unless run_data['relic_stats']['Astrolabe'].nil?
         obtain_floor = run_data['relic_stats']['obtain_stats'][0]['Astrolabe'].to_i
         @floors[obtain_floor].obtain_objects += run_data['relic_stats']['Astrolabe']
       end
       ['Bottled Frame', 'Bottled Lightning', 'Bottled Tornado'].each do |b|
-        if run_data['relic_stats'][b] != nil then
+        unless run_data['relic_stats'][b].nil?
           obtain_floor = run_data['relic_stats']['obtain_stats'][0][b].to_i
           @floors[obtain_floor].bottled_cards << run_data['relic_stats'][b]
         end
       end
     end
-
   end
 
   # 4205495799455053197 should convert to 18JIMLWZV7HTH
