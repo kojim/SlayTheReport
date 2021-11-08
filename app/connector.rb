@@ -8,9 +8,9 @@ require 'twitter'
 require_relative './floor'
 
 class RunDataService
-  def initialize(table_name)
-    @table_name = table_name
-    @ddb = Aws::DynamoDB::Client.new(region: 'ap-northeast-1')
+  def initialize(ddb_and_name)
+    @ddb = ddb_and_name[0]
+    @table_name = ddb_and_name[1]
   end
 
   def query_all

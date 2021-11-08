@@ -15,7 +15,7 @@ also_reload "#{File.dirname(__FILE__)}/connector_mock.rb"
 
 require_relative './floor'
 require_relative './connector'
-require_relative './connector_local'
+require_relative 'ddb_generator'
 require_relative './connector_mock'
 
 $stdout.sync = true
@@ -26,12 +26,12 @@ ddb, $twitter_service =
 
     case ENV['DB_MODE']
     when 'staging'
-      [RunDataService.new('SlayTheReport-v3p'), TwitterService.new]
+      [RunDataService.new(DDBGenerator.run(:production)), TwitterService.new]
     when 'production'
-      [RunDataService.new('SlayTheReport-v3p'), TwitterService.new]
+      [RunDataService.new(DDBGenerator.run(:production)), TwitterService.new]
     when 'local'
       set :bind, '0.0.0.0'
-      [RunDataServiceLocal.new('SlayTheReport'), TwitterServiceMock.new]
+      [RunDataService.new(DDBGenerator.run(:local)), TwitterServiceMock.new]
     when 'standalone'
       [RunDataServiceMock.new, TwitterServiceMock.new]
     end
