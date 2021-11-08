@@ -154,6 +154,10 @@ class Run
       @floors[e['floor'].to_i].obtain_objects << e['key']
     end
 
+    # StS本体のバグによる、戦闘後のカード選択画面を開いた回数分ログが重複して出力される問題の対処。
+    @floors.each do |e|
+      e.obtain_chosen_cards.uniq!
+    end
   end
 
 
