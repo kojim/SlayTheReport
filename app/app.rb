@@ -147,6 +147,12 @@ post '/mypage/edit/:run_id' do |run_id|
   redirect '/mypage'
 end
 
+post '/mypage/delete/:run_id' do |run_id|
+  @twitter = $twitter_service.token_authenticate(session[:twitter_token], session[:twitter_secret])
+  ddb.delete_item(@twitter.user.screen_name, run_id)
+  redirect '/mypage'
+end
+
 get '/report/:player_id/:run_id' do |player_id, run_id|
   @player = player_id
   @runid = run_id

@@ -121,6 +121,14 @@ class RunDataService
       }
     )
   end
+
+  def delete_item(author, runid)
+    @ddb.delete_item(
+      table_name: @table_name,
+      key: { author: author, runid: runid }
+    )
+  end
+
 end
 
 class TwitterService
