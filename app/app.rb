@@ -24,7 +24,7 @@ configure do
 
   case ENV['DB_MODE']
   when 'staging' then
-    ddb = RunDataService.new('SlayTheReport-v3p')
+    ddb = RunDataService.new('SlayTheReport-v3s')
     $twitter_service = TwitterService.new
   when 'production' then
     ddb = RunDataService.new('SlayTheReport-v3p')
