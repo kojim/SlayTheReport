@@ -88,7 +88,9 @@ class RunDataService
         report_summary: '{}',
         report_body: '{}',
         pseudo_pk: 'dummy'
-      }
+      },
+      condition_expression: 'author <> :author AND runid <> :runid',
+      expression_attribute_values: { ':author' => author, ':runid' => runid }
     )
   end
 
@@ -121,6 +123,14 @@ class RunDataService
       }
     )
   end
+
+  def delete_item(author, runid)
+    @ddb.delete_item(
+      table_name: @table_name,
+      key: { author: author, runid: runid }
+    )
+  end
+
 end
 
 class TwitterService

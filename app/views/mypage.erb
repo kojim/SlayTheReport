@@ -1,3 +1,17 @@
+<html>
+
+<head>
+  <title>SlayTheReport</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script>
+    $(function(){
+      $('.delete_report').click(function(e) {
+        ret = window.prompt('本当に削除してよろしいですか？よろしければ「削除」と入力してください', '');
+        return ret == '削除';
+      });
+    });
+  </script>
+<body>
 <h1>SlayTheReport</h1>
 <h2>mypage</h2>
 
@@ -21,8 +35,13 @@
         <li>
           <a href="/report/<%= r.author %>/<%= r.run_id %>"> <%= h(r.title) %> / <%= r.run_id %></a> / 
           <a href="/mypage/edit/<%=r.run_id%>">edit</a>
+          <form method='POST' action='/mypage/delete/<%=r.run_id%>'>
+            <button type='submit'  class='delete_report'>削除</button>
+          </form>
         </li>
       <% end %>
     </ul>
   </li>
 </ul>
+</body>
+</html>
