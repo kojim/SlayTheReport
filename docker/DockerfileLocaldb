@@ -7,4 +7,4 @@ RUN apt install build-essential awscli -y
 COPY app/* /app/
 
 RUN bundle install
-CMD cd app ; sh ./createtable.sh ; bundle exec ruby app.rb -p 80
+CMD cd app ; sh ../scripts/createtable.sh ; bundle exec ruby app.rb -p 80
