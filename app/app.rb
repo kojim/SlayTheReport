@@ -82,12 +82,21 @@ get '/mypage' do
 end
 
 post '/mypage/newreport' do
+  # 30kb 以上のrunfileは無視する
+  # Todo: 何かメッセージを出すべきである
+  redirect '/mypage' if File.size(params[:runfile][:tempfile]) >= (30 * 1000)
+
   runfile = File.read(params[:runfile][:tempfile])
   twitter = $twitter_service.token_authenticate(session[:twitter_token], session[:twitter_secret])
-  # Todo: runfileサイズ超過の例外対処
-  # Todo: 重複登録の例外対処
-  # Todo: Run.new でのパース失敗の例外対処
-  ddb.put_item(twitter.user.screen_name, params[:runfile][:filename], runfile, Run.new(runfile))
+  begin
+    ddb.put_item(twitter.user.screen_name, params[:runfile][:filename], runfile, Run.new(runfile))
+  rescue JSON::ParserError => ex
+    # パースできないJSONは無視する
+    # Todo: 何かメッセージを出すべきである
+  rescue Aws::DynamoDB::Errors::ConditionalCheckFailedException => ex
+    # 同一ファイルの重複登録は無視する
+    # Todo: 何かメッセージを出すべきである
+  end
   redirect '/mypage'
 end
 

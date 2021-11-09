@@ -86,7 +86,9 @@ class RunDataService
         report_summary: '{}',
         report_body: '{}',
         pseudo_pk: 'dummy'
-      }
+      },
+      condition_expression: 'author <> :author AND runid <> :runid',
+      expression_attribute_values: { ':author' => author, ':runid' => runid }
     )
   end
 
