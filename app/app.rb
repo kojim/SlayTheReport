@@ -21,21 +21,20 @@ require_relative './connector_mock'
 $stdout.sync = true
 
 ddb, $twitter_service =
-  configure do
-    use Rack::Session::Cookie
-
-    case ENV['DB_MODE']
-    when 'staging'
-      [RunDataService.new(DDBGenerator.run(:production)), TwitterService.new]
-    when 'production'
-      [RunDataService.new(DDBGenerator.run(:production)), TwitterService.new]
-    when 'local'
-      set :bind, '0.0.0.0'
-      [RunDataService.new(DDBGenerator.run(:local)), TwitterServiceMock.new]
-    when 'standalone'
-      [RunDataServiceMock.new, TwitterServiceMock.new]
-    end
+  case ENV['DB_MODE']
+  when 'staging'
+    [RunDataService.new(DDBGenerator.run(:production)), TwitterService.new]
+  when 'production'
+    [RunDataService.new(DDBGenerator.run(:production)), TwitterService.new]
+  when 'local'
+    set :bind, '0.0.0.0'
+    [RunDataService.new(DDBGenerator.run(:local)), TwitterServiceMock.new]
+  when 'standalone'
+    [RunDataServiceMock.new, TwitterServiceMock.new]
   end
+configure do
+  use Rack::Session::Cookie
+end
 
 helpers do
   def h(text)
