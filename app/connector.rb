@@ -130,7 +130,6 @@ class RunDataService
       key: { author: author, runid: runid }
     )
   end
-
 end
 
 class TwitterService

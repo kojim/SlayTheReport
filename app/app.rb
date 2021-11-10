@@ -27,13 +27,14 @@ ddb, $twitter_service =
   when 'production'
     [RunDataService.new(DDBGenerator.run(:production)), TwitterService.new]
   when 'local'
-    set :bind, '0.0.0.0'
     [RunDataService.new(DDBGenerator.run(:local)), TwitterServiceMock.new]
   when 'standalone'
     [RunDataServiceMock.new, TwitterServiceMock.new]
   end
+
 configure do
   use Rack::Session::Cookie
+  set :bind, '0.0.0.0' if ENV['DB_MODE'] == 'local'
 end
 
 helpers do
