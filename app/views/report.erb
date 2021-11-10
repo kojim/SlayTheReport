@@ -55,16 +55,32 @@
 <body>
 <% require_relative '../image' %>
 
+<div class='header'>
+  <header class='title'>SlayTheReport</header>
+  <header class='menu'>
+    <ul class='pages'>
+      <li><a href='/'>トップページ</a></li>
+      <% if @twitter != nil then %>
+        <li><a href="/mypage">マイページ</a></li>
+      <% else %>
+        <li><a href="/auth">ログイン</a></li>
+      <% end %>
+      <li><a href="/help">ヘルプ</a></li>
+    </ul>
+  </header>
+</div>
+
 <% if @is_edit_mode then %>
   <form target='.' method='post'>
 <% end %>
-<a href="/">top page</a>
 <h1>GameInfo</h1>
 
 <% if @is_edit_mode then %>
   <p>タイトル: <input type='text' name='title' maxlength='20' value='<%= h(@report.title) %>' /></p>
 <% else %>
-  <p>タイトル: <%= h(@report.title) %> </p>
+  <p>タイトル: <%= h(@report.title) %> 
+  <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-text="<%= h(@report.title) %> by <%= h(@report.author) %>" data-hashtags="SlayTheReport" data-show-count="true">Tweet</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+  </p>
 <% end %>
 
 <% if @is_edit_mode then %>
@@ -187,8 +203,6 @@
 <% if @is_edit_mode then %>
   <button type='submit'>submit</button>
   </form>
-<% else %>
-  <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-text="<%= h(@report.title) %> by <%= h(@report.author) %>" data-hashtags="SlayTheReport" data-show-count="true">Tweet</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 <% end %>
 </body>
 </html>

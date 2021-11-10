@@ -1,9 +1,35 @@
+header.title {
+  background: #38A3A5;
+  font-size: 30px;
+  color: white;
+}
+header.menu ul.pages {
+  background: #57CC99;
+}
+header.menu ul.pages {
+  display: flex;
+  font-size: 20px;
+  flex-direction: row;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+header.menu ul.pages li {
+  list-style: none;
+  width: 150px;
+
+}
+header.menu ul.pages li.current {
+  background: #80ED99;
+}
+
 table.reports {
     display: flex;
     max-width: 1200px;
     flex-direction: column;
     border: 1px solid #ccc;
     background: #fff;
+    margin: 20px;
 }
 table.reports thead {
     color: #fff;

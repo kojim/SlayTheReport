@@ -2,6 +2,7 @@
 
 <head>
   <title>SlayTheReport</title>
+  <link rel="stylesheet" href="/style.css" />
   <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
   <script>
     $(function(){
@@ -12,16 +13,19 @@
     });
   </script>
 <body>
-<h1>SlayTheReport</h1>
-<h2>mypage</h2>
+
+<div class='header'>
+  <header class='title'>SlayTheReport</header>
+  <header class='menu'>
+    <ul class='pages'>
+      <li><a href='/'>トップページ</a></li>
+      <li class='current'>マイページ</li>
+      <li><a href="/help">ヘルプ</a></li>
+    </ul>
+  </header>
+</div>
 
 <ul>
-  <li>
-    <h3>links</h3>
-    <ul>
-      <li><a href="/">top page</a></li>
-    </ul>
-  </li>
   <li>
     <form action='/mypage/newreport' method="post" enctype="multipart/form-data">
       <input type="file" name="runfile", accept=".run">
