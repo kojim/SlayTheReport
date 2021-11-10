@@ -119,6 +119,7 @@ class Run
       @floors[e['floor'].to_i].image = 'campfire'
       @floors[e['floor'].to_i].player_choise = e['key']
       @floors[e['floor'].to_i].upgrade_cards << e['data'] if e['key'] == 'SMITH'
+      @floors[e['floor'].to_i].remove_cards << e['data'] if e['key'] == 'PURGE'
     end
 
     run_data['relics_obtained'].each do |e|

@@ -7,79 +7,57 @@
 <body>
 <% require_relative '../image' %>
 
-<h1>SlayTheReport</h1>
-<h2>top page</h2>
-
-<ul>
-  <% if @twitter != nil then %>
-    <li><a href="/mypage">mypage</a></li>
-  <% else %>
-    <li><a href="/auth">auth</a></li>
-  <% end %>
-  <li>
-    <h3>reports</h3>
-    <table class='reports'>
-      <thead>
-        <tr>
-          <th>タイトル</th>
-          <th>投稿者</th>
-          <th>概要</th>
-          <th>キーカード</th>
-          <th>キーレリック</th>
-        </tr>
-      </thead>
-      <tbody>
-      <% @reports.each do |r| %>
-        <tr>
-          <td>
-            <a href="/report/<%= r.author %>/<%= r.run_id %>"><%= h(r.title) %></a>
-            <p><%= h( r.description) %></p>
-          </td>
-          <td><%= r.author %></td>
-          <td>
-            <ul>
-            <li>A<%= r.run.ascension_level %></li>
-            <li>floor: <%= r.run.floor_reached %></li>
-            <li><%= if r.run.victory then 'win' else 'lose' end %></li>
-            </ul>
-          </td>
-          <td><%= r.key_cards.map{|c| img(c)}.join %></td>
-          <td><%= r.key_relics.map{|c| img(c)}.join %></td>
-        </tr>
+<div class='header'>
+  <header class='title'>SlayTheReport</header>
+  <header class='menu'>
+    <ul class='pages'>
+      <li class='current'>トップページ</li>
+      <% if @twitter != nil then %>
+        <li><a href="/mypage">マイページ</a></li>
+      <% else %>
+        <li><a href="/auth">ログイン</a></li>
       <% end %>
-      </tbody>
-    </table>
-  </li>
-  <img src='https://slaythereport-images.s3.ap-northeast-1.amazonaws.com/akabeko.png'></img>
-  <li>
-    <h3>お知らせ</h3>
-    <ul>
-      <li>β版です。ご自由にrunファイルをアップロードしたり、プレイレポートを書いたりしてください。</li>
-      <li>ただしβ版につきデータ消失のリスクがある点はご承知おきください。一応定期的なバックアップは心掛けています。</li>
-      <li>Twitter認証はユーザー名取得にしか使ってないのでご安心ください。将来的にユーザーアイコンの取得位は行うかもしれません。</li>
-      <li>度を越えておかしなrunファイルをアップロードすることはご遠慮ください。</li>
+      <li><a href="/help">ヘルプ</a></li>
     </ul>
-  </li>
-  <li>
-    <h3>使い方</h3>
-    <ul>
-      <li>authリンクをクリックするとTwitter認証でログインできます</li>
-      <li>その後mypageに移動し、runファイルをアップロードします</li>
-      <li>runファイルはSteamから確認できます。
-        <img src='https://slaythereport-images.s3.ap-northeast-1.amazonaws.com/misc/how_to_find_runfile1.png' style='width: 300px'></img>
-        <img src='https://slaythereport-images.s3.ap-northeast-1.amazonaws.com/misc/how_to_find_runfile2.png' style='width: 300px'></img>
-        <img src='https://slaythereport-images.s3.ap-northeast-1.amazonaws.com/misc/how_to_find_runfile3.png' style='width: 300px'></img>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <h3>ロードマップ</h3>
-    <ul>
-      <li>やろうとしていることはざっくりと<a href='https://github.com/kojim/SlayTheReport/issues'>こちら</a>に書いてあります。書いていないこともあります。</li>
-      <li>しばらくは開発環境の整備に時間を割きたいので新機能開発はペースダウンします、悪しからず。</li>
-    </ul>
-  </li>
+  </header>
+</div>
+
+<h3>お知らせ</h3>
+<ul>
+  <li>β版です。ご自由にrunファイルをアップロードしたり、プレイレポートを書いたりしてください。</li>
 </ul>
+
+<table class='reports'>
+  <thead>
+    <tr>
+      <th>タイトル</th>
+      <th>投稿者</th>
+      <th>概要</th>
+      <th>キーカード</th>
+      <th>キーレリック</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @reports.each do |r| %>
+    <tr>
+      <td>
+        <a href="/report/<%= r.author %>/<%= r.run_id %>"><%= h(r.title) %></a>
+        <p><%= h( r.description) %></p>
+      </td>
+      <td><%= r.author %></td>
+      <td>
+        <ul>
+        <li>A<%= r.run.ascension_level %></li>
+        <li>floor: <%= r.run.floor_reached %></li>
+        <li><%= if r.run.victory then 'win' else 'lose' end %></li>
+        </ul>
+      </td>
+      <td><%= r.key_cards.map{|c| img(c)}.join %></td>
+      <td><%= r.key_relics.map{|c| img(c)}.join %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
 
 </body>
 </html>

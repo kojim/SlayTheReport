@@ -105,10 +105,10 @@ end
 
 get '/mypage/edit/:run_id' do |run_id|
   @is_edit_mode = true
-  twitter = $twitter_service.token_authenticate(session[:twitter_token], session[:twitter_secret])
+  @twitter = $twitter_service.token_authenticate(session[:twitter_token], session[:twitter_secret])
   @runid = run_id
   @report = ddb.get_item(
-    twitter.user.screen_name,
+    @twitter.user.screen_name,
     run_id
   )
   erb :report
@@ -157,6 +157,7 @@ post '/mypage/delete/:run_id' do |run_id|
 end
 
 get '/report/:player_id/:run_id' do |player_id, run_id|
+  @twitter = $twitter_service.token_authenticate(session[:twitter_token], session[:twitter_secret])
   @player = player_id
   @runid = run_id
   @report = ddb.get_item(
@@ -170,6 +171,10 @@ get '/report/:player_id/:run_id' do |player_id, run_id|
   end
 end
 
+get '/help' do
+  @twitter = $twitter_service.token_authenticate(session[:twitter_token], session[:twitter_secret])
+  erb :help
+end
 get '/debug' do
   erb :debug
 end
