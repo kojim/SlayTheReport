@@ -1,6 +1,6 @@
 #!/bin/sh
 
-AWS_ACCESS_KEY_ID=fakeid AWS_SECRET_ACCESS_KEY=fakekey aws dynamodb create-table \
+aws dynamodb create-table \
     --table-name SlayTheReport-v3s \
     --attribute-definitions \
         AttributeName=author,AttributeType=S \
