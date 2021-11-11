@@ -15,25 +15,28 @@ also_reload "#{File.dirname(__FILE__)}/connector_mock.rb"
 
 require_relative './floor'
 require_relative './connector'
+require_relative 'ddb_generator'
 require_relative './connector_mock'
 
-ddb = nil
-$twitter_service = nil
+$stdout.sync = true
+
+ddb, $twitter_service =
+  case ENV['DB_MODE']
+  when 'staging'
+    [RunDataService.new(DDBGenerator.run(:staging)), TwitterService.new]
+  when 'production'
+    [RunDataService.new(DDBGenerator.run(:production)), TwitterService.new]
+  when 'local'
+    [RunDataService.new(DDBGenerator.run(:local)), TwitterServiceMock.new]
+  when 'standalone'
+    [RunDataServiceMock.new, TwitterServiceMock.new]
+  end
+
 configure do
   use Rack::Session::Cookie
-
-  case ENV['DB_MODE']
-  when 'staging' then
-    ddb = RunDataService.new('SlayTheReport-v3s')
-    $twitter_service = TwitterService.new
-  when 'production' then
-    ddb = RunDataService.new('SlayTheReport-v3p')
-    $twitter_service = TwitterService.new
-  when 'standalone' then
-    ddb = RunDataServiceMock.new
-    $twitter_service = TwitterServiceMock.new
-  end
+  set :bind, '0.0.0.0' if ENV['DB_MODE'] == 'local'
 end
+
 helpers do
   def h(text)
     Rack::Utils.escape_html(text)
@@ -176,35 +179,34 @@ get '/debug' do
   erb :debug
 end
 get '/batch' do
-# db = Aws::DynamoDB::Client.new(region: 'ap-northeast-1')
-# resp = db.scan(
-#   table_name: 'SlayTheReport',
-# )
-# resp.items.map do |e|
-#   r = JSON.parse(e['report2'])
-#   run = Run.new(e['runfile'])
-#   db.put_item(
-#     table_name: 'SlayTheReport-v3p',
-#     item: {
-#       author: e['author'],
-#       runid: e['runid'],
-#       last_modified: run.raw_json['timestamp']*1000,
-#       runfile: e['runfile'],
-#       run_summary: JSON.generate({
-#         victory: run.victory,
-#         floor_reached: run.floor_reached,
-#         ascension_level: run.ascension_level,
-#         character_chosen: run.character_chosen
-#       }),
-#       report_summary: JSON.generate({
-#         title: r.fetch('title', e['runid'])
-#       }),
-#       report_body: JSON.generate({
-#         floor_comment: r.fetch('floor_comment', [])
-#       }),
-#       pseudo_pk: 'dummy'
-#     }
-#   )
-# end
-
+  # db = Aws::DynamoDB::Client.new(region: 'ap-northeast-1')
+  # resp = db.scan(
+  #   table_name: 'SlayTheReport',
+  # )
+  # resp.items.map do |e|
+  #   r = JSON.parse(e['report2'])
+  #   run = Run.new(e['runfile'])
+  #   db.put_item(
+  #     table_name: 'SlayTheReport-v3p',
+  #     item: {
+  #       author: e['author'],
+  #       runid: e['runid'],
+  #       last_modified: run.raw_json['timestamp']*1000,
+  #       runfile: e['runfile'],
+  #       run_summary: JSON.generate({
+  #         victory: run.victory,
+  #         floor_reached: run.floor_reached,
+  #         ascension_level: run.ascension_level,
+  #         character_chosen: run.character_chosen
+  #       }),
+  #       report_summary: JSON.generate({
+  #         title: r.fetch('title', e['runid'])
+  #       }),
+  #       report_body: JSON.generate({
+  #         floor_comment: r.fetch('floor_comment', [])
+  #       }),
+  #       pseudo_pk: 'dummy'
+  #     }
+  #   )
+  # end
 end

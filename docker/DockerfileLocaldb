@@ -1,0 +1,10 @@
+FROM ruby:2.7-slim
+
+WORKDIR /app
+RUN apt update
+RUN apt install build-essential awscli -y
+
+COPY app/* /app/
+
+RUN bundle install
+CMD cd app ; sh ../scripts/create_table.sh ; bundle exec ruby app.rb -p 80

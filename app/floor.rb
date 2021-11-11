@@ -26,6 +26,7 @@ end
 
 class RunSummary
   attr_accessor :victory, :floor_reached, :ascension_level, :character_chosen
+
   def initialize(summary_json)
     summary = JSON.parse(summary_json)
     @victory = summary['victory']
@@ -72,7 +73,7 @@ class Run
       @floors << f
     end
 
-    # Todo: 心臓にトライしない場合は別の画像を使う
+    # TODO: 心臓にトライしない場合は別の画像を使う
     if (@ascension_level < 20) && (@floors.size >= 52)
       @floors[51].image = 'door'
     elsif (@ascension_level >= 20) && (@floors.size >= 53)
@@ -84,7 +85,7 @@ class Run
     end
 
     unless run_data['boss_relics'].nil?
-      # Todo: フロア数のハードコードをやめる(path_per_floorの値を活用する)
+      # TODO: フロア数のハードコードをやめる(path_per_floorの値を活用する)
       if run_data['boss_relics'].size >= 1
         @floors[17].image = 'boss_chest'
         @floors[17].obtain_chosen_cards << run_data['boss_relics'][0]
@@ -162,23 +163,22 @@ class Run
     end
 
     # MOD Relic Statsの情報を活用
-    if run_data['relic_stats'] != nil then
-      if run_data['relic_stats']["Pandora's Box"] != nil then
+    unless run_data['relic_stats'].nil?
+      if run_data['relic_stats']["Pandora's Box"] != nil
         obtain_floor = run_data['relic_stats']['obtain_stats'][0]["Pandora's Box"].to_i
         @floors[obtain_floor].obtain_objects += run_data['relic_stats']["Pandora's Box"]
       end
-      if run_data['relic_stats']['Astrolabe'] != nil then
+      unless run_data['relic_stats']['Astrolabe'].nil?
         obtain_floor = run_data['relic_stats']['obtain_stats'][0]['Astrolabe'].to_i
         @floors[obtain_floor].obtain_objects += run_data['relic_stats']['Astrolabe']
       end
       ['Bottled Frame', 'Bottled Lightning', 'Bottled Tornado'].each do |b|
-        if run_data['relic_stats'][b] != nil then
+        unless run_data['relic_stats'][b].nil?
           obtain_floor = run_data['relic_stats']['obtain_stats'][0][b].to_i
           @floors[obtain_floor].bottled_cards << run_data['relic_stats'][b]
         end
       end
     end
-
   end
 
   # 4205495799455053197 should convert to 18JIMLWZV7HTH
@@ -205,7 +205,7 @@ end
 class Report
   attr_accessor :author, :run_id, :title, :description, :key_cards, :key_cards_pos, :key_relics, :key_relics_pos, :floor_comment, :run
 
-  def initialize(author, run_id, report_summary, report_body={}, run)
+  def initialize(author, run_id, report_summary, report_body = {}, run)
     @author        = author
     @run_id        = run_id
     @title         = report_summary.fetch('title', run_id)
@@ -213,7 +213,7 @@ class Report
     @key_cards     = report_summary.fetch('key_cards', [])
     @key_cards_pos = report_summary.fetch('key_cards_pos', [])
     @key_relics    = report_summary.fetch('key_relics', [])
-    @key_relics_pos= report_summary.fetch('key_relics_pos', [])
+    @key_relics_pos = report_summary.fetch('key_relics_pos', [])
     @floor_comment = report_body.fetch('floor_comment', [])
     @run           = run
   end

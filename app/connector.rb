@@ -8,9 +8,9 @@ require 'twitter'
 require_relative './floor'
 
 class RunDataService
-  def initialize(table_name)
-    @table_name = table_name
-    @ddb = Aws::DynamoDB::Client.new(region: 'ap-northeast-1')
+  def initialize(ddb_and_name)
+    @ddb = ddb_and_name[0]
+    @table_name = ddb_and_name[1]
   end
 
   def query_all
@@ -21,7 +21,7 @@ class RunDataService
       key_condition_expression: 'pseudo_pk = :pseudo_pk',
       expression_attribute_values: { ':pseudo_pk' => 'dummy' }
     )
-    return resp1.items.map do |e|
+    resp1.items.map do |e|
       resp2 = @ddb.query(
         table_name: @table_name,
         index_name: 'last_modified-index',
@@ -77,12 +77,14 @@ class RunDataService
         runid: runid,
         last_modified: (Time.now.to_i * 1000).to_i,
         runfile: runfile,
-        run_summary: JSON.generate({
-          victory: run.victory,
-          floor_reached: run.floor_reached,
-          ascension_level: run.ascension_level,
-          character_chosen: run.character_chosen
-        }),
+        run_summary: JSON.generate(
+          {
+            victory: run.victory,
+            floor_reached: run.floor_reached,
+            ascension_level: run.ascension_level,
+            character_chosen: run.character_chosen
+          }
+        ),
         report_summary: '{}',
         report_body: '{}',
         pseudo_pk: 'dummy'
@@ -102,20 +104,20 @@ class RunDataService
           'action' => 'PUT'
         },
         'report_summary' => {
-          'value' => JSON.generate({
-            'title' => title,
-            'description' => description,
-            'key_cards' => key_cards,
-            'key_cards_pos' => key_cards_pos,
-            'key_relics' => key_relics,
-            'key_relics_pos' => key_relics_pos
-          }),
+          'value' => JSON.generate(
+            {
+              'title' => title,
+              'description' => description,
+              'key_cards' => key_cards,
+              'key_cards_pos' => key_cards_pos,
+              'key_relics' => key_relics,
+              'key_relics_pos' => key_relics_pos
+            }
+          ),
           'action' => 'PUT'
         },
         'report_body' => {
-          'value' => JSON.generate({
-            'floor_comment' => floor_comment,
-          }),
+          'value' => JSON.generate({ 'floor_comment' => floor_comment }),
           'action' => 'PUT'
         }
       }
@@ -128,7 +130,6 @@ class RunDataService
       key: { author: author, runid: runid }
     )
   end
-
 end
 
 class TwitterService

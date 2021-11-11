@@ -2,7 +2,7 @@
 
 require 'json'
 
-def img(raw_key, size = 200)
+def img(raw_key, _size = 200)
   map = {
     # events
     'neow' => 'misc/neow.png',
