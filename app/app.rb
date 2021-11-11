@@ -23,7 +23,7 @@ $stdout.sync = true
 ddb, $twitter_service =
   case ENV['DB_MODE']
   when 'staging'
-    [RunDataService.new(DDBGenerator.run(:production)), TwitterService.new]
+    [RunDataService.new(DDBGenerator.run(:staging)), TwitterService.new]
   when 'production'
     [RunDataService.new(DDBGenerator.run(:production)), TwitterService.new]
   when 'local'
