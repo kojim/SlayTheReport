@@ -21,18 +21,29 @@ class RunDataService
       key_condition_expression: 'pseudo_pk = :pseudo_pk',
       expression_attribute_values: { ':pseudo_pk' => 'dummy' }
     )
-    resp1.items.map do |e|
-      resp2 = @ddb.query(
-        table_name: @table_name,
-        index_name: 'last_modified-index',
-        key_condition_expression: 'author = :author and last_modified = :last_modified',
-        expression_attribute_values: { ':author' => e['author'], ':last_modified' => e['last_modified'] }
-      )
+
+    return [] if resp1.items.size == 0
+
+    # 記事が増えたらトップページの同時表示件数を減らす予定
+    # それまでは完全に冗長な実装だが気にするな
+    last_modified = resp1.items.map { |e| e['last_modified'] }
+    resp2 = @ddb.query(
+      table_name: @table_name,
+      index_name: 'pseudo_pk-last_modified-summary',
+      scan_index_forward: false,
+      key_condition_expression: 'pseudo_pk = :pseudo_pk AND last_modified BETWEEN :min AND :max',
+      expression_attribute_values: {
+        ':pseudo_pk' => 'dummy',
+        ':min' => last_modified.min,
+        ':max' => last_modified.max,
+      }
+    )
+    resp2.items.map do |e|
       Report.new(
-        resp2.items[0]['author'],
-        resp2.items[0]['runid'],
-        JSON.parse(resp2.items[0]['report_summary']),
-        RunSummary.new(resp2.items[0]['run_summary'])
+        e['author'],
+        e['runid'],
+        JSON.parse(e['report_summary']),
+        RunSummary.new(e['run_summary'])
       )
     end
   end
