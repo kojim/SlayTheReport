@@ -50,6 +50,15 @@
     })
   </script>
 
+<% unless @is_edit_mode then %>
+  <meta name='twitter:card'   content='summary'/>
+  <meta name='twitter:site'   content='@kojim'/>
+  <meta name='og:url'         content='https://slaythereport.kojim.net/report/<%=h(@report.author)%><%=h(@report.run_id)%>'/>
+  <meta name='og:title'       content='<%= h(@report.title) %>'/>
+  <meta name='og:description' content='<%= h(@report.description) %>'/>
+  <meta name='og:image'       content='https://slaythereport-images.s3.ap-northeast-1.amazonaws.com/misc/hp.png'/>
+<% end %>
+
 </head>
 
 <body>
