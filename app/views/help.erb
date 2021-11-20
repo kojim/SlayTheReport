@@ -6,20 +6,7 @@
 
 <body>
 
-<div class='header'>
-  <header class='title'>SlayTheReport</header>
-  <header class='menu'>
-    <ul class='pages'>
-      <li><a href='/'>トップページ</a></li>
-      <% if @twitter != nil then %>
-        <li><a href="/mypage">マイページ</a></li>
-      <% else %>
-        <li><a href="/auth">ログイン</a></li>
-      <% end %>
-      <li class='current'>ヘルプ</li>
-    </ul>
-  </header>
-</div>
+<%= render(:erb, :_header) %>
 
 <h3>使い方</h3>
 <ul>

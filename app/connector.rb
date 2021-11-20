@@ -48,6 +48,19 @@ class RunDataService
     end
   end
 
+  def query_authors
+    resp = @ddb.query(
+      table_name: @table_name,
+      index_name: 'pseudo_pk-last_modified-index',
+      scan_index_forward: false,
+      key_condition_expression: 'pseudo_pk = :pseudo_pk',
+      expression_attribute_values: { ':pseudo_pk' => 'dummy' }
+    )
+    resp.items.map do |e|
+      e['author']
+    end
+  end
+
   def query_by_author(name)
     resp = @ddb.query(
       table_name: @table_name,

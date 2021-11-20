@@ -1,0 +1,19 @@
+<div class='header'>
+  <header class='title'>SlayTheReport</header>
+  <header class='menu'>
+    <ul class='pages'>
+
+      <li <%= current('/') %>><a href='/'>トップページ</a></li>
+      <li <%= current('/users') %>><a href='/users'>投稿者別一覧</a></li>
+
+      <% if @twitter != nil then %>
+        <li <%= current('/mypage') %>><a href="/mypage">マイページ</a></li>
+      <% else %>
+        <li><a href="/auth">ログイン</a></li>
+      <% end %>
+
+      <li <%= current('/help') %>><a href="/help">ヘルプ</a></li>
+    </ul>
+  </header>
+</div>
+

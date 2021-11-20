@@ -2,28 +2,13 @@
 <head>
   <title>SlayTheReport</title>
   <link rel="stylesheet" href="/style.css" />
-
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-R37V7Z5D57"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-R37V7Z5D57');
-</script>
-
 </head>
 
 <body>
-<% require_relative '../image' %>
 
 <%= render(:erb, :_header) %>
 
-<h3>お知らせ</h3>
-<ul>
-  <li>β版です。ご自由にrunファイルをアップロードしたり、プレイレポートを書いたりしてください。</li>
-</ul>
+<a href='/users'>投稿者別一覧</a> ＞ <%= h(@author)%>
 
 <table class='reports'>
   <thead>
@@ -59,3 +44,5 @@
 
 </body>
 </html>
+<html>
+

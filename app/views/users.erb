@@ -1,0 +1,20 @@
+<html>
+<head>
+  <title>SlayTheReport</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+
+<body>
+
+<%= render(:erb, :_header) %>
+
+<ul>
+<% @authors.each do |author, count| %>
+  <li>
+    <a href='/users/<%=h(author)%>'><%= author %></a>(<%= count.size %>)
+  </li>
+<% end %>
+</ul>
+
+</body>
+</html>

@@ -41,6 +41,13 @@ helpers do
   def h(text)
     Rack::Utils.escape_html(text)
   end
+  def current(path)
+    if request.path_info == path then
+      "class='current'"
+    else
+      ''
+    end
+  end
 end
 
 def oauth
@@ -171,42 +178,25 @@ get '/report/:player_id/:run_id' do |player_id, run_id|
   end
 end
 
+get '/users' do
+  @twitter = $twitter_service.token_authenticate(session[:twitter_token], session[:twitter_secret])
+  authors = ddb.query_authors
+  @authors = authors.group_by{|e|e}
+  erb :users
+end
+
+get '/users/:player_id' do |user|
+  @twitter = $twitter_service.token_authenticate(session[:twitter_token], session[:twitter_secret])
+  @author = user
+  @reports = ddb.query_by_author(user)
+  erb :user
+end
+
 get '/help' do
   @twitter = $twitter_service.token_authenticate(session[:twitter_token], session[:twitter_secret])
   erb :help
 end
+
 get '/debug' do
   erb :debug
-end
-get '/batch' do
-  # db = Aws::DynamoDB::Client.new(region: 'ap-northeast-1')
-  # resp = db.scan(
-  #   table_name: 'SlayTheReport',
-  # )
-  # resp.items.map do |e|
-  #   r = JSON.parse(e['report2'])
-  #   run = Run.new(e['runfile'])
-  #   db.put_item(
-  #     table_name: 'SlayTheReport-v3p',
-  #     item: {
-  #       author: e['author'],
-  #       runid: e['runid'],
-  #       last_modified: run.raw_json['timestamp']*1000,
-  #       runfile: e['runfile'],
-  #       run_summary: JSON.generate({
-  #         victory: run.victory,
-  #         floor_reached: run.floor_reached,
-  #         ascension_level: run.ascension_level,
-  #         character_chosen: run.character_chosen
-  #       }),
-  #       report_summary: JSON.generate({
-  #         title: r.fetch('title', e['runid'])
-  #       }),
-  #       report_body: JSON.generate({
-  #         floor_comment: r.fetch('floor_comment', [])
-  #       }),
-  #       pseudo_pk: 'dummy'
-  #     }
-  #   )
-  # end
 end
