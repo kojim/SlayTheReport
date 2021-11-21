@@ -16,27 +16,14 @@
 
 <%= render(:erb, :_header) %>
 
-<ul>
-  <li>
-    <form action='/mypage/newreport' method="post" enctype="multipart/form-data">
-      <input type="file" name="runfile", accept=".run">
-      <button type="submit">upload</button>
-    </form>
-  </li>
-  <li>
-    <h3>my reports</h3>
-    <ul>
-      <% @reports.each do |r| %>
-        <li>
-          <a href="/report/<%= r.author %>/<%= r.run_id %>"> <%= h(r.title) %> / <%= r.run_id %></a> / 
-          <a href="/mypage/edit/<%=r.run_id%>">edit</a>
-          <form method='POST' action='/mypage/delete/<%=r.run_id%>'>
-            <button type='submit'  class='delete_report'>削除</button>
-          </form>
-        </li>
-      <% end %>
-    </ul>
-  </li>
-</ul>
+<h3>アップロード</h3>
+<form action='/mypage/newreport' method="post" enctype="multipart/form-data">
+  <input type="file" name="runfile", accept=".run">
+  <button type="submit">upload</button>
+</form>
+
+<h3>投稿記事</h3>
+<%= render(:erb, :_reports, {}, {:type => 'edit'}) %>
+
 </body>
 </html>

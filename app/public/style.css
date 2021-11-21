@@ -49,6 +49,9 @@ table.reports tbody tr td {
     justify-content: flex-start;
     padding: .5em;
 }
+table.reports tbody tr td.author {
+    display: block;
+}
 /* タイトル列 */
 table.reports tbody tr td:nth-of-type(1) {
   flex-direction: column;

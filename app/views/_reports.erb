@@ -1,0 +1,39 @@
+<table class='reports'>
+  <thead>
+    <tr>
+      <th>タイトル</th>
+      <th>投稿者</th>
+      <th>概要</th>
+      <th>キーカード</th>
+      <th>キーレリック</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @reports.each do |r| %>
+    <tr>
+      <td>
+        <a href="/report/<%= r.author %>/<%= r.run_id %>"><%= h(r.title) %></a>
+        <p><%= h( r.description) %></p>
+      </td>
+      <td class='author'>
+        <%= r.author %><br/>
+        <% if locals[:type] == 'edit' %>
+          <a href="/mypage/edit/<%=r.run_id%>">編集</a><br/>
+          <form method='POST' action='/mypage/delete/<%=r.run_id%>'>
+            <button type='submit'  class='delete_report'>削除</button>
+          </form>
+        <% end %>
+      </td>
+      <td>
+        <ul>
+        <li>A<%= r.run.ascension_level %></li>
+        <li>floor: <%= r.run.floor_reached %></li>
+        <li><%= if r.run.victory then 'win' else 'lose' end %></li>
+        </ul>
+      </td>
+      <td><%= r.key_cards.map{|c| img(c)}.join %></td>
+      <td><%= r.key_relics.map{|c| img(c)}.join %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
