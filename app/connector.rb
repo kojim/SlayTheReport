@@ -93,7 +93,7 @@ class RunDataService
     )
   end
 
-  def put_item(author, runid, runfile, run)
+  def put_item(author, runid, runfile, run, password='')
     @ddb.put_item(
       table_name: @table_name,
       item: {
@@ -110,7 +110,11 @@ class RunDataService
           }
         ),
         report_summary: '{}',
-        report_body: '{}',
+        report_body: JSON.generate(
+          {
+            password: password
+          }
+        ),
         pseudo_pk: 'dummy'
       },
       condition_expression: 'author <> :author AND runid <> :runid',
@@ -118,7 +122,7 @@ class RunDataService
     )
   end
 
-  def update_item(author, runid, title, description, floor_comment, key_cards, key_cards_pos, key_relics, key_relics_pos)
+  def update_item(author, runid, title, description, floor_comment, key_cards, key_cards_pos, key_relics, key_relics_pos, password='')
     @ddb.update_item(
       table_name: @table_name,
       key: { author: author, runid: runid },
@@ -141,7 +145,12 @@ class RunDataService
           'action' => 'PUT'
         },
         'report_body' => {
-          'value' => JSON.generate({ 'floor_comment' => floor_comment }),
+          'value' => JSON.generate(
+            {
+              'floor_comment' => floor_comment,
+              'password' => password
+            }
+          ),
           'action' => 'PUT'
         }
       }
@@ -179,3 +188,11 @@ class TwitterService
     [@api_key, @api_secret]
   end
 end
+
+class SaltService
+  def self.salt
+    smc = Aws::SecretsManager::Client.new(region: 'ap-northeast-1')
+    JSON.parse(smc.get_secret_value(secret_id: 'HashSalt')['secret_string'])['salt']
+  end
+end
+

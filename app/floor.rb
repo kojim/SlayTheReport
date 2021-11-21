@@ -159,6 +159,7 @@ class Run
 
     # StS本体のバグによる、戦闘後のカード選択画面を開いた回数分ログが重複して出力される問題の対処。
     @floors.each do |e|
+      # TODO: 選択画面を何度も開いたのちにカードをピックした場合、uniqでは対処が不十分
       e.obtain_chosen_cards.uniq!
     end
 
@@ -203,7 +204,7 @@ class Run
 end
 
 class Report
-  attr_accessor :author, :run_id, :title, :description, :key_cards, :key_cards_pos, :key_relics, :key_relics_pos, :floor_comment, :run
+  attr_accessor :author, :run_id, :title, :description, :key_cards, :key_cards_pos, :key_relics, :key_relics_pos, :password, :floor_comment, :run
 
   def initialize(author, run_id, report_summary, report_body = {}, run)
     @author        = author
@@ -214,6 +215,7 @@ class Report
     @key_cards_pos = report_summary.fetch('key_cards_pos', [])
     @key_relics    = report_summary.fetch('key_relics', [])
     @key_relics_pos = report_summary.fetch('key_relics_pos', [])
+    @password       = report_body.fetch('password', '')
     @floor_comment = report_body.fetch('floor_comment', [])
     @run           = run
   end

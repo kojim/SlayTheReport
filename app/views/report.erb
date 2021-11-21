@@ -67,6 +67,7 @@
 
 <% if @is_edit_mode then %>
   <form target='.' method='post'>
+    <input type='hidden' name='password' value='<%= h(request["password"])%>'/>
 <% end %>
 <h1>GameInfo</h1>
 

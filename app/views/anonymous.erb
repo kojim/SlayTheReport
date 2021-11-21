@@ -1,0 +1,55 @@
+<html>
+
+<head>
+  <title>SlayTheReport</title>
+  <link rel="stylesheet" href="/style.css" />
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script>
+    $(function(){
+      $('.edit_report').click(function(e) {
+        ret = $.ajax({
+          type: 'GET',
+          url: '/anonymous/auth/' + e.target.dataset.runid + '?password=' + $(e.target.parentNode).find('input').val(),
+          async: false
+        });
+        if (ret.status != 200) {
+          alert('パスワードが違います');
+          return false;
+        } else {
+          return true;
+        }
+        return ret.status == 200;
+      });
+      $('.delete_report').click(function(e) {
+        ret = $.ajax({
+          type: 'GET',
+          url: '/anonymous/auth/' + e.target.dataset.runid + '?password=' + $(e.target.parentNode).find('input').val(),
+          async: false
+        });
+        if (ret.status != 200) {
+          alert('パスワードが違います');
+          return false;
+        }
+        ret = window.prompt('本当に削除してよろしいですか？よろしければ「削除」と入力してください', '');
+        return ret == '削除';
+      });
+    });
+  </script>
+<body>
+
+  <%= @xxx %>
+<%= render(:erb, :_header) %>
+
+<h3>アップロード</h3>
+<form action='/anonymous/newreport' method="post" enctype="multipart/form-data">
+  <input type="file" name="runfile" accept=".run">
+  <label>pass</label>
+  <input type="text" name="password" size='10'>
+  <button type="submit">upload</button>
+</form>
+
+<h3>投稿記事</h3>
+<%= render(:erb, :_reports, {}, {:type => 'anonymous'}) %>
+
+</body>
+</html>

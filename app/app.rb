@@ -7,6 +7,7 @@ require 'aws-sdk'
 require 'twitter'
 require 'oauth'
 require 'json'
+require 'digest/md5'
 
 also_reload "#{File.dirname(__FILE__)}/floor.rb"
 also_reload "#{File.dirname(__FILE__)}/image.rb"
@@ -20,16 +21,16 @@ require_relative './connector_mock'
 
 $stdout.sync = true
 
-ddb, $twitter_service =
+ddb, $twitter_service, salt =
   case ENV['DB_MODE']
   when 'staging'
-    [RunDataService.new(DDBGenerator.run(:staging)), TwitterService.new]
+    [RunDataService.new(DDBGenerator.run(:staging)), TwitterService.new, SaltService.salt]
   when 'production'
-    [RunDataService.new(DDBGenerator.run(:production)), TwitterService.new]
+    [RunDataService.new(DDBGenerator.run(:production)), TwitterService.new, SaltService.salt]
   when 'local'
-    [RunDataService.new(DDBGenerator.run(:local)), TwitterServiceMock.new]
+    [RunDataService.new(DDBGenerator.run(:local)), TwitterServiceMock.new, 'salt']
   when 'standalone'
-    [RunDataServiceMock.new, TwitterServiceMock.new]
+    [RunDataServiceMock.new, TwitterServiceMock.new, 'salt']
   end
 
 configure do
@@ -94,6 +95,7 @@ end
 post '/mypage/newreport' do
   # 30kb 以上のrunfileは無視する
   # Todo: 何かメッセージを出すべきである
+  redirect '/mypage' unless File.basename(params[:runfile][:filename]).match(/^\d+.run$/)
   redirect '/mypage' if File.size(params[:runfile][:tempfile]) >= (30 * 1000)
 
   runfile = File.read(params[:runfile][:tempfile])
@@ -161,6 +163,105 @@ post '/mypage/delete/:run_id' do |run_id|
   @twitter = $twitter_service.token_authenticate(session[:twitter_token], session[:twitter_secret])
   ddb.delete_item(@twitter.user.screen_name, run_id)
   redirect '/mypage'
+end
+
+get '/anonymous' do
+  @twitter = $twitter_service.token_authenticate(session[:twitter_token], session[:twitter_secret])
+  @reports = ddb.query_by_author('anonymous')
+  erb :anonymous
+end
+
+get '/anonymous/auth/:run_id' do |run_id|
+  # TODO: REST的に奇妙な設計。後で直すかも。
+  report = ddb.get_item('anonymous', run_id)
+  if report.password == Digest::MD5.hexdigest(params['password'] + salt) then
+    status 200
+    body 'OK'
+  else
+    status 401
+    body 'Unauthorized'
+  end
+end
+
+post '/anonymous/newreport' do
+  # 30kb 以上のrunfileは無視する
+  # Todo: 何かメッセージを出すべきである
+  redirect '/anonymous' unless File.basename(params[:runfile][:filename]).match(/^\d+.run$/)
+  redirect '/anonymous' if File.size(params[:runfile][:tempfile]) >= (30 * 1000)
+
+  runfile = File.read(params[:runfile][:tempfile])
+  begin
+    ddb.put_item('anonymous', params[:runfile][:filename], runfile, Run.new(runfile), Digest::MD5.hexdigest(params['password'] + salt))
+  rescue JSON::ParserError => ex
+    # パースできないJSONは無視する
+    # Todo: 何かメッセージを出すべきである
+  rescue Aws::DynamoDB::Errors::ConditionalCheckFailedException => ex
+    # 同一ファイルの重複登録は無視する
+    # Todo: 何かメッセージを出すべきである
+  end
+  redirect '/anonymous'
+end
+
+get '/anonymous/edit/:run_id' do |run_id|
+  @is_edit_mode = true
+  @twitter = $twitter_service.token_authenticate(session[:twitter_token], session[:twitter_secret])
+  @report = ddb.get_item(
+    'anonymous',
+    run_id
+  )
+  redirect '/anonymous' unless @report.password == Digest::MD5.hexdigest(params['password'] + salt)
+  erb :report
+end
+
+post '/anonymous/edit/:run_id' do |run_id|
+  report = ddb.get_item(
+    'anonymous',
+    run_id
+  )
+  redirect '/anonymous' unless report.password == Digest::MD5.hexdigest(params['password'] + salt)
+
+  floor_comments = params.keys.filter { |k| k.start_with?('report_') }.sort.map do |key|
+    params[key]
+  end
+
+  key_cards = []
+  key_cards_pos = []
+  params.keys.filter { |k| k.start_with?('key_card_') }.each do |key|
+    key_cards << params[key]
+    key_cards_pos << key.gsub(/key_card_/, '')
+  end
+
+  key_relics = []
+  key_relics_pos = []
+  params.keys.filter { |k| k.start_with?('key_relic_') }.each do |key|
+    key_relics << params[key]
+    key_relics_pos << key.gsub(/key_relic_/, '')
+  end
+
+  ddb.update_item(
+    'anonymous',
+    run_id,
+    params['title'],
+    params['description'],
+    floor_comments,
+    key_cards,
+    key_cards_pos,
+    key_relics,
+    key_relics_pos,
+    Digest::MD5.hexdigest(params['password'] + salt)
+  )
+
+  redirect '/anonymous'
+end
+
+post '/anonymous/delete/:run_id' do |run_id|
+  report = ddb.get_item(
+    'anonymous',
+    run_id
+  )
+  redirect '/anonymous' unless report.password == Digest::MD5.hexdigest(params['password'] + salt)
+  ddb.delete_item('anonymous', run_id)
+  redirect '/anonymous'
 end
 
 get '/report/:player_id/:run_id' do |player_id, run_id|
