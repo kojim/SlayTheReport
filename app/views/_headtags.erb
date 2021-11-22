@@ -1,0 +1,18 @@
+<% if locals[:title] != nil then %>
+  <title><%= locals[:title]%> - SlayTheReport</title>
+<% else %>
+  <title>SlayTheReport</title>
+<% end %>
+
+<link rel="stylesheet" href="/style.css" />
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-R37V7Z5D57"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-R37V7Z5D57');
+</script>
+
