@@ -87,7 +87,11 @@
 <% end %>
 
 <p>player: <%= h(@report.author) %></p>
-<p>runid: <%= h(@report.run_id) %></p>
+<% if @is_edit_mode then %>
+  <p>runid: <%= h(@report.run_id) %></p>
+<% else %>
+  <p>runid: <a href='<%= request.path_info%>?raw=true'><%= h(@report.run_id) %></a></p>
+<% end %>
 <p>seed: <%= h(@report.run.seed_text) %></p>
 <p>AscensionLevel: <%= h(@report.run.ascension_level) %></p>
 
