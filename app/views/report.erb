@@ -96,7 +96,8 @@
 <p>AscensionLevel: <%= h(@report.run.ascension_level) %></p>
 
 <h2>deck(<%=@report.run.master_deck.size%>) </h2>
-<div class='master_deck'>
+
+<div class='master_deck <%= if @is_edit_mode then 'clickable' else '' end %>'>
 <% @report.run.master_deck.each_with_index do |c,idx| %>
   <span>
   <%= img(c,80) %>
@@ -104,8 +105,10 @@
   </span>
 <% end %>
 </div>
+
 <h2>relics(<%=@report.run.relics.size%>)</h2>
-<div class='master_relic'>
+
+<div class='master_relic <%= if @is_edit_mode then 'clickable' else '' end %>'>
 <% @report.run.relics.each_with_index do |c,idx| %>
   <span>
   <%= img(c,60) %>
