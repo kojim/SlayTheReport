@@ -235,7 +235,9 @@
   <h4>Act <%=id+1%></h4>
   <% act.each_with_index do |line,f| %>
     <% if f%2 == 1 then %>
-      <pre id='map_floor_<%=15+17*id-f/2%>'><%= line%></pre>
+      <% floor = 15+17*id-f/2 %>
+      <% path_taken_index = 15+16*id-f/2-1 %>
+      <pre id='map_floor_<%=floor%>'><%= line.gsub(@report.run.raw_json['path_taken'][path_taken_index] || '_','<span class="touched">\&</span>')%></pre>
     <% else%>
       <pre><%=line%></pre>
     <% end%>

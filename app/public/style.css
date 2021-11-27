@@ -122,6 +122,9 @@ table.reports tbody tr td:nth-of-type(5) img {
   margin: 0;
   border-left: 3px solid white;
 }
+.report_body .map pre span.touched {
+  color:red;
+}
 .report_body .map pre.selected {
   border-left: 3px solid blue;
 }
