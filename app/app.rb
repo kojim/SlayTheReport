@@ -299,5 +299,6 @@ get '/help' do
 end
 
 get '/debug' do
+  @text = 'test'
   erb :debug
 end

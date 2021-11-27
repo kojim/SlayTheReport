@@ -100,6 +100,43 @@ table.reports tbody tr td:nth-of-type(5) img {
 .master_relic.clickable img {
   cursor: pointer;
 }
+.report_body {
+  display: flex;
+}
+.report_body .content {
+}
+.report_body .map {
+  margin-left: 30px;
+  border: 2px dotted;
+  position: sticky;
+  top: 0;
+}
+.report_body .map .tree{
+  display: none;
+}
+.report_body .map .tree.selected {
+  display: block;
+}
+.report_body .map pre{
+  font-family: Courier;
+  margin: 0;
+  border-left: 3px solid white;
+}
+.report_body .map pre.selected {
+  border-left: 3px solid blue;
+}
+
+.report_body .map ul {
+  width: 200px;
+  display: flex;
+  flex-direction: row;
+}
+.report_body .map ul li {
+  list-style: none;
+  width: 250px;
+  padding: 0;
+  margin: 0;
+}
 .f_container {
 }
 .f_container {

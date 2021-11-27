@@ -38,10 +38,13 @@ end
 
 class Run
   attr_reader :raw_json
-  attr_accessor :victory, :floor_reached, :ascension_level, :character_chosen, :seed_text, :master_deck, :relics, :floors
+  attr_accessor :victory, :floor_reached, :ascension_level, :character_chosen, :seed_text, :master_deck, :relics, :floors, :maps
 
   def initialize(run_json)
     run_data = JSON.parse(run_json)
+
+    raise "seed error" unless run_data['seed_played'].match(/^-?\d+$/)
+
     @raw_json = run_data
     @victory = run_data['victory']
     @floor_reached = run_data['floor_reached']
@@ -50,6 +53,7 @@ class Run
     @seed_text = convert_raw_seed_to_string(run_data['seed_played'].to_i)
     @master_deck = run_data['master_deck']
     @relics = run_data['relics']
+    @maps = generate_map(run_data['seed_played'])
 
     @floors = []
     @floors << Floor.new
@@ -200,6 +204,22 @@ class Run
       result << c
     end
     result.reverse.join
+  end
+
+  def generate_map(seed)
+    result = [[],[],[]]
+    act = 0
+    stdout = `bin/sts_map_oracle --seed "#{seed}"`
+    stdout.split("\n").each do |line|
+      if line.start_with?('Act')
+        act = line[4].to_i
+        next
+      end
+      next if act == 0
+      next if line == ''
+      result[act-1] << line.slice(7..-1)
+    end
+    return result
   end
 end
 

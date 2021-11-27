@@ -12,6 +12,7 @@
   </script>
   <script>
     $(function(){
+      // キーカード, キーレリック
       var deck_count = 0;
       var relic_count = 0;
       $('.master_deck input:checked').each(function() {
@@ -48,6 +49,26 @@
           }
         });
       }
+      // マップ追従処理
+      $(window).scroll(function(e) {
+        var min_val = 99999;
+        var min_id  = 100;
+        $('h2.floor').each(function(idx, e) {
+          var val = Math.abs($(e).offset().top - $(window).scrollTop())
+          if (val < min_val) {
+            min_val = val;
+            min_id  = e.dataset.id;
+          }
+        });
+        // current actのみ表示
+        $('.tree').removeClass('selected');
+        if (min_id <18)      $('.map_1').addClass('selected');
+        else if (min_id <35) $('.map_2').addClass('selected');
+        else                 $('.map_3').addClass('selected');
+        // current floorのみ selected付与
+        $('.map pre').removeClass('selected');
+        $('#map_floor_' + min_id).addClass('selected');
+      });
     })
   </script>
 
@@ -117,12 +138,14 @@
 <% end %>
 </div>
 
-
 <h1>Floors</h1>
+<div class='report_body'>
+
+<div class='content'>
 
 <% @report.run.floors.each_with_index do |f,idx| %>
 
-  <h2> Floor <%= f.floor_id %> </h2>
+  <h2 class='floor' data-id='<%= f.floor_id %>'> Floor <%= f.floor_id %> </h2>
   <div class='f_container'>
     <div class='f_events'>
       <div class='f_event_summary'>
@@ -203,6 +226,26 @@
     </div>
   </div>
 <% end %>
+</div>
+
+<div>
+<div class='map'>
+<% @report.run.maps.each_with_index do |act, id| %>
+  <div class='tree map_<%=id+1%>'>
+  <h4>Act <%=id+1%></h4>
+  <% act.each_with_index do |line,f| %>
+    <% if f%2 == 1 then %>
+      <pre id='map_floor_<%=15+17*id-f/2%>'><%= line%></pre>
+    <% else%>
+      <pre><%=line%></pre>
+    <% end%>
+  <% end %>
+  </div>
+<% end %>
+</div>
+</div>
+
+</div>
 
 <% if @is_edit_mode then %>
   <button type='submit'>submit</button>
