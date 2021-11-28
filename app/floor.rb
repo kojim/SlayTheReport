@@ -53,7 +53,7 @@ class Run
     @seed_text = convert_raw_seed_to_string(run_data['seed_played'].to_i)
     @master_deck = run_data['master_deck']
     @relics = run_data['relics']
-    @maps = generate_map(run_data['seed_played'])
+    @maps = generate_map(run_data['seed_played'], @ascension_level == 0)
 
     @floors = []
     @floors << Floor.new
@@ -206,10 +206,10 @@ class Run
     result.reverse.join
   end
 
-  def generate_map(seed)
+  def generate_map(seed, is_ascension_zero)
     result = [[],[],[]]
     act = 0
-    stdout = `bin/sts_map_oracle --seed "#{seed}"`
+    stdout = `bin/sts_map_oracle --seed "#{seed}" #{if is_ascension_zero then '-a' else '' end}`
     stdout.split("\n").each do |line|
       if line.start_with?('Act')
         act = line[4].to_i
