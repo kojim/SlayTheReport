@@ -32,6 +32,10 @@
         ret = window.prompt('本当に削除してよろしいですか？よろしければ「削除」と入力してください', '');
         return ret == '削除';
       });
+      $('#submit').prop('disabled', true);
+      $('#runfile').change(function(){
+        $('#submit').prop('disabled', false);
+      });
     });
   </script>
 <body>
@@ -40,10 +44,10 @@
 
 <h3>アップロード</h3>
 <form action='/anonymous/newreport' method="post" enctype="multipart/form-data">
-  <input type="file" name="runfile" accept=".run">
+  <input type="file" id="runfile" name="runfile" accept=".run">
   <label>pass</label>
   <input type="text" name="password" size='10'>
-  <button type="submit">upload</button>
+  <button type="submit" id="submit">upload</button>
 </form>
 
 <h3>投稿記事</h3>
