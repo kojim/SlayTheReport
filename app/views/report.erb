@@ -66,7 +66,7 @@
         else if (min_id <35) $('.map_2').addClass('selected');
         else                 $('.map_3').addClass('selected');
         // current floorのみ selected付与
-        $('.map pre').removeClass('selected');
+        $('.map span').removeClass('selected');
         $('#map_floor_' + min_id).addClass('selected');
       });
     })
@@ -232,13 +232,41 @@
 <% @report.run.maps.each_with_index do |act, id| %>
   <div class='tree map_<%=id+1%>'>
   <h4>Act <%=id+1%></h4>
-  <% act.each_with_index do |line,f| %>
-    <% if f%2 == 1 then %>
+  <% act.reverse.each_with_index do |line,f| %>
+    <% if f%2 == 0 then %>
       <% floor = 15+17*id-f/2 %>
-      <% path_taken_index = 15+16*id-f/2-1 %>
-      <pre id='map_floor_<%=floor%>'><%= line.gsub(@report.run.raw_json['path_taken'][path_taken_index] || '_','<span class="touched">\&</span>')%></pre>
+      <span id='map_floor_<%=floor%>'>
+      <% line.each_with_index do |t,t_index| %><img src='<%= case t[0]
+                      when 'R'
+                        'https://slaythereport-images.s3.ap-northeast-1.amazonaws.com/minimap/rest.png'
+                      when '?'
+                        'https://slaythereport-images.s3.ap-northeast-1.amazonaws.com/minimap/unknown.png'
+                      when 'M'
+                        'https://slaythereport-images.s3.ap-northeast-1.amazonaws.com/minimap/monster.png'
+                      when 'E'
+                        'https://slaythereport-images.s3.ap-northeast-1.amazonaws.com/minimap/elite.png'
+                      when 'T'
+                        'https://slaythereport-images.s3.ap-northeast-1.amazonaws.com/minimap/chest.png'
+                      when '$'
+                        'https://slaythereport-images.s3.ap-northeast-1.amazonaws.com/minimap/shop.png'
+                      else
+                        'https://slaythereport-images.s3.ap-northeast-1.amazonaws.com/minimap/empty.png'
+                      end
+                      %>' class='<%= if t_index%2 == 0 then "full" else "half" end %> <%= if t[1] then "selected" else "" end %>'/><% end %>
+      </span><br/>
     <% else%>
-      <pre><%=line%></pre>
+      <span>
+      <% line.each_with_index do |t,t_index| %><img src='<%= case t[0]
+                      when '\\'
+                        'https://slaythereport-images.s3.ap-northeast-1.amazonaws.com/minimap/left.png'
+                      when '|'
+                        'https://slaythereport-images.s3.ap-northeast-1.amazonaws.com/minimap/up.png'
+                      when '/'
+                        'https://slaythereport-images.s3.ap-northeast-1.amazonaws.com/minimap/right.png'
+                      else
+                        'https://slaythereport-images.s3.ap-northeast-1.amazonaws.com/minimap/empty.png'
+                      end %>' class='<%= if t_index%2 == 0 then "full" else "half" end %> connector'/><% end %>
+      </span><br/>
     <% end%>
   <% end %>
   </div>

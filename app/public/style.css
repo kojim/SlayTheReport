@@ -107,6 +107,7 @@ table.reports tbody tr td:nth-of-type(5) img {
 }
 .report_body .map {
   margin-left: 30px;
+  width: 210px;
   border: 2px dotted;
   position: sticky;
   top: 0;
@@ -117,15 +118,12 @@ table.reports tbody tr td:nth-of-type(5) img {
 .report_body .map .tree.selected {
   display: block;
 }
-.report_body .map pre{
+.report_body .map span{
   font-family: Courier;
   margin: 0;
   border-left: 3px solid white;
 }
-.report_body .map pre span.touched {
-  color:red;
-}
-.report_body .map pre.selected {
+.report_body .map span.selected {
   border-left: 3px solid blue;
 }
 
@@ -139,6 +137,24 @@ table.reports tbody tr td:nth-of-type(5) img {
   width: 250px;
   padding: 0;
   margin: 0;
+}
+.report_body .map img {
+  margin: 0;
+}
+.report_body .map img.full {
+  width: 18px;
+  border: 1px solid white;
+}
+.report_body .map img.half {
+  width:  8px;
+  height: 18px;
+  border: 1px solid white;
+}
+.report_body .map img.selected {
+  border: 1px solid red;
+}
+.report_body .map img.connector {
+  height: 8px;
 }
 .f_container {
 }

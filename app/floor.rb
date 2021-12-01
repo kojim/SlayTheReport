@@ -53,7 +53,7 @@ class Run
     @seed_text = convert_raw_seed_to_string(run_data['seed_played'].to_i)
     @master_deck = run_data['master_deck']
     @relics = run_data['relics']
-    @maps = generate_map(run_data['seed_played'], @ascension_level == 0)
+    @maps = generate_map(run_data['seed_played'], run_data['path_taken'], @ascension_level == 0)
 
     @floors = []
     @floors << Floor.new
@@ -206,19 +206,44 @@ class Run
     result.reverse.join
   end
 
-  def generate_map(seed, is_ascension_zero)
-    result = [[],[],[]]
-    act = 0
-    stdout = `bin/sts_map_oracle --seed "#{seed}" #{if is_ascension_zero then '-a' else '' end}`
-    stdout.split("\n").each do |line|
-      if line.start_with?('Act')
-        act = line[4].to_i
-        next
+  def generate_map(seed, path_taken, is_ascension_zero)
+    result = Array.new(3){Array.new(15+14){Array.new(7+6){Array.new(2)}}}
+    stdout = `bin/sts_map_oracle2 --seed "#{seed}" #{if is_ascension_zero then '-a' else '' end}`
+    map_info = JSON.parse(stdout)
+
+    map_info.each_with_index do |map,act|
+      map['nodes'].each do |n|
+        result[act][n['y']*2][n['x']*2][0] = case n['class']
+                                            when 'RestRoom'
+                                              'R'
+                                            when 'EventRoom'
+                                              '?'
+                                            when 'MonsterRoom'
+                                              'M'
+                                            when 'MonsterRoomElite'
+                                              'E'
+                                            when 'TreasureRoom'
+                                              'T'
+                                            when 'ShopRoom'
+                                              '$'
+                                            else
+                                              n['class']
+                                            end
+        result[act][n['y']*2][n['x']*2][1] = result[act][n['y']*2][n['x']*2][0] == path_taken[act*16+n['y']]
+        # 15+16*id-f/2-1
       end
-      next if act == 0
-      next if line == ''
-      result[act-1] << line.slice(7..-1)
+      map['edges'].each do |e|
+        case e['dst_x'] - e['src_x']
+                when -1
+                  result[act][e['src_y']*2+1][e['src_x']*2-1] = '\\'
+                when 0
+                  result[act][e['src_y']*2+1][e['src_x']*2] = '|'
+                when 1
+                  result[act][e['src_y']*2+1][e['src_x']*2+1] = '/'
+                end
+      end
     end
+
     return result
   end
 end
