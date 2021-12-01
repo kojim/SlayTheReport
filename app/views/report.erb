@@ -144,7 +144,6 @@
 <div class='content'>
 
 <% @report.run.floors.each_with_index do |f,idx| %>
-
   <h2 class='floor' data-id='<%= f.floor_id %>'> Floor <%= f.floor_id %> </h2>
   <div class='f_container'>
     <div class='f_events'>
@@ -164,7 +163,7 @@
         </div>
         <% f.obtain_chosen_cards.each do |c| %>
           <div class='f_chosen_cards'>
-            <% if c['picked'] != 'SKIP' %>
+            <% if c['picked'] != 'SKIP' && c['picked'] != nil %>
               <div class='picked'>
                 <%= img(c['picked'], 80) %>
                 <p> picked</p> 
