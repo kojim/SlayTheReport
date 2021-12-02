@@ -53,7 +53,7 @@ class Run
     @seed_text = convert_raw_seed_to_string(run_data['seed_played'].to_i)
     @master_deck = run_data['master_deck']
     @relics = run_data['relics']
-    @maps = generate_map(run_data['seed_played'], run_data['path_taken'], @ascension_level == 0)
+    @maps = generate_map(run_data['seed_played'], run_data['path_taken'], run_data['relics'].include?('WingedGreaves'), @ascension_level == 0)
 
     @floors = []
     @floors << Floor.new
@@ -206,31 +206,79 @@ class Run
     result.reverse.join
   end
 
-  def generate_map(seed, path_taken, is_ascension_zero)
+  def generate_map(seed, path_taken, has_shoes, is_ascension_zero)
     result = Array.new(3){Array.new(15+14){Array.new(7+6){Array.new(2)}}}
     stdout = `bin/sts_map_oracle2 --seed "#{seed}" #{if is_ascension_zero then '-a' else '' end}`
     map_info = JSON.parse(stdout)
 
+    # 以下を行う
+    # - 部屋表記を正規化する(例: MonsterRoom -> M)
+    # - path_takenの情報をもとに立ち寄った可能性のあるすべての部屋にフラグを立てる
+    map_info.each_with_index do |map,act|
+      map['nodes'].each do |node|
+        node['class_r'] = case node['class']
+                          when 'RestRoom'
+                            'R'
+                          when 'EventRoom'
+                            '?'
+                          when 'MonsterRoom'
+                            'M'
+                          when 'MonsterRoomElite'
+                            'E'
+                          when 'TreasureRoom'
+                            'T'
+                          when 'ShopRoom'
+                            '$'
+                          else
+                            node['class']
+                          end
+        floor = act*16+node['y']+1
+        node['visited']  = path_taken[floor-1] == node['class_r']
+        node['defeated'] = path_taken.length == floor
+      end
+    end
+
+    unless has_shoes then
+      map_info.each do |map|
+        flipped = true
+        while flipped do
+          flipped = false
+          map['nodes'].filter{|n|n['visited'] && !n['defeated']}.each do |node|
+            # すべての到達元が unvisitedであれば unvisited
+            to = map['edges'].filter{|e|
+              # 「先」が自身であるすべてのedge
+              e['dst_x'] == node['x'] && e['dst_y'] == node['y']
+            }
+            if to != [] && to.all?{|e|
+                # すべてのedgeの「元」がunvisitedである
+                map['nodes'].find{|n|n['x'] == e['src_x'] && n['y'] == e['src_y']}['visited'] == false
+              } then
+              node['visited'] = false
+              flipped = true
+            end
+            # すべての到達先が unvisitedであれば unvisited
+            from = map['edges'].filter{|e|
+              # 「元」が自身であるすべてのedge
+              e['src_x'] == node['x'] && e['src_y'] == node['y']
+            }
+            if from != [] && from.all?{|e|
+                # すべてのedgeの「先」がunvisitedである
+                map['nodes'].find{|n|n['x'] == e['dst_x'] && n['y'] == e['dst_y']}['visited'] == false
+              } then
+              node['visited'] = false
+              flipped = true
+            end
+          end
+        end
+      end
+    end
+
+
+    # JSON情報を元にマトリックス状のマップ情報を生成する
     map_info.each_with_index do |map,act|
       map['nodes'].each do |n|
-        result[act][n['y']*2][n['x']*2][0] = case n['class']
-                                            when 'RestRoom'
-                                              'R'
-                                            when 'EventRoom'
-                                              '?'
-                                            when 'MonsterRoom'
-                                              'M'
-                                            when 'MonsterRoomElite'
-                                              'E'
-                                            when 'TreasureRoom'
-                                              'T'
-                                            when 'ShopRoom'
-                                              '$'
-                                            else
-                                              n['class']
-                                            end
-        result[act][n['y']*2][n['x']*2][1] = result[act][n['y']*2][n['x']*2][0] == path_taken[act*16+n['y']]
-        # 15+16*id-f/2-1
+        result[act][n['y']*2][n['x']*2][0] = n['class_r']
+        result[act][n['y']*2][n['x']*2][1] = n['visited']
       end
       map['edges'].each do |e|
         case e['dst_x'] - e['src_x']
