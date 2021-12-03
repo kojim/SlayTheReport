@@ -1,3 +1,6 @@
+/* ------------------------------------------------------- */
+/* 共通ヘッダ                                              */
+/* ------------------------------------------------------- */
 header.title {
   background: #38A3A5;
   font-size: 30px;
@@ -23,21 +26,63 @@ header.menu ul.pages li.current {
   background: #80ED99;
 }
 
+/* ------------------------------------------------------- */
+/* 記事一覧                                                */
+/* ------------------------------------------------------- */
+
+/* キャラクターセレクタ */
+div.selector {
+  display: flex;
+  flex-direction: row;
+  margin: 0 0 0 20px;
+}
+div.selector div {
+  width: 100px;
+  padding-left: 8px;
+}
+div.selector div.selected {
+  text-decoration: underline;
+}
+div.selector div:nth-child(1) {
+  background: #009485;
+  color: white;
+}
+div.selector div:nth-child(2) {
+  background: #8c1a12;
+  color: white;
+}
+div.selector div:nth-child(3) {
+  background: #2c6e24;
+  color: white;
+}
+div.selector div:nth-child(4) {
+  background: #2eaac9;
+  color: white;
+}
+div.selector div:nth-child(5) {
+  background: #8a12b5;
+  color: white;
+}
+
+/* 一覧本体 */
 table.reports {
     display: flex;
     max-width: 1200px;
     flex-direction: column;
     border: 1px solid #ccc;
     background: #fff;
-    margin: 20px;
+    margin: 0 20px 20px 20px;
 }
 table.reports thead {
     color: #fff;
     background: #009485;
 }
-table.reports thead tr,
 table.reports tbody tr {
-    display: flex;
+  display: none;
+}
+table.reports thead tr,
+table.reports tbody tr.selected {
+  display: flex;
 }
 table.reports tbody tr+tr {
     border-top: 1px solid #ccc;
@@ -81,6 +126,9 @@ table.reports tbody tr td:nth-of-type(5) img {
   height:auto;
 }
 
+/* ------------------------------------------------------- */
+/* 記事                                                    */
+/* ------------------------------------------------------- */
 
 /* デッキカード画像 */
 .master_deck img {

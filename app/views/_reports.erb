@@ -1,3 +1,26 @@
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script>
+  $(function(){
+    $('div.selector div').click(function(e) {
+      $('div.selector div').removeClass('selected');
+      $(e.target).addClass('selected');
+      if (e.target.dataset.character == 'ALL') {
+        $('tbody tr').addClass('selected');
+        return;
+      }
+      $('tbody tr').removeClass('selected');
+      $('tbody tr.' + e.target.dataset.character).addClass('selected');
+    });
+  });
+</script>
+
+<div class='selector'>
+  <div data-character='ALL' class='selected'>ALL</div>
+  <div data-character='IRONCLAD'>IRONCLAD</div>
+  <div data-character='THE_SILENT'>SILENT</div>
+  <div data-character='DEFECT'>DEFECT</div>
+  <div data-character='WATCHER'>WATCHER</div>
+</div>
 <table class='reports'>
   <thead>
     <tr>
@@ -10,7 +33,7 @@
   </thead>
   <tbody>
   <% @reports.each do |r| %>
-    <tr>
+    <tr class='<%=h(r.run.character_chosen)%> selected'>
       <td>
         <a href="/report/<%= r.author %>/<%= r.run_id %>"><%= h(r.title) %></a>
         <p><%= h( r.description) %></p>
