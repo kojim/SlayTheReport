@@ -5,13 +5,21 @@ header.title {
   background: #38A3A5;
   font-size: 30px;
   color: white;
+  background-image: url(https://slaythereport-images.s3.ap-northeast-1.amazonaws.com/misc/logo1.png);
+  background-size: auto 60px;
+  background-repeat: no-repeat;
+}
+header.title a {
+  display: block;
+  height: 60px;
+  width: 220px;
 }
 header.menu ul.pages {
   background: #57CC99;
 }
 header.menu ul.pages {
   display: flex;
-  font-size: 20px;
+  font-size: 18px;
   flex-direction: row;
   width: 100%;
   padding: 0;
@@ -39,6 +47,7 @@ div.selector {
 div.selector div {
   width: 100px;
   padding-left: 8px;
+  cursor: pointer;
 }
 div.selector div.selected {
   text-decoration: underline;
