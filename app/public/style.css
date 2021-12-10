@@ -45,7 +45,8 @@ div.selector {
   margin: 0 0 0 20px;
 }
 div.selector div {
-  width: 100px;
+  width: 120px;
+  font-size: 18px;
   padding-left: 8px;
   cursor: pointer;
   border-radius: 10px 10px 0 0;
@@ -82,10 +83,12 @@ table.reports {
     border: 1px solid #ccc;
     background: #fff;
     margin: 0 20px 20px 20px;
+    border-radius: 0 5px 0 0;
 }
 table.reports thead {
     color: #fff;
     background: #009485;
+    border-radius: 0 5px 0 0;
 }
 table.reports tbody tr {
   display: none;
@@ -93,6 +96,18 @@ table.reports tbody tr {
 table.reports thead tr,
 table.reports tbody tr.selected {
   display: flex;
+}
+table.reports tbody tr.IRONCLAD {
+  background: rgba(254,239,242,1);
+}
+table.reports tbody tr.THE_SILENT {
+  background: rgba(239,252,241,1);
+}
+table.reports tbody tr.DEFECT {
+  background: rgba(239,250,252,1);
+}
+table.reports tbody tr.WATCHER {
+  background: rgba(247,239,252,1);
 }
 table.reports tbody tr+tr {
     border-top: 1px solid #ccc;
