@@ -232,7 +232,7 @@
 <% @report.run.maps.each_with_index do |act, id| %>
   <div class='tree map_<%=id+1%>'>
   <h4>Act <%=id+1%></h4>
-  <div class='boss' id='map_floor_<%=(id+1)*17-1%>'><%=if @report.run.bosses[id] != nil then img('map_' + @report.run.bosses[id]) else '' end %></div>
+  <div class='boss' id='map_floor_<%=(id+1)*17-1%>'><%=if @report.run.bosses[id] != nil then img('map_' + @report.run.bosses[id]) else '<br/>' end %></div>
   <% act.reverse.each_with_index do |line,f| %>
     <% if f%2 == 0 then %>
       <% floor = 15+17*id-f/2 %>
