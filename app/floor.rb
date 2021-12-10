@@ -38,7 +38,7 @@ end
 
 class Run
   attr_reader :raw_json
-  attr_accessor :victory, :floor_reached, :ascension_level, :character_chosen, :seed_text, :master_deck, :relics, :floors, :maps
+  attr_accessor :victory, :floor_reached, :ascension_level, :character_chosen, :seed_text, :master_deck, :relics, :floors, :bosses, :maps
 
   def initialize(run_json)
     run_data = JSON.parse(run_json)
@@ -53,6 +53,7 @@ class Run
     @seed_text = convert_raw_seed_to_string(run_data['seed_played'].to_i)
     @master_deck = run_data['master_deck']
     @relics = run_data['relics']
+    @bosses = [nil,nil,nil]
     @maps = generate_map(run_data['seed_played'], run_data['path_taken'], run_data['relics'].include?('WingedGreaves'), @ascension_level == 0)
 
     @floors = []
@@ -103,6 +104,9 @@ class Run
     run_data['damage_taken'].each do |e|
       @floors[e['floor'].to_i].image = e['enemies']
     end
+    @bosses[0] = run_data['damage_taken'].find(proc{{}}){|e|e['floor'].to_i == 16}['enemies']
+    @bosses[1] = run_data['damage_taken'].find(proc{{}}){|e|e['floor'].to_i == 33}['enemies']
+    @bosses[2] = run_data['damage_taken'].find(proc{{}}){|e|e['floor'].to_i == 50}['enemies']
 
     run_data['event_choices'].each do |e|
       @floors[e['floor'].to_i].image =

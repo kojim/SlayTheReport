@@ -14,6 +14,17 @@ def img(raw_key, _size = 200)
     # graphics
     'hp' => 'misc/hp.png',
     'gold' => 'misc/gold.png',
+    # map bosses
+    'map_The Guardian' => 'minimap/guardian.png',
+    'map_Hexaghost' => 'minimap/hexaghost.png',
+    'map_Slime Boss' => 'minimap/slime.png',
+    'map_Automaton' => 'minimap/automaton.png',
+    'map_Collector' => 'minimap/collector.png',
+    'map_Champ' => 'minimap/champ.png',
+    'map_Awakened One' => 'minimap/awakened.png',
+    'map_Time Eater' => 'minimap/timeeater.png',
+    'map_Donu and Deca' => 'minimap/donu.png',
+    'map_The Heart' => 'minimap/heart.png',
     # win images
     'IRONCLAD_win' => 'misc/IRONCLAD_win.png',
     'THE_SILENT_win' => 'misc/THE_SILENT_win.png',
