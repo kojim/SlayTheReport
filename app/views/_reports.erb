@@ -39,7 +39,11 @@
         <p><%= h( r.description) %></p>
       </td>
       <td class='author'>
-        <a href='/users/<%= r.author %>'><%= r.author %></a><br/>
+        <a href='/users/<%= r.author %>'>
+          <img src='https://img.tweetimag.es/i/<%= r.author %>_n'/>
+          <br/>
+          <%= r.author %>
+        </a>
         <% if locals[:type] == 'edit' %>
           <a href="/mypage/edit/<%=r.run_id%>">編集</a><br/>
           <form method='POST' action='/mypage/delete/<%=r.run_id%>'>

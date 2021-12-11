@@ -157,6 +157,11 @@ table.reports tbody tr td:nth-of-type(5) img {
   width: 80px;
   height:auto;
 }
+/* 投稿者アイコン */
+.author img {
+  border-radius: 9999px;
+  width: 32px;
+}
 
 /* ------------------------------------------------------- */
 /* 記事                                                    */
