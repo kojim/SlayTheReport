@@ -92,18 +92,27 @@ table.reports {
     margin: 0 20px 20px 20px;
     border-radius: 0 5px 0 0;
 }
+/* ヘッダ */
 table.reports thead {
     color: #fff;
     background: #009485;
     border-radius: 0 5px 0 0;
 }
-table.reports tbody tr {
-  display: none;
-}
-table.reports thead tr,
-table.reports tbody tr.selected {
+table.reports thead tr {
   display: flex;
 }
+/* 一覧の各行 */
+table.reports tbody tr {
+  display: none; /* 非表示キャラクター */
+}
+table.reports tbody tr.selected {
+  display: flex; /* 表示キャラクター */
+}
+table.reports tbody tr+tr {
+    border-top: 1px solid #ccc; /* 行の境界線 */
+}
+
+/* 各行のキャラクターごとの色 */
 table.reports tbody tr.IRONCLAD {
   background: rgba(254,239,242,1);
 }
@@ -116,52 +125,54 @@ table.reports tbody tr.DEFECT {
 table.reports tbody tr.WATCHER {
   background: rgba(247,239,252,1);
 }
-table.reports tbody tr+tr {
-    border-top: 1px solid #ccc;
-}
+
+/* 各行の各列 */
 table.reports thead tr th,
 table.reports tbody tr td {
-    display: flex;
-    flex: 1;
-    justify-content: flex-start;
-    padding: .5em;
+  text-align:left;
+  flex: 1;
+  justify-content: flex-start;
+  padding: .5em;
 }
-table.reports tbody tr td.author {
-    display: block;
+/* 1.タイトル列 */
+table.reports tbody tr td:nth-of-type(1) img.author {
+  border-radius: 9999px;
+  width: 32px;
+  float: left;
 }
-/* タイトル列 */
-table.reports tbody tr td:nth-of-type(1) {
-  flex-direction: column;
+table.reports tbody tr td:nth-of-type(1) div.title {
+  margin-top: 6px;
+  margin-left: 40px;
 }
-/* 投稿者&概要列 */
+/* 2.概要列 */
 table.reports thead tr th:nth-of-type(2),
-table.reports tbody tr td:nth-of-type(2),
-table.reports thead tr th:nth-of-type(3),
-table.reports tbody tr td:nth-of-type(3) {
+table.reports tbody tr td:nth-of-type(2) {
   width: 120px;
   flex: none;
 }
-table.reports thead tr th:nth-of-type(4),
-table.reports tbody tr td:nth-of-type(4) {
+table.reports tbody tr td:nth-of-type(2) img {
+  vertical-align: bottom;
+  width: 30px;
+}
+/* 3.キーカード列 */
+table.reports thead tr th:nth-of-type(3),
+table.reports tbody tr td:nth-of-type(3) {
   width: 250px;
   flex: none;
 }
-table.reports thead tr th:nth-of-type(5),
-table.reports tbody tr td:nth-of-type(5) {
+/* 4.キーレリック列 */
+table.reports thead tr th:nth-of-type(4),
+table.reports tbody tr td:nth-of-type(4) {
   width: 100px;
   flex: none;
 }
-table.reports tbody tr td:nth-of-type(4) img,
-table.reports tbody tr td:nth-of-type(5) img {
+table.reports tbody tr td:nth-of-type(3) img,
+table.reports tbody tr td:nth-of-type(4) img {
   align-self: flex-start;
   width: 80px;
   height:auto;
 }
 /* 投稿者アイコン */
-.author img {
-  border-radius: 9999px;
-  width: 32px;
-}
 
 /* ------------------------------------------------------- */
 /* 記事                                                    */

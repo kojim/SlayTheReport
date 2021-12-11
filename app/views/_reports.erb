@@ -25,7 +25,6 @@
   <thead>
     <tr>
       <th>タイトル</th>
-      <th>投稿者</th>
       <th>概要</th>
       <th>キーカード</th>
       <th>キーレリック</th>
@@ -35,15 +34,15 @@
   <% @reports.each do |r| %>
     <tr class='<%=h(r.run.character_chosen)%> selected'>
       <td>
-        <a href="/report/<%= r.author %>/<%= r.run_id %>"><%= h(r.title) %></a>
+        <a href='/users/<%= r.author %>'>
+          <img class='author' src='https://img.tweetimag.es/i/<%= r.author %>_n' alt='<%= r.author %>'/>
+        </a>
+        <div class='title'>
+          <a href="/report/<%= r.author %>/<%= r.run_id %>"><%= h(r.title) %></a>
+        </div>
         <p><%= h( r.description) %></p>
       </td>
-      <td class='author'>
-        <a href='/users/<%= r.author %>'>
-          <img src='https://img.tweetimag.es/i/<%= r.author %>_n'/>
-          <br/>
-          <%= r.author %>
-        </a>
+      <td>
         <% if locals[:type] == 'edit' %>
           <a href="/mypage/edit/<%=r.run_id%>">編集</a><br/>
           <form method='POST' action='/mypage/delete/<%=r.run_id%>'>
@@ -58,13 +57,13 @@
             <button type='submit' data-runid='<%=r.run_id%>' formmethod='POST' formaction='/anonymous/delete/<%=r.run_id%>' class='delete_report'>削除</button>
           </form>
         <% end %>
-      </td>
-      <td>
-        <ul>
-        <li>A<%= r.run.ascension_level %></li>
-        <li>floor: <%= r.run.floor_reached %></li>
-        <li><%= if r.run.victory then 'win' else 'lose' end %></li>
-        </ul>
+            <img src='https://slaythereport-images.s3.ap-northeast-1.amazonaws.com/misc/ascension.png'/>
+            <%= r.run.ascension_level %>
+            <br/>
+            <img src='https://slaythereport-images.s3.ap-northeast-1.amazonaws.com/misc/floor.png'/>
+            <%= r.run.floor_reached %>
+            <br/>
+            <%= if r.run.victory then 'win' else 'lose' end %>
       </td>
       <td><%= r.key_cards.map{|c| img(c)}.join %></td>
       <td><%= r.key_relics.map{|c| img(c)}.join %></td>
