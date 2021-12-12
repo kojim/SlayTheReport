@@ -40,6 +40,9 @@ header.menu ul.pages li.current {
 div.breadcrumb {
   margin: 10px 0px 10px 0px;
 }
+img.twitter_logo {
+  width: 20px;
+}
 
 /* ------------------------------------------------------- */
 /* 記事一覧                                                */
@@ -178,6 +181,10 @@ table.reports tbody tr td:nth-of-type(4) img {
 /* 記事                                                    */
 /* ------------------------------------------------------- */
 
+/* プレイヤー画像 */
+img.author {
+  border-radius: 9999px;
+}
 /* デッキカード画像 */
 .master_deck img {
   width: 100px;

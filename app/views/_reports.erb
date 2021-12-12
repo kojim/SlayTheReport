@@ -62,8 +62,8 @@
             <br/>
             <img src='https://slaythereport-images.s3.ap-northeast-1.amazonaws.com/misc/floor.png'/>
             <%= r.run.floor_reached %>
+            <%= if r.run.victory then '' else '(lose)' end %>
             <br/>
-            <%= if r.run.victory then 'win' else 'lose' end %>
       </td>
       <td><%= r.key_cards.map{|c| img(c)}.join %></td>
       <td><%= r.key_relics.map{|c| img(c)}.join %></td>

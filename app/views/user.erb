@@ -8,7 +8,12 @@
 <%= render(:erb, :_header) %>
 
 <div class='breadcrumb'>
-<a href='/users'>投稿者別一覧</a> ＞ <%= h(@author)%>
+  <a href='/users'>投稿者別一覧</a> ＞ <%= h(@author)%>
+  <% if @author != 'anonymous' then %>
+    <a href='https://twitter.com/<%=h(@author)%>'>
+      <img class='twitter_logo' src='https://slaythereport-images.s3.ap-northeast-1.amazonaws.com/misc/twitter_logo.png'/>
+    </a>
+  <% end %>
 </div>
 
 <%= render(:erb, :_reports) %>

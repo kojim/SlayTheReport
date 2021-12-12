@@ -91,23 +91,24 @@
   <form target='.' method='post'>
     <input type='hidden' name='password' value='<%= h(request["password"])%>'/>
 <% end %>
-<h1>GameInfo</h1>
 
 <% if @is_edit_mode then %>
   <p>タイトル: <input type='text' name='title' maxlength='20' value='<%= h(@report.title) %>' /></p>
 <% else %>
-  <p>タイトル: <%= h(@report.title) %> 
-  <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-text="<%= h(@report.title) %> by <%= h(@report.author) %>" data-hashtags="SlayTheReport" data-show-count="true">Tweet</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-  </p>
+  <h1><%= h(@report.title) %></h1>
 <% end %>
 
 <% if @is_edit_mode then %>
-  <p>一言説明: <textarea rows='2' cols='60' maxlength='50' name='description'><%= h(@report.description) %></textarea>
+  <p>一言説明: <textarea rows='2' cols='60' maxlength='50' name='description'><%= h(@report.description) %></textarea></p>
 <% else %>
-  <p>一言説明: <%= h(@report.description) %> </p>
+  <p><%= h(@report.description) %> </p>
 <% end %>
 
-<p>player: <%= h(@report.author) %></p>
+<a href='/users/<%= @report.author %>'>
+<img class='author' src='https://img.tweetimag.es/i/<%= @report.author %>_n' alt='<%= @report.author %>'/>
+<%= h(@report.author) %>
+</a>
+
 <% if @is_edit_mode then %>
   <p>runid: <%= h(@report.run_id) %></p>
 <% else %>
@@ -115,6 +116,8 @@
 <% end %>
 <p>seed: <%= h(@report.run.seed_text) %></p>
 <p>AscensionLevel: <%= h(@report.run.ascension_level) %></p>
+  <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-text="<%= h(@report.title) %> by <%= h(@report.author) %>" data-hashtags="SlayTheReport" data-show-count="true">Tweet</a>
+  <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 <h2>deck(<%=@report.run.master_deck.size%>) </h2>
 
