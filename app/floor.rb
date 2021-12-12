@@ -173,13 +173,19 @@ class Run
 
     # MOD Relic Statsの情報を活用
     unless run_data['relic_stats'].nil?
-      if run_data['relic_stats']["Pandora's Box"] != nil
+      unless run_data['relic_stats']["Pandora's Box"].nil?
         obtain_floor = run_data['relic_stats']['obtain_stats'][0]["Pandora's Box"].to_i
         @floors[obtain_floor].obtain_objects += run_data['relic_stats']["Pandora's Box"]
       end
       unless run_data['relic_stats']['Astrolabe'].nil?
         obtain_floor = run_data['relic_stats']['obtain_stats'][0]['Astrolabe'].to_i
         @floors[obtain_floor].obtain_objects += run_data['relic_stats']['Astrolabe']
+      end
+      ['Whetstone', 'War Paint'].each do |b|
+        unless run_data['relic_stats'][b].nil?
+          obtain_floor = run_data['relic_stats']['obtain_stats'][0][b].to_i
+          @floors[obtain_floor].upgrade_cards += run_data['relic_stats'][b]
+        end
       end
       ['Bottled Frame', 'Bottled Lightning', 'Bottled Tornado'].each do |b|
         unless run_data['relic_stats'][b].nil?
