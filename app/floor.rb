@@ -38,7 +38,7 @@ end
 
 class Run
   attr_reader :raw_json
-  attr_accessor :victory, :floor_reached, :ascension_level, :character_chosen, :seed_text, :master_deck, :relics, :floors, :bosses, :maps
+  attr_accessor :victory, :floor_reached, :ascension_level, :character_chosen, :seed_text, :localtime, :master_deck, :relics, :floors, :bosses, :maps
 
   def initialize(run_json)
     run_data = JSON.parse(run_json)
@@ -51,6 +51,7 @@ class Run
     @ascension_level = run_data.fetch('ascension_level', 0)
     @character_chosen = run_data['character_chosen']
     @seed_text = convert_raw_seed_to_string(run_data['seed_played'].to_i)
+    @localtime = run_data['local_time'].gsub(/^(\d{4})(\d{2})(\d{2})(\d{2})(\d{2}).*$/, '\1-\2-\3 \4:\5')
     @master_deck = run_data['master_deck']
     @relics = run_data['relics']
     @bosses = [nil,nil,nil]
