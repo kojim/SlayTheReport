@@ -8,9 +8,9 @@ require 'twitter'
 require_relative './floor'
 
 class RunDataService
-  def initialize(ddb_and_name)
-    @ddb = ddb_and_name[0]
-    @table_name = ddb_and_name[1]
+  def initialize(ddb, table_name)
+    @ddb = ddb
+    @table_name = table_name
   end
 
   def query_all
@@ -162,6 +162,35 @@ class RunDataService
       table_name: @table_name,
       key: { author: author, runid: runid }
     )
+  end
+end
+class AuthorDataService
+  def initialize(ddb, table_name)
+    @ddb = ddb
+    @table_name = table_name
+  end
+  def update_icon(author, url)
+    @ddb.update_item(
+      table_name: @table_name,
+      key: { author: author, pseudo_key: 'dummy' },
+      attribute_updates: {
+        'icon_url' => {
+          'value' => url,
+          'action' => 'PUT'
+        }
+      }
+    )
+  end
+  def query_all_icon()
+    resp = @ddb.scan(
+      table_name: @table_name,
+      index_name: 'icon_url-index'
+    )
+    result = Hash.new
+    resp.items.each do |item|
+      result[item['author']] = item['icon_url']
+    end
+    result
   end
 end
 

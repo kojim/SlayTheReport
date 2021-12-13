@@ -35,7 +35,7 @@
     <tr class='<%=h(r.run.character_chosen)%> selected'>
       <td>
         <a href='/users/<%= r.author %>'>
-          <img class='author' src='https://img.tweetimag.es/i/<%= r.author %>_n' alt='<%= r.author %>'/>
+          <img class='author' src='<%= @icons[r.author] %>' alt='<%= r.author %>'/>
         </a>
         <div class='title'>
           <a href="/report/<%= r.author %>/<%= r.run_id %>"><%= h(r.title) %></a>

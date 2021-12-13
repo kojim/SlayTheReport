@@ -20,22 +20,25 @@ require_relative './connector_mock'
 
 $stdout.sync = true
 
-ddb, $twitter_service, salt =
+ddb, ddb_author, $twitter_service, salt =
   case ENV['DB_MODE']
   when 'staging'
-    [RunDataService.new([Aws::DynamoDB::Client.new(region: 'ap-northeast-1'), 'SlayTheReport-v3s']),
+    [RunDataService.new(Aws::DynamoDB::Client.new(region: 'ap-northeast-1'), 'SlayTheReport-v3s'),
+     AuthorDataService.new(Aws::DynamoDB::Client.new(region: 'ap-northeast-1'), 'SlayTheReport-author-v1s'),
      TwitterService.new,
      SaltService.salt]
   when 'production'
-    [RunDataService.new([Aws::DynamoDB::Client.new(region: 'ap-northeast-1'), 'SlayTheReport-v3p']),
+    [RunDataService.new(Aws::DynamoDB::Client.new(region: 'ap-northeast-1'), 'SlayTheReport-v3p'),
+     AuthorDataService.new(Aws::DynamoDB::Client.new(region: 'ap-northeast-1'), 'SlayTheReport-author-v1p'),
      TwitterService.new,
      SaltService.salt]
   when 'local'
     [RunDataService.new([Aws::DynamoDB::Client.new(endpoint: 'http://dynamodb:8000', region: 'ap-northeast-1', access_key_id: 'fakeid', secret_access_key: 'fakekey'), 'SlayTheReport']),
+     'dummy',
      TwitterServiceMock.new,
      'salt']
   when 'standalone'
-    [RunDataServiceMock.new, TwitterServiceMock.new, 'salt']
+    [RunDataServiceMock.new, 'dummy', TwitterServiceMock.new, 'salt']
   end
 
 configure do
@@ -73,6 +76,7 @@ end
 get '/' do
   @twitter = $twitter_service.token_authenticate(session[:twitter_token], session[:twitter_secret])
   @reports = ddb.query_all
+  @icons = ddb_author.query_all_icon()
   erb :index
 end
 
@@ -94,6 +98,7 @@ end
 get '/mypage' do
   @twitter = $twitter_service.token_authenticate(session[:twitter_token], session[:twitter_secret])
   @reports = ddb.query_by_author(@twitter.user.screen_name)
+  @icons = ddb_author.query_all_icon()
   erb :mypage
 end
 
@@ -114,12 +119,17 @@ post '/mypage/newreport' do
     # 同一ファイルの重複登録は無視する
     # Todo: 何かメッセージを出すべきである
   end
+
+  url= $twitter_service.get_icon_url(session[:twitter_token], session[:twitter_secret], twitter.user.screen_name)
+  ddb_author.update_icon(twitter.user.screen_name, url)
+
   redirect '/mypage'
 end
 
 get '/mypage/edit/:run_id' do |run_id|
   @is_edit_mode = true
   @twitter = $twitter_service.token_authenticate(session[:twitter_token], session[:twitter_secret])
+  @icons = ddb_author.query_all_icon()
   @runid = run_id
   @report = ddb.get_item(
     @twitter.user.screen_name,
@@ -173,6 +183,7 @@ end
 get '/anonymous' do
   @twitter = $twitter_service.token_authenticate(session[:twitter_token], session[:twitter_secret])
   @reports = ddb.query_by_author('anonymous')
+  @icons = ddb_author.query_all_icon()
   erb :anonymous
 end
 
@@ -204,6 +215,10 @@ post '/anonymous/newreport' do
     # 同一ファイルの重複登録は無視する
     # Todo: 何かメッセージを出すべきである
   end
+
+  url= $twitter_service.get_icon_url(session[:twitter_token], session[:twitter_secret], 'anonymous')
+  ddb_author.update_icon('anonymous', url)
+
   redirect '/anonymous'
 end
 
@@ -214,6 +229,7 @@ get '/anonymous/edit/:run_id' do |run_id|
     'anonymous',
     run_id
   )
+  @icons = ddb_author.query_all_icon()
   redirect '/anonymous' unless @report.password == Digest::MD5.hexdigest(params['password'] + salt)
   erb :report
 end
@@ -277,6 +293,7 @@ get '/report/:player_id/:run_id' do |player_id, run_id|
     player_id,
     run_id
   )
+  @icons = ddb_author.query_all_icon()
   if params[:raw]
     erb :report_rawjson
   else
@@ -295,6 +312,7 @@ get '/users/:player_id' do |user|
   @twitter = $twitter_service.token_authenticate(session[:twitter_token], session[:twitter_secret])
   @author = user
   @reports = ddb.query_by_author(user)
+  @icons = ddb_author.query_all_icon()
   erb :user
 end
 
@@ -304,6 +322,6 @@ get '/help' do
 end
 
 get '/debug' do
-  @text = $twitter_service.get_icon_url(session[:twitter_token], session[:twitter_secret], 'kojim')
+  @text = 'debug'
   erb :debug
 end
