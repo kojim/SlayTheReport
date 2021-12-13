@@ -187,6 +187,10 @@ class TwitterService
   def get_api_keys
     [@api_key, @api_secret]
   end
+
+  def get_icon_url(token, secret, name)
+    token_authenticate(token, secret).user(name).profile_image_url
+  end
 end
 
 class SaltService

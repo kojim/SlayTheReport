@@ -16,7 +16,6 @@ also_reload "#{File.dirname(__FILE__)}/connector_mock.rb"
 
 require_relative './floor'
 require_relative './connector'
-require_relative 'ddb_generator'
 require_relative './connector_mock'
 
 $stdout.sync = true
@@ -24,11 +23,17 @@ $stdout.sync = true
 ddb, $twitter_service, salt =
   case ENV['DB_MODE']
   when 'staging'
-    [RunDataService.new(DDBGenerator.run(:staging)), TwitterService.new, SaltService.salt]
+    [RunDataService.new([Aws::DynamoDB::Client.new(region: 'ap-northeast-1'), 'SlayTheReport-v3s']),
+     TwitterService.new,
+     SaltService.salt]
   when 'production'
-    [RunDataService.new(DDBGenerator.run(:production)), TwitterService.new, SaltService.salt]
+    [RunDataService.new([Aws::DynamoDB::Client.new(region: 'ap-northeast-1'), 'SlayTheReport-v3p']),
+     TwitterService.new,
+     SaltService.salt]
   when 'local'
-    [RunDataService.new(DDBGenerator.run(:local)), TwitterServiceMock.new, 'salt']
+    [RunDataService.new([Aws::DynamoDB::Client.new(endpoint: 'http://dynamodb:8000', region: 'ap-northeast-1', access_key_id: 'fakeid', secret_access_key: 'fakekey'), 'SlayTheReport']),
+     TwitterServiceMock.new,
+     'salt']
   when 'standalone'
     [RunDataServiceMock.new, TwitterServiceMock.new, 'salt']
   end
@@ -299,6 +304,6 @@ get '/help' do
 end
 
 get '/debug' do
-  @text = 'test'
+  @text = $twitter_service.get_icon_url(session[:twitter_token], session[:twitter_secret], 'kojim')
   erb :debug
 end
