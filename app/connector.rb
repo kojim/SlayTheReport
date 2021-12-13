@@ -218,7 +218,11 @@ class TwitterService
   end
 
   def get_icon_url(token, secret, name)
-    token_authenticate(token, secret).user(name).profile_image_url
+    result = token_authenticate(token, secret).user(name).profile_image_url
+    if result.to_s == 'http://abs.twimg.com/sticky/default_profile_images/default_profile_normal.png' then
+      result = 'https://abs.twimg.com/sticky/default_profile_images/default_profile_normal.png'
+    end
+    result
   end
 end
 
