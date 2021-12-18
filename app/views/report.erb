@@ -101,7 +101,7 @@
 <% if @is_edit_mode then %>
   <p>一言説明: <textarea rows='2' cols='60' maxlength='50' name='description'><%= h(@report.description) %></textarea></p>
 <% else %>
-  <p><%= h(@report.description) %> </p>
+  <p class="description_content"><%= h(@report.description) %> </p>
 <% end %>
 
 <a href='/users/<%= @report.author %>'>
@@ -171,13 +171,13 @@
             <% if c['picked'] != 'SKIP' && c['picked'] != nil %>
               <div class='picked'>
                 <%= img(c['picked'], 80) %>
-                <p> picked</p> 
+                <p> picked</p>
               </div>
             <% end %>
             <% c['not_picked'].each do |np| %>
               <div>
                 <%= img(np, 80) %>
-                <p> not picked</p> 
+                <p> not picked</p>
               </div>
             <% end %>
             </p>
@@ -199,7 +199,7 @@
           <% f.remove_cards.each do |c| %>
             <div class='removed'>
               <%= img(c, 80) %>
-              <p> removed</p> 
+              <p> removed</p>
             </div>
           <% end %>
         </div>
@@ -207,7 +207,7 @@
           <% f.bottled_cards.each do |c| %>
             <div class='bottled'>
               <%= img(c, 80) %>
-              <p> bottled</p> 
+              <p> bottled</p>
             </div>
           <% end %>
         </div>
@@ -222,7 +222,7 @@
         <% end %>
       <% else %>
         <% if @report.floor_comment[idx] != nil %>
-          <p><%= h(@report.floor_comment[idx]) %></p>
+          <p class="f_comment_content"><%= h(@report.floor_comment[idx]) %></p>
         <% else %>
           <p></p>
         <% end %>

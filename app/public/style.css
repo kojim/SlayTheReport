@@ -185,6 +185,9 @@ table.reports tbody tr td:nth-of-type(4) img {
 img.author {
   border-radius: 9999px;
 }
+.description_content {
+  white-space: pre-line;
+}
 /* デッキカード画像 */
 .master_deck img {
   width: 100px;
@@ -338,4 +341,7 @@ img.author {
 }
 .f_comment textarea {
   width: 100%;
+}
+.f_comment_content {
+  white-space: pre-line;
 }
