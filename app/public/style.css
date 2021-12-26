@@ -88,7 +88,7 @@ div.selector div:nth-child(5) {
 /* 一覧本体 */
 table.reports {
     display: flex;
-    max-width: 1200px;
+    max-width: 1000px;
     flex-direction: column;
     border: 1px solid #ccc;
     background: #fff;
@@ -175,7 +175,30 @@ table.reports tbody tr td:nth-of-type(4) img {
   width: 80px;
   height:auto;
 }
-/* 投稿者アイコン */
+
+/* 広告 */
+.reports_container {
+  display: flex;
+}
+.reports_container div.reports {
+  display: flex;
+  flex-direction: column;
+  margin: 0 0 0 20px;
+}
+.reports_container div.ad {
+  margin-left: 30px;
+  width: auto;
+  border: 0px dotted;
+  top: 0;
+}
+
+@media screen and (max-width: 1400px) {
+.reports_container div.ad {
+  /* 画面が十分に広いときにしか表示されない奥ゆかしさ */
+  display: none;
+}
+
+}
 
 /* ------------------------------------------------------- */
 /* 記事                                                    */
