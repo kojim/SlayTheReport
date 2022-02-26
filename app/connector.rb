@@ -218,6 +218,10 @@ class TwitterService
   end
 
   def get_icon_url(token, secret, name)
+    # anonymousユーザーとアイコン未設定の非匿名ユーザーを区別できるようにするため、
+    # anonymousユーザーはTwitterアイコンではなく独自に用意したアイコンを使用する
+    return 'https://slaythereport-images.s3.ap-northeast-1.amazonaws.com/misc/anonymous.png' if name == 'anonymous'
+
     result = token_authenticate(token, secret).user(name).profile_image_url
     if result.to_s == 'http://abs.twimg.com/sticky/default_profile_images/default_profile_normal.png' then
       result = 'https://abs.twimg.com/sticky/default_profile_images/default_profile_normal.png'
