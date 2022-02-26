@@ -368,3 +368,11 @@ img.author {
 .f_comment_content {
   white-space: pre-line;
 }
+
+/* ------------------------------------------------------- */
+/* ユーザー一覧                                            */
+/* ------------------------------------------------------- */
+div.users img.author {
+  border-radius: 9999px;
+  width: 32px;
+}

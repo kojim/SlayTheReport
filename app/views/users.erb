@@ -7,13 +7,16 @@
 
 <%= render(:erb, :_header) %>
 
+<div class='users'>
 <ul>
 <% @authors.each do |author, count| %>
   <li>
+    <img class='author' src='<%= @icons[author] %>' alt='<%= author %>'/>
     <a href='/users/<%=h(author)%>'><%= author %></a>(<%= count.size %>)
   </li>
 <% end %>
 </ul>
+</div>
 
 </body>
 </html>
