@@ -224,6 +224,7 @@ img.author {
 .master_deck .selected,
 .master_relic .selected {
   border: 3px solid red;
+  border-radius: 6px;
 }
 .master_deck.clickable img,
 .master_relic.clickable img {
@@ -297,10 +298,11 @@ img.author {
 .report_body .map img.connector {
   height: 8px;
 }
-.f_container {
-}
+/* フロア囲い枠 */
 .f_container {
   border: 2px dotted;
+  border-radius: 4px;
+  padding: 0px 3px 0px 5px;
   width: 800px;
 }
 .f_events {
@@ -308,12 +310,16 @@ img.author {
 }
 .f_event_summary {
 }
+/* イベント画像領域 */
 .f_event_image {
+  margin: 10px 3px 0px 0px;
 }
 /* イベント画像 */
 .f_event_image img {
   width: 330px;
   height:auto;
+  border-radius: 5px;
+  /*margin: 10px 3px 10px 3px;*/
 }
 .f_event_text {
 }
@@ -324,46 +330,79 @@ img.author {
   width: 100px;
   height:auto;
 }
+/* ライフ & ゴールド領域 */
+.f_life_gold {
+  display: flex;
+  align-items: center;
+}
 /* ライフ & ゴールド画像 */
 .f_life_gold img {
-  width: 25px;
+  width: 40px;
   height:auto;
 }
 
 .f_player_choise {
+  margin-left: 8px;
 }
-.f_life_gold {
-}
-.f_chosen_cards {
+/* カード選択 & カード獲得 & カードアップグレード & カード削除 & 瓶詰め 共通*/
+.bordered_cards {
   display: flex;
+  margin: 0 0 0 6px;
+}
+.bordered_cards div {
+  text-align: center;
+  border-width: 3px;
+  border-style: none;
+  border-radius: 6px;
+  margin: 1px;
+  padding: 2px;
+}
+
+/* カード選択 */
+.f_chosen_cards {
 }
 .f_chosen_cards div.picked {
-  border: 3px solid blue;
+  border-style: solid;
+  border-color: blue;
 }
+
+/* カード獲得 */
 .f_obtain_objects {
-  display: flex;
-  flex-wrap: wrap;
 }
+
+/* カードアップグレード */
 .f_upgrade_cards {
+  align-items: center;
 }
+
+/* カード削除 */
 .f_remove_cards {
-  display: flex;
-  flex-wrap: wrap;
 }
 .f_remove_cards div.removed {
-  border: 3px solid red;
+  border-style: solid;
+  border-color: red;
 }
+.f_remove_cards div {
+}
+.f_remove_cards {
+}
+/* 瓶詰め */
 .f_bottled_cards {
-  display: flex;
-  flex-wrap: wrap;
 }
 .f_bottled_cards div.bottled {
-  border: 3px solid green;
+  border-style: solid;
+  border-color: green;
 }
+
+/* フロアコメント */
 .f_comment {
+  margin-top: 8px;
 }
 .f_comment textarea {
   width: 100%;
+}
+.f_comment div {
+  border-top: 1px dotted black;
 }
 .f_comment_content {
   white-space: pre-line;

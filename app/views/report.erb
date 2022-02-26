@@ -157,45 +157,47 @@
         <div class='f_event_text'></div>
       </div>
       <div class='f_player_action'>
+        <div class='f_life_gold'>
+          <%= img('hp', 30) %> <%= f.hp %> / <%= f.max_hp %> (<%= sprintf("%+d", f.hp_diff) %>)
+          <%= img('gold', 30) %> <%= f.gold %> (<%= sprintf("%+d", f.gold_diff) %>)
+        </div>
         <div class='f_player_choise'>
           <% if f.player_choise != nil then %>
             行動選択: <%= f.player_choise %>
           <% end %>
         </div>
-        <div class='f_life_gold'>
-          <%= img('hp', 30) %> <%= f.hp %> / <%= f.max_hp %> (<%= sprintf("%+d", f.hp_diff) %>)
-          <%= img('gold', 30) %> <%= f.gold %> (<%= sprintf("%+d", f.gold_diff) %>)
-        </div>
         <% f.obtain_chosen_cards.each do |c| %>
-          <div class='f_chosen_cards'>
+          <div class='f_chosen_cards bordered_cards'>
             <% if c['picked'] != 'SKIP' && c['picked'] != nil %>
               <div class='picked'>
                 <%= img(c['picked'], 80) %>
-                <p> picked</p>
+                <p>picked</p>
               </div>
             <% end %>
             <% c['not_picked'].each do |np| %>
-              <div>
+              <div class='pass'>
                 <%= img(np, 80) %>
-                <p> not picked</p>
+                <p>pass</p>
               </div>
             <% end %>
             </p>
           </div>
         <% end %>
-        <div class='f_obtain_objects'>
+        <div class='f_obtain_objects bordered_cards'>
           <% f.obtain_objects.each do |c| %>
-            <%= img(c, 80) %>
+            <div>
+              <%= img(c, 80) %>
+            </div>
           <% end %>
         </div>
         <% f.upgrade_cards.each do |c| %>
-          <div class='f_upgrade_cards'>
+          <div class='f_upgrade_cards bordered_cards'>
             <%= img(c, 80) %>
             ⇒
             <%= img(c+'+1', 80) %>
           </div>
         <% end %>
-        <div class='f_remove_cards'>
+        <div class='f_remove_cards bordered_cards'>
           <% f.remove_cards.each do |c| %>
             <div class='removed'>
               <%= img(c, 80) %>
@@ -203,7 +205,7 @@
             </div>
           <% end %>
         </div>
-        <div class='f_bottled_cards'>
+        <div class='f_bottled_cards bordered_cards'>
           <% f.bottled_cards.each do |c| %>
             <div class='bottled'>
               <%= img(c, 80) %>
@@ -221,10 +223,9 @@
           <textarea rows='3' name='report_<%= format("%03d", idx) %>'></textarea>
         <% end %>
       <% else %>
-        <% if @report.floor_comment[idx] != nil %>
-          <p class="f_comment_content"><%= h(@report.floor_comment[idx]) %></p>
+        <% if @report.floor_comment[idx] != nil && @report.floor_comment[idx] != '' %>
+          <div><p class="f_comment_content"><%= h(@report.floor_comment[idx]) %></p></div>
         <% else %>
-          <p class="f_comment_content"></p>
         <% end %>
       <% end %>
     </div>

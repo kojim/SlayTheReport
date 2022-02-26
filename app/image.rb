@@ -12,8 +12,8 @@ def img(raw_key, _size = 200)
     'boss_chest' => 'misc/boss_chest.png',
     'door' => 'misc/door.png',
     # graphics
-    'hp' => 'misc/hp.png',
-    'gold' => 'misc/gold.png',
+    'hp' => 'misc/panelHeart.png',
+    'gold' => 'misc/panelGold.png',
     # map bosses
     'map_The Guardian' => 'minimap/guardian.png',
     'map_Hexaghost' => 'minimap/hexaghost.png',
