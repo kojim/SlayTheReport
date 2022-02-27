@@ -36,15 +36,18 @@
   <% @reports.each do |r| %>
     <tr class='<%=h(r.run.character_chosen)%> selected'>
       <td>
-        <a href='/users/<%= r.author %>'>
-          <img class='author' src='<%= @icons[r.author] %>' alt='<%= r.author %>'/>
-        </a>
-        <div class='title'>
-          <a href="/report/<%= r.author %>/<%= r.run_id %>"><%= h(r.title) %></a>
+        <div class='align_center'>
+          <a href='/users/<%= r.author %>'>
+            <img class='author' src='<%= @icons[r.author] %>' alt='<%= r.author %>'/>
+          </a>
+          <div class='title'>
+            <a href="/report/<%= r.author %>/<%= r.run_id %>"><%= h(r.title) %></a>
+          </div>
         </div>
         <p><%= h( r.description) %></p>
       </td>
       <td>
+        <div>
         <% if locals[:type] == 'edit' %>
           <a href="/mypage/edit/<%=r.run_id%>">編集</a><br/>
           <form method='POST' action='/mypage/delete/<%=r.run_id%>'>
@@ -59,13 +62,17 @@
             <button type='submit' data-runid='<%=r.run_id%>' formmethod='POST' formaction='/anonymous/delete/<%=r.run_id%>' class='delete_report'>削除</button>
           </form>
         <% end %>
+          <div class='align_center'>
             <img src='https://slaythereport-images.s3.ap-northeast-1.amazonaws.com/misc/ascension.png'/>
             <%= r.run.ascension_level %>
-            <br/>
+          </div>
+          <div class='align_center'>
             <img src='https://slaythereport-images.s3.ap-northeast-1.amazonaws.com/misc/floor.png'/>
             <%= r.run.floor_reached %>
             <%= if r.run.victory then '' else '(lose)' end %>
             <br/>
+          </div>
+        </div>
       </td>
       <td><%= r.key_cards.map{|c| img(c)}.join %></td>
       <td><%= r.key_relics.map{|c| img(c)}.join %></td>

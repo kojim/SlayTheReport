@@ -3,11 +3,13 @@
 require 'json'
 
 class Floor
-  attr_accessor :floor_id, :image, :text, :gold, :gold_diff, :max_hp, :hp, :hp_diff, :player_choise, :obtain_objects,
+  attr_accessor :floor_id, :floor_type, :floor_taken, :image, :text, :gold, :gold_diff, :max_hp, :hp, :hp_diff, :player_choise, :obtain_objects,
                 :obtain_chosen_cards, :upgrade_cards, :remove_cards, :bottled_cards
 
   def initialize
     @floor_id            = 0
+    @floor_type          = ''
+    @floor_taken         = ''
     @image               = 'no_image'
     @text                = 'no text'
     @gold                = 99
@@ -76,6 +78,10 @@ class Run
       end
       f.text = t
       f.floor_id = idx + 1
+      f.floor_type = t
+      f.floor_taken = run_data['path_taken'][idx-f.floor_id/17]
+      f.floor_taken = f.floor_taken[0] unless f.floor_taken == nil
+
       @floors << f
     end
 

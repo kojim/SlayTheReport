@@ -43,6 +43,10 @@ div.breadcrumb {
 img.twitter_logo {
   width: 20px;
 }
+.align_center {
+  display: flex;
+  align-items: center;
+}
 
 /* ------------------------------------------------------- */
 /* 記事一覧                                                */
@@ -139,21 +143,30 @@ table.reports tbody tr td {
 }
 /* 1.タイトル列 */
 table.reports tbody tr td:nth-of-type(1) img.author {
+  margin: 3px 3px 0px 3px;
   border-radius: 9999px;
   width: 32px;
   float: left;
 }
 table.reports tbody tr td:nth-of-type(1) div.title {
-  margin-top: 6px;
-  margin-left: 40px;
+  margin-top: 8px;
+  margin-left: 10px;
+}
+table.reports tbody tr td:nth-of-type(1) p {
+  margin-left: 5px;
 }
 /* 2.概要列 */
 table.reports thead tr th:nth-of-type(2),
 table.reports tbody tr td:nth-of-type(2) {
   width: 120px;
   flex: none;
+  display: flex;
+  align-items: center;
 }
-table.reports tbody tr td:nth-of-type(2) img {
+table.reports tbody tr td:nth-of-type(2) div {
+  flex: none;
+} 
+table.reports tbody tr td:nth-of-type(2) div img {
   vertical-align: bottom;
   width: 30px;
 }
@@ -169,6 +182,7 @@ table.reports tbody tr td:nth-of-type(4) {
   width: 100px;
   flex: none;
 }
+/* キーカード&キーレリック */
 table.reports tbody tr td:nth-of-type(3) img,
 table.reports tbody tr td:nth-of-type(4) img {
   align-self: flex-start;
@@ -204,6 +218,10 @@ table.reports tbody tr td:nth-of-type(4) img {
 /* 記事                                                    */
 /* ------------------------------------------------------- */
 
+/* -------------*/
+/* 記事ヘッダ   */
+/* -------------*/
+
 /* プレイヤー画像 */
 img.author {
   border-radius: 9999px;
@@ -229,6 +247,20 @@ img.author {
 .master_deck.clickable img,
 .master_relic.clickable img {
   cursor: pointer;
+}
+
+/* -------------*/
+/* 記事本体     */
+/* -------------*/
+h2.floor {
+  margin-top: 20px;
+  margin-bottom: 4px;
+}
+h2.floor div {
+  margin-left: 20px;
+}
+h2.floor img {
+  width: 35px;
 }
 .report_body {
   display: flex;
@@ -332,8 +364,6 @@ img.author {
 }
 /* ライフ & ゴールド領域 */
 .f_life_gold {
-  display: flex;
-  align-items: center;
 }
 /* ライフ & ゴールド画像 */
 .f_life_gold img {

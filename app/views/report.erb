@@ -149,7 +149,48 @@
 <div class='content'>
 
 <% @report.run.floors.each_with_index do |f,idx| %>
-  <h2 class='floor' data-id='<%= f.floor_id %>'> Floor <%= f.floor_id %> </h2>
+  <h2 class='floor align_center' data-id='<%= f.floor_id %>'> Floor <%= f.floor_id %>
+    <div class='align_center'>
+    <img src='<%= case f.floor_taken
+        when 'R'
+          'https://slaythereport-images.s3.ap-northeast-1.amazonaws.com/minimap/rest.png'
+        when '?'
+          'https://slaythereport-images.s3.ap-northeast-1.amazonaws.com/minimap/unknown.png'
+        when 'M'
+          'https://slaythereport-images.s3.ap-northeast-1.amazonaws.com/minimap/monster.png'
+        when 'E'
+          'https://slaythereport-images.s3.ap-northeast-1.amazonaws.com/minimap/elite.png'
+        when 'T'
+          'https://slaythereport-images.s3.ap-northeast-1.amazonaws.com/minimap/chest.png'
+        when '$'
+          'https://slaythereport-images.s3.ap-northeast-1.amazonaws.com/minimap/shop.png'
+        when 'B'
+          'https://slaythereport-images.s3.ap-northeast-1.amazonaws.com/minimap/boss.png'
+        else
+          'https://slaythereport-images.s3.ap-northeast-1.amazonaws.com/minimap/empty.png'
+        end %>'/>
+    <% if f.floor_id < 50 and f.floor_type != nil and f.floor_type != f.floor_taken %> /
+    <img src='<%= case f.floor_type
+        when 'R'
+          'https://slaythereport-images.s3.ap-northeast-1.amazonaws.com/minimap/rest.png'
+        when '?'
+          'https://slaythereport-images.s3.ap-northeast-1.amazonaws.com/minimap/unknown.png'
+        when 'M'
+          'https://slaythereport-images.s3.ap-northeast-1.amazonaws.com/minimap/monster.png'
+        when 'E'
+          'https://slaythereport-images.s3.ap-northeast-1.amazonaws.com/minimap/elite.png'
+        when 'T'
+          'https://slaythereport-images.s3.ap-northeast-1.amazonaws.com/minimap/chest.png'
+        when '$'
+          'https://slaythereport-images.s3.ap-northeast-1.amazonaws.com/minimap/shop.png'
+        when 'B'
+          'https://slaythereport-images.s3.ap-northeast-1.amazonaws.com/minimap/boss.png'
+        else
+          'https://slaythereport-images.s3.ap-northeast-1.amazonaws.com/minimap/empty.png'
+        end %>'/>
+    <% end %>
+    </div>
+  </h2>
   <div class='f_container'>
     <div class='f_events'>
       <div class='f_event_summary'>
@@ -157,7 +198,7 @@
         <div class='f_event_text'></div>
       </div>
       <div class='f_player_action'>
-        <div class='f_life_gold'>
+        <div class='f_life_gold align_center'>
           <%= img('hp', 30) %> <%= f.hp %> / <%= f.max_hp %> (<%= sprintf("%+d", f.hp_diff) %>)
           <%= img('gold', 30) %> <%= f.gold %> (<%= sprintf("%+d", f.gold_diff) %>)
         </div>

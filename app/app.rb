@@ -24,7 +24,7 @@ ddb, ddb_author, $twitter_service, salt =
   case ENV['DB_MODE']
   when 'staging'
     [RunDataService.new(Aws::DynamoDB::Client.new(region: 'ap-northeast-1'), 'SlayTheReport-v3s'),
-     AuthorDataService.new(Aws::DynamoDB::Client.new(region: 'ap-northeast-1'), 'SlayTheReport-author-v1s'),
+     AuthorDataService.new(Aws::DynamoDB::Client.new(region: 'ap-northeast-1'), 'SlayTheReport-author-v1p'),
      TwitterService.new,
      SaltService.salt]
   when 'production'
