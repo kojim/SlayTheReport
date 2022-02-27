@@ -45,6 +45,13 @@
           </div>
         </div>
         <p><%= h( r.description) %></p>
+        <% if locals[:type] == 'anonymous' %>
+          <form>
+            <input type='text' name='password' size='10'/>
+            <button type='submit' data-runid='<%=r.run_id%>' formmethod='GET' formaction='/anonymous/edit/<%=r.run_id%>'    class='edit_report'>編集</button>
+            <button type='submit' data-runid='<%=r.run_id%>' formmethod='POST' formaction='/anonymous/delete/<%=r.run_id%>' class='delete_report'>削除</button>
+          </form>
+        <% end %>
       </td>
       <td>
         <div>
@@ -52,14 +59,6 @@
           <a href="/mypage/edit/<%=r.run_id%>">編集</a><br/>
           <form method='POST' action='/mypage/delete/<%=r.run_id%>'>
             <button type='submit'  class='delete_report'>削除</button>
-          </form>
-        <% end %>
-        <% if locals[:type] == 'anonymous' %>
-          <form>
-            <label>pass</label>
-            <input type='text' name='password' size='10'/>
-            <button type='submit' data-runid='<%=r.run_id%>' formmethod='GET' formaction='/anonymous/edit/<%=r.run_id%>'    class='edit_report'>編集</button>
-            <button type='submit' data-runid='<%=r.run_id%>' formmethod='POST' formaction='/anonymous/delete/<%=r.run_id%>' class='delete_report'>削除</button>
           </form>
         <% end %>
           <div class='align_center'>
