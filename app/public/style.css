@@ -373,6 +373,7 @@ h2.floor img {
 
 .f_player_choise {
   margin-left: 8px;
+  padding-bottom: 10px;
 }
 /* カード選択 & カード獲得 & カードアップグレード & カード削除 & 瓶詰め 共通*/
 .bordered_cards {
