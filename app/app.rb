@@ -305,6 +305,7 @@ get '/users' do
   @twitter = $twitter_service.token_authenticate(session[:twitter_token], session[:twitter_secret])
   authors = ddb.query_authors
   @authors = authors.group_by{|e|e}
+  @total = authors.size
   @icons = ddb_author.query_all_icon()
   erb :users
 end
