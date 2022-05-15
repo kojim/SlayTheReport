@@ -87,6 +87,7 @@
 
 <%= render(:erb, :_header) %>
 
+<div class='content'>
 <% if @is_edit_mode then %>
   <form method='post'>
     <input type='hidden' name='password' value='<%= h(request["password"])%>'/>
@@ -105,9 +106,8 @@
 <% end %>
 
 <a href='/users/<%= @report.author %>'>
-<img class='author' src='<%= @icons[@report.author] %>' alt='<%= @report.author %>'/>
-<%= h(@report.author) %>
-</a>
+<img class='author' src='<%= @icons[@report.author] %>' alt='<%= @report.author %>'/></a>
+<a href='/users/<%= @report.author %>'><%= h(@report.author) %></a>
 
 <% if @is_edit_mode then %>
   <p>runid: <%= h(@report.run_id) %></p>
@@ -328,6 +328,8 @@
   <button type='submit'>submit</button>
   </form>
 <% end %>
+
+</div>
 </body>
 </html>
 

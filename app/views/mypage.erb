@@ -17,8 +17,9 @@
   </script>
 <body>
 
-<%= render(:erb, :_header) %>
+<%= render(:erb, :_header, {}, {:is_sticky => true}) %>
 
+<div class='content'>
 <h3>アップロード</h3>
 <form action='/mypage/newreport' method="post" enctype="multipart/form-data">
   <input type="file" id="runfile" name="runfile" accept=".run">
@@ -27,6 +28,8 @@
 
 <h3>投稿記事</h3>
 <%= render(:erb, :_reports, {}, {:type => 'edit'}) %>
+
+</div>
 
 </body>
 </html>

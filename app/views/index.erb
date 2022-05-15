@@ -6,8 +6,9 @@
 <body>
 <% require_relative '../image' %>
 
-<%= render(:erb, :_header) %>
+<%= render(:erb, :_header, {}, {:is_sticky => true}) %>
 
+<div class='content'>
 <h3>お知らせ</h3>
 <ul>
   <li>Slay the ReportはSlay the Spireのプレイレポートを作成&共有するサービスです。</li>
@@ -15,6 +16,7 @@
   <li>表示がおかしい場合はCtrl+F5でなおります。</li>
 </ul>
 <%= render(:erb, :_reports) %>
+</div>
 
 </body>
 </html>

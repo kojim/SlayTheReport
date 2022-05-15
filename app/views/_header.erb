@@ -1,5 +1,6 @@
-<div class='header'>
-  <header class='title'><a href='/'/></header>
+
+<div class='header <%= if locals[:is_sticky] != nil then 'sticky' else '' end %>' >
+  <header class='title'><a href='/'></a></header>
   <header class='menu'>
     <ul class='pages'>
 

@@ -1,11 +1,20 @@
 /* ------------------------------------------------------- */
-/* 共通ヘッダ                                              */
+/* 共通ヘッダ & 共通コンテンツ                             */
 /* ------------------------------------------------------- */
+body {
+  margin: 0;
+}
+div.header.sticky {
+  position: sticky;
+  top: 0;
+}
+
 header.title {
   background: #38A3A5;
   font-size: 30px;
   color: white;
   background-image: url(https://slaythereport-images.s3.ap-northeast-1.amazonaws.com/misc/logo1.png);
+  background-position: 10px 0px;
   background-size: auto 60px;
   background-repeat: no-repeat;
 }
@@ -13,6 +22,9 @@ header.title a {
   display: block;
   height: 60px;
   width: 220px;
+}
+header.menu ul.pages li:first-child {
+  padding: 0 0 0 10px;
 }
 header.menu ul.pages {
   background: #57CC99;
@@ -32,6 +44,10 @@ header.menu ul.pages li {
 }
 header.menu ul.pages li.current {
   background: #80ED99;
+}
+
+div.content {
+  margin: 0 0 0 10px;
 }
 
 /* ------------------------------------------------------- */
@@ -269,8 +285,10 @@ h2.floor img {
 }
 .report_body .map {
   margin-left: 30px;
+  margin-right: 5px;
   width: 210px;
   border: 2px dotted;
+  border-radius: 6px;
   position: sticky;
   top: 0;
 }
@@ -333,7 +351,7 @@ h2.floor img {
 /* フロア囲い枠 */
 .f_container {
   border: 2px dotted;
-  border-radius: 4px;
+  border-radius: 6px;
   padding: 0px 3px 0px 5px;
   width: 800px;
 }

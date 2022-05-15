@@ -5,7 +5,9 @@
 
 <body>
 
-<%= render(:erb, :_header) %>
+<%= render(:erb, :_header, {}, {:is_sticky => true}) %>
+
+<div class='content'>
 
 <h3>使い方</h3>
 <ul>
@@ -55,6 +57,6 @@
   <li>mail: ykojim _ gmail com</li>
   <li>Twitterアカウントもないしメールを送るのも憚られるという場合は、記事の一言コメント欄にメッセージを記載いただけたら、気が付いたときに反応します</li>
 </ul>
-
+</div>
 <body>
 </html>
