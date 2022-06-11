@@ -3,7 +3,7 @@
 require 'json'
 
 class Floor
-  attr_accessor :floor_id, :floor_type, :floor_taken, :image, :text, :gold, :gold_diff, :max_hp, :hp, :hp_diff, :player_choise, :obtain_objects,
+  attr_accessor :floor_id, :floor_type, :floor_taken, :image, :text, :gold, :gold_diff, :max_hp, :hp, :hp_diff, :turn, :player_choise, :obtain_objects,
                 :obtain_chosen_cards, :upgrade_cards, :remove_cards, :bottled_cards
 
   def initialize
@@ -15,6 +15,7 @@ class Floor
     @gold                = 99
     @gold_diff           = 99
     @max_hp              = -1
+    @turn                = '-'
     @hp                  = -1
     @player_choise       = nil
     @hp_diff             = 0
@@ -110,6 +111,7 @@ class Run
 
     run_data['damage_taken'].each do |e|
       @floors[e['floor'].to_i].image = e['enemies']
+      @floors[e['floor'].to_i].turn = e['turns'].to_i
     end
     @bosses[0] = run_data['damage_taken'].find(proc{{}}){|e|e['floor'].to_i == 16}['enemies']
     @bosses[1] = run_data['damage_taken'].find(proc{{}}){|e|e['floor'].to_i == 33}['enemies']

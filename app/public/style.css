@@ -371,8 +371,6 @@ h2.floor img {
   border-radius: 5px;
   /*margin: 10px 3px 10px 3px;*/
 }
-.f_event_text {
-}
 .f_player_action {
 }
 /* 本文カード&レリック画像 */
@@ -382,6 +380,11 @@ h2.floor img {
 }
 /* ライフ & ゴールド領域 */
 .f_life_gold {
+}
+/* 戦闘ターン数 */
+.f_life_gold img.turn {
+  width: 25px;
+  margin: 0 5px 0 0;
 }
 /* ライフ & ゴールド画像 */
 .f_life_gold img {
