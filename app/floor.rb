@@ -57,6 +57,7 @@ class Run
     @localtime = run_data['local_time'].gsub(/^(\d{4})(\d{2})(\d{2})(\d{2})(\d{2}).*$/, '\1-\2-\3 \4:\5')
     @mods = []
     @mods << 'relic_stats' if run_data['relic_stats'] != nil
+    @mods << 'run_history_plus' if run_data['floor_exit_playtime'] != nil
     @master_deck = run_data['master_deck']
     @relics = run_data['relics']
     @bosses = [nil,nil,nil]
