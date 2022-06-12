@@ -4,7 +4,7 @@ require 'json'
 
 class Floor
   attr_accessor :floor_id, :floor_type, :floor_taken, :image, :text, :gold, :gold_diff, :max_hp, :hp, :hp_diff, :turn, :player_choise, :obtain_objects,
-                :obtain_chosen_cards, :upgrade_cards, :remove_cards, :bottled_cards
+                :obtain_chosen_cards, :upgrade_cards, :remove_cards, :bottled_cards, :shop_items
 
   def initialize
     @floor_id            = 0
@@ -24,6 +24,7 @@ class Floor
     @upgrade_cards       = []
     @remove_cards        = []
     @bottled_cards       = []
+    @shop_items          = {}
   end
 end
 
@@ -205,6 +206,11 @@ class Run
           obtain_floor = run_data['relic_stats']['obtain_stats'][0][b].to_i
           @floors[obtain_floor].bottled_cards << run_data['relic_stats'][b]
         end
+      end
+    end
+    unless run_data['shop_contents'].nil?
+      run_data['shop_contents'].each do |s|
+        @floors[s['floor'].to_i].shop_items = s
       end
     end
   end

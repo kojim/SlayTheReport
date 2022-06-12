@@ -450,6 +450,14 @@ h2.floor img {
   border-style: solid;
   border-color: green;
 }
+/* ショップの売り物 */
+.f_shop_items {
+  border-style: dashed;
+  border-color: green;
+}
+.f_shop_items img {
+  width: 50px;
+}
 
 /* フロアコメント */
 .f_comment {

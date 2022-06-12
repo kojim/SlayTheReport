@@ -273,6 +273,24 @@ end
             </div>
           <% end %>
         </div>
+        <% unless f.shop_items.empty? then %>
+        <div class='f_shop_items bordered_cards'>
+          <div>
+          <% f.shop_items['cards'].each do |c| %>
+              <%= img(c, 40) %>
+          <% end %>
+          </div>
+          <div>
+          <% f.shop_items['relics'].each do |c| %>
+              <%= img(c, 40) %>
+          <% end %>
+          <% f.shop_items['potions'].each do |c| %>
+              <%= img(c, 40) %>
+          <% end %>
+          </div>
+          <p>pass</p>
+        </div>
+        <% end %>
       </div>
     </div>
     <div class='f_comment'>
