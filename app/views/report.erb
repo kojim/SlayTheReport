@@ -117,6 +117,18 @@
 <p>seed: <%= h(@report.run.seed_text) %></p>
 <p>AscensionLevel: <%= h(@report.run.ascension_level) %></p>
 <p>localtime: <%= h(@report.run.localtime) %></p>
+<p>mod: <%=
+if @report.run.mods.empty? then
+  '-'
+else
+  @report.run.mods.map{|e|
+    case e
+    when 'relic_stats'
+      "<a href='https://steamcommunity.com/sharedfiles/filedetails/?id=2118491069'>Relic Stats</a>"
+    end
+  }.join
+end
+%></p>
 
   <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-text="<%= h(@report.title) %> by <%= h(@report.author) %>" data-hashtags="SlayTheReport" data-show-count="true">Tweet</a>
   <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
