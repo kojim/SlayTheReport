@@ -242,6 +242,11 @@ end
           <% f.obtain_objects.each do |c| %>
             <div>
               <%= img(c, 80) %>
+              <%=
+                unless ['War Paint', 'Whetstone', 'Bottled Flame', 'Bottled Lightning', 'Bottled Tornado'].include?(c) then
+                  @report.run.relic_stats[c]
+                end
+              %>
             </div>
           <% end %>
         </div>

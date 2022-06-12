@@ -41,7 +41,7 @@ end
 
 class Run
   attr_reader :raw_json
-  attr_accessor :victory, :floor_reached, :ascension_level, :character_chosen, :seed_text, :localtime, :mods, :master_deck, :relics, :floors, :bosses, :maps
+  attr_accessor :victory, :floor_reached, :ascension_level, :character_chosen, :seed_text, :localtime, :mods, :master_deck, :relics, :relic_stats, :floors, :bosses, :maps
 
   def initialize(run_json)
     run_data = JSON.parse(run_json)
@@ -60,6 +60,7 @@ class Run
     @mods << 'run_history_plus' if run_data['floor_exit_playtime'] != nil
     @master_deck = run_data['master_deck']
     @relics = run_data['relics']
+    @relic_stats = run_data['relic_stats'] || {}
     @bosses = [nil,nil,nil]
     @maps = generate_map(run_data['seed_played'], run_data['path_taken'], run_data['relics'].include?('WingedGreaves'), @ascension_level == 0)
 

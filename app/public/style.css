@@ -422,6 +422,10 @@ h2.floor img {
 /* カード獲得 */
 .f_obtain_objects {
 }
+.f_obtain_objects div {
+  display: flex;
+  flex-direction: column;
+}
 
 /* カードアップグレード */
 .f_upgrade_cards {
