@@ -103,27 +103,39 @@ get '/mypage' do
 end
 
 post '/mypage/newreport' do
-  # 30kb 以上のrunfileは無視する
-  # Todo: 何かメッセージを出すべきである
-  redirect '/mypage' unless File.basename(params[:runfile][:filename]).match(/^\d+.run$/)
-  redirect '/mypage' if File.size(params[:runfile][:tempfile]) >= (30 * 1000)
-
-  runfile = File.read(params[:runfile][:tempfile])
   twitter = $twitter_service.token_authenticate(session[:twitter_token], session[:twitter_secret])
-  begin
-    ddb.put_item(twitter.user.screen_name, params[:runfile][:filename], runfile, Run.new(runfile))
-  rescue JSON::ParserError => ex
-    # パースできないJSONは無視する
+  newreport(ddb, ddb_author, '/mypage', twitter.user.screen_name, '')
+end
+
+helpers do
+  # Todo: 引数をまともにする、というかモジュラースタイルに移行する
+  def newreport(ddb, ddb_author, return_url, author, password)
+    # 30kb 以上のrunfileは無視する
     # Todo: 何かメッセージを出すべきである
-  rescue Aws::DynamoDB::Errors::ConditionalCheckFailedException => ex
-    # 同一ファイルの重複登録は無視する
-    # Todo: 何かメッセージを出すべきである
+    redirect return_url unless File.basename(params[:runfile][:filename]).match(/^\d+.run$/)
+    redirect return_url if File.size(params[:runfile][:tempfile]) >= (30 * 1000)
+
+    runfile = File.read(params[:runfile][:tempfile])
+    unless runfile.valid_encoding? then
+      File.open(params[:runfile][:tempfile], 'r:Shift_JIS') {|f|
+        runfile = f.read.encode('UTF-8')
+      }
+    end
+    begin
+      ddb.put_item(author, params[:runfile][:filename], runfile, Run.new(runfile), password)
+    rescue JSON::ParserError => ex
+      # パースできないJSONは無視する
+      # Todo: 何かメッセージを出すべきである
+    rescue Aws::DynamoDB::Errors::ConditionalCheckFailedException => ex
+      # 同一ファイルの重複登録は無視する
+      # Todo: 何かメッセージを出すべきである
+    end
+
+    url= $twitter_service.get_icon_url(session[:twitter_token], session[:twitter_secret], author)
+    ddb_author.update_icon(author, url)
+
+    redirect return_url
   end
-
-  url= $twitter_service.get_icon_url(session[:twitter_token], session[:twitter_secret], twitter.user.screen_name)
-  ddb_author.update_icon(twitter.user.screen_name, url)
-
-  redirect '/mypage'
 end
 
 get '/mypage/edit/:run_id' do |run_id|
@@ -200,26 +212,7 @@ get '/anonymous/auth/:run_id' do |run_id|
 end
 
 post '/anonymous/newreport' do
-  # 30kb 以上のrunfileは無視する
-  # Todo: 何かメッセージを出すべきである
-  redirect '/anonymous' unless File.basename(params[:runfile][:filename]).match(/^\d+.run$/)
-  redirect '/anonymous' if File.size(params[:runfile][:tempfile]) >= (30 * 1000)
-
-  runfile = File.read(params[:runfile][:tempfile])
-  begin
-    ddb.put_item('anonymous', params[:runfile][:filename], runfile, Run.new(runfile), Digest::MD5.hexdigest(params['password'] + salt))
-  rescue JSON::ParserError => ex
-    # パースできないJSONは無視する
-    # Todo: 何かメッセージを出すべきである
-  rescue Aws::DynamoDB::Errors::ConditionalCheckFailedException => ex
-    # 同一ファイルの重複登録は無視する
-    # Todo: 何かメッセージを出すべきである
-  end
-
-  url= $twitter_service.get_icon_url(session[:twitter_token], session[:twitter_secret], 'anonymous')
-  ddb_author.update_icon('anonymous', url)
-
-  redirect '/anonymous'
+  newreport(ddb, ddb_author, '/anonymous', 'anonymous', Digest::MD5.hexdigest(params['password'] + salt))
 end
 
 get '/anonymous/edit/:run_id' do |run_id|
