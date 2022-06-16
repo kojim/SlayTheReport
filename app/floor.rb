@@ -155,6 +155,7 @@ class Run
       @floors[e['floor'].to_i].player_choise = e['key']
       @floors[e['floor'].to_i].upgrade_cards << e['data'] if e['key'] == 'SMITH'
       @floors[e['floor'].to_i].remove_cards << e['data'] if e['key'] == 'PURGE'
+      @floors[e['floor'].to_i].obtain_objects << 'ruby_key' if e['key'] == 'RECALL'
     end
 
     run_data['relics_obtained'].each do |e|
@@ -226,6 +227,13 @@ class Run
         @floors[s['floor'].to_i].shop_items = s
       end
     end
+
+    # Mod Run History Plusの情報を活e
+    unless run_data['blue_key_relic_skipped_log'].nil?
+      f = run_data['blue_key_relic_skipped_log']['floor'].to_i
+      @floors[f].obtain_chosen_cards << {'picked'=> 'sapphire_key', 'not_picked'=> [run_data['blue_key_relic_skipped_log']['relicID']]}
+    end
+
   end
 
   # 4205495799455053197 should convert to 18JIMLWZV7HTH
