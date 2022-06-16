@@ -71,6 +71,19 @@ class Run
       @floors[0].image = 'neow'
       @floors[0].player_choise = "#{run_data['neow_bonus']}/#{run_data['neow_cost']}"
     end
+    unless run_data['neow_bonuses_skipped_log'].nil?
+      @floors[0].player_choise += "<br/>スキップ:"
+      run_data['neow_bonuses_skipped_log'].each_with_index do |b, idx|
+        @floors[0].player_choise += "<br/>#{b}/#{run_data['neow_costs_skipped_log'][idx]}"
+      end
+    end
+    unless run_data['neow_bonus_log'].nil?
+      @floors[0].remove_cards += run_data['neow_bonus_log']['cardsRemoved']
+      @floors[0].remove_cards += run_data['neow_bonus_log']['cardsTransformed']
+      @floors[0].obtain_objects += run_data['neow_bonus_log']['cardsObtained']
+      @floors[0].obtain_objects += run_data['neow_bonus_log']['relicsObtained']
+      @floors[0].upgrade_cards += run_data['neow_bonus_log']['cardsUpgraded']
+    end
 
     run_data['path_per_floor'].each_with_index do |t, idx|
       f = Floor.new
