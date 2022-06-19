@@ -69,12 +69,14 @@ class Run
     @floors << Floor.new
     if !run_data['neow_bonus'].nil? && run_data['neow_cost']
       @floors[0].image = 'neow'
-      @floors[0].player_choise = "#{run_data['neow_bonus']}/#{run_data['neow_cost']}"
+      @floors[0].player_choise = "#{run_data['neow_bonus']}"
+      @floors[0].player_choise += "/#{run_data['neow_cost']}" if run_data['neow_cost'] != 'NONE'
     end
     unless run_data['neow_bonuses_skipped_log'].nil?
       @floors[0].player_choise += "<br/>スキップ:"
       run_data['neow_bonuses_skipped_log'].each_with_index do |b, idx|
-        @floors[0].player_choise += "<br/>#{b}/#{run_data['neow_costs_skipped_log'][idx]}"
+        @floors[0].player_choise += "<br/>#{b}"
+        @floors[0].player_choise += "/#{run_data['neow_costs_skipped_log'][idx]}" if run_data['neow_costs_skipped_log'][idx] != 'NONE'
       end
     end
     unless run_data['neow_bonus_log'].nil?
