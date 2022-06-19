@@ -360,6 +360,22 @@ h2.floor img {
 }
 .f_event_summary {
 }
+/* 使用ポーション */
+.f_use_potions {
+  display: flex;
+  flex-direction: row;
+  margin-top: 3px;
+}
+.f_use_potions div {
+  display: flex;
+  flex-direction: column;
+  border-style: solid;
+  border-color: red;
+  align-items: center;
+  border-radius: 6px;
+  margin: 1px;
+  padding: 2px;
+}
 /* イベント画像領域 */
 .f_event_image {
   margin: 10px 8px 0px 0px;

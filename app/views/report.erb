@@ -207,8 +207,18 @@ end
   </h2>
   <div class='f_container'>
     <div class='f_events'>
-      <div class='f_event_summary'>
-        <div class='f_event_image'><%= img(f.image, 250) %></div>
+      <div class='f_event_left'>
+        <div class='f_event_summary'>
+          <div class='f_event_image'><%= img(f.image, 250) %></div>
+        </div>
+        <div class='f_use_potions'>
+          <% f.use_potions.each do |c| %>
+            <div>
+            <%= img(c, 80) %>
+            use
+            </div>
+          <% end %>
+        </div>
       </div>
       <div class='f_player_action'>
         <div class='f_life_gold align_center'>

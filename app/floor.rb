@@ -4,7 +4,7 @@ require 'json'
 
 class Floor
   attr_accessor :floor_id, :floor_type, :floor_taken, :image, :text, :gold, :gold_diff, :max_hp, :hp, :hp_diff, :turn, :player_choise, :obtain_objects,
-                :obtain_chosen_cards, :upgrade_cards, :remove_cards, :bottled_cards, :shop_items
+                :obtain_chosen_cards, :upgrade_cards, :remove_cards, :bottled_cards, :shop_items, :use_potions
 
   def initialize
     @floor_id            = 0
@@ -25,6 +25,7 @@ class Floor
     @remove_cards        = []
     @bottled_cards       = []
     @shop_items          = {}
+    @use_potions         = []
   end
 end
 
@@ -230,10 +231,15 @@ class Run
       end
     end
 
-    # Mod Run History Plusの情報を活e
+    # Mod Run History Plusの情報を活用
     unless run_data['blue_key_relic_skipped_log'].nil?
       f = run_data['blue_key_relic_skipped_log']['floor'].to_i
       @floors[f].obtain_chosen_cards << {'picked'=> 'sapphire_key', 'not_picked'=> [run_data['blue_key_relic_skipped_log']['relicID']]}
+    end
+    unless run_data['potion_use_per_floor'].nil?
+      run_data['potion_use_per_floor'].each_with_index do |p, f|
+        @floors[f+1].use_potions = p
+      end
     end
 
   end
