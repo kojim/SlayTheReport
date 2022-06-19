@@ -425,6 +425,8 @@ h2.floor img {
 .f_obtain_objects div {
   display: flex;
   flex-direction: column;
+  border-style: solid;
+  border-color: blue;
 }
 
 /* カードアップグレード */
