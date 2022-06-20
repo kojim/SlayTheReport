@@ -364,7 +364,9 @@ h2.floor img {
 .f_use_potions {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   margin-top: 3px;
+  width: 350px;
 }
 .f_use_potions div {
   display: flex;
