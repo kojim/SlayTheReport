@@ -18,6 +18,9 @@
 </ul>
 <%= render(:erb, :_reports) %>
 </div>
+<% unless params.has_key?('all') then  %>
+  <a class='all' href='/?all'>全件表示</a>
+<% end %>
 
 </body>
 </html>

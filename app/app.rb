@@ -74,8 +74,9 @@ def oauth
 end
 
 get '/' do
+  count = if params.has_key?('all') then 3000 else 200 end
   @twitter = $twitter_service.token_authenticate(session[:twitter_token], session[:twitter_secret])
-  @reports = ddb.query_all
+  @reports = ddb.query_all(count)
   @icons = ddb_author.query_all_icon()
   erb :index
 end

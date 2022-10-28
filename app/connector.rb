@@ -13,7 +13,7 @@ class RunDataService
     @table_name = table_name
   end
 
-  def query_all
+  def query_all(limit)
     resp1 = @ddb.query(
       table_name: @table_name,
       index_name: 'pseudo_pk-last_modified-index',
@@ -36,7 +36,8 @@ class RunDataService
         ':pseudo_pk' => 'dummy',
         ':min' => last_modified.min,
         ':max' => last_modified.max,
-      }
+      },
+      limit: limit
     )
     resp2.items.map do |e|
       Report.new(
