@@ -135,6 +135,14 @@ end
   <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-text="<%= h(@report.title) %> by <%= h(@report.author) %>" data-hashtags="SlayTheReport" data-show-count="true">Tweet</a>
   <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
+<div>
+  <% if @is_edit_mode then %>
+    <button type='submit'>submit</button>
+  <% else %>
+    <a href="/mypage/edit/<%= @report.run_id %>">編集</a>
+  <% end %>
+</div>
+
 <h2>deck(<%=@report.run.master_deck.size%>) </h2>
 
 <div class='master_deck <%= if @is_edit_mode then 'clickable' else '' end %>'>
