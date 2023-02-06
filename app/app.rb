@@ -9,11 +9,13 @@ require 'oauth'
 require 'json'
 require 'digest/md5'
 
+also_reload "#{File.dirname(__FILE__)}/cards.rb"
 also_reload "#{File.dirname(__FILE__)}/floor.rb"
 also_reload "#{File.dirname(__FILE__)}/image.rb"
 also_reload "#{File.dirname(__FILE__)}/connector.rb"
 also_reload "#{File.dirname(__FILE__)}/connector_mock.rb"
 
+require_relative './cards'
 require_relative './floor'
 require_relative './connector'
 require_relative './connector_mock'

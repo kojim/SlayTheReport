@@ -167,6 +167,71 @@ end
 <% end %>
 </div>
 
+<h2>deck stat(β版) </h2>
+
+<table class='xxx' border='1'>
+  <thead>
+    <tr>
+      <th></th>
+      <th colspan='4'>枚数</th>
+      <th rowspan='2'>ドロー性能</th>
+    </tr>
+    <tr>
+      <th></th>
+      <th>計</th>
+      <th>0ドロー</th>
+      <th>1ドロー</th>
+      <th>2～ドロー</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>パワー</th>
+      <td><%= @report.run.deck_stat['power']['total_count']%></td>
+      <td><%= @report.run.deck_stat['power']['d0']%></td>
+      <td><%= @report.run.deck_stat['power']['d1']%></td>
+      <td><%= @report.run.deck_stat['power']['d2']%></td>
+      <td>
+        <%= @report.run.deck_stat['power']['total_draw']%>
+        (<%=(@report.run.deck_stat['power']['total_draw'].to_f/@report.run.deck_stat['total']['total_count']*100).round(0)%>%)
+      </td>
+    </tr>
+    <tr>
+      <th>消滅</th>
+      <td><%= @report.run.deck_stat['exhaust']['total_count']%></td>
+      <td><%= @report.run.deck_stat['exhaust']['d0']%></td>
+      <td><%= @report.run.deck_stat['exhaust']['d1']%></td>
+      <td><%= @report.run.deck_stat['exhaust']['d2']%></td>
+      <td>
+        <%= @report.run.deck_stat['exhaust']['total_draw']%>
+        (<%=(@report.run.deck_stat['exhaust']['total_draw'].to_f/@report.run.deck_stat['total']['total_count']*100).round(0)%>%)
+      </td>
+    </tr>
+    <tr>
+      <th>残留</th>
+      <td><%= @report.run.deck_stat['remain']['total_count']%></td>
+      <td><%= @report.run.deck_stat['remain']['d0']%></td>
+      <td><%= @report.run.deck_stat['remain']['d1']%></td>
+      <td><%= @report.run.deck_stat['remain']['d2']%></td>
+      <td>
+        <%= @report.run.deck_stat['remain']['total_draw']%>
+        (<%=(@report.run.deck_stat['remain']['total_draw'].to_f/@report.run.deck_stat['total']['total_count']*100).round(0)%>%)
+      </td>
+    </tr>
+    <tr>
+      <th>計</th>
+      <td><%= @report.run.deck_stat['total']['total_count']%></td>
+      <td><%= @report.run.deck_stat['total']['d0']%></td>
+      <td><%= @report.run.deck_stat['total']['d1']%></td>
+      <td><%= @report.run.deck_stat['total']['d2']%></td>
+      <td>
+        <%= @report.run.deck_stat['total']['total_draw']%>
+        (<%=(@report.run.deck_stat['total']['total_draw'].to_f/@report.run.deck_stat['total']['total_count']*100).round(0)%>%)
+      </td>
+    </tr>
+  </tbody>
+</table>
+
 <h1>Floors</h1>
 <div class='report_body'>
 

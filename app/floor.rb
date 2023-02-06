@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'json'
+require_relative './cards'
 
 class Floor
   attr_accessor :floor_id, :floor_type, :floor_taken, :image, :text, :gold, :gold_diff, :max_hp, :hp, :hp_diff, :turn, :player_choise, :obtain_objects,
@@ -43,7 +44,7 @@ end
 
 class Run
   attr_reader :raw_json
-  attr_accessor :victory, :floor_reached, :ascension_level, :character_chosen, :seed_text, :localtime, :mods, :master_deck, :relics, :relic_stats, :floors, :bosses, :maps
+  attr_accessor :victory, :floor_reached, :ascension_level, :character_chosen, :seed_text, :localtime, :mods, :master_deck, :deck_stat, :relics, :relic_stats, :floors, :bosses, :maps
 
   def initialize(run_json)
     run_data = JSON.parse(run_json)
@@ -61,6 +62,7 @@ class Run
     @mods << 'relic_stats' if run_data['relic_stats'] != nil
     @mods << 'run_history_plus' if run_data['floor_exit_playtime'] != nil
     @master_deck = run_data['master_deck']
+    @deck_stat = generate_deck_stat(@master_deck)
     @relics = run_data['relics']
     @relic_stats = run_data['relic_stats'] || {}
     @bosses = [nil,nil,nil]
@@ -351,6 +353,56 @@ class Run
     end
 
     return result
+  end
+  def generate_deck_stat(deck)
+    result = {
+      'power'   => {'d0' => 0, 'd1' => 0, 'd2' => 0, 'total_count' => 0, 'total_draw' => 0},
+      'exhaust' => {'d0' => 0, 'd1' => 0, 'd2' => 0, 'total_count' => 0, 'total_draw' => 0},
+      'remain'  => {'d0' => 0, 'd1' => 0, 'd2' => 0, 'total_count' => 0, 'total_draw' => 0},
+      'total'   => {'d0' => 0, 'd1' => 0, 'd2' => 0, 'total_count' => 0, 'total_draw' => 0},
+    }
+
+    # パワー行、消滅行、残留行集計
+    deck.each do |raw_card_name|
+      card_name = raw_card_name.gsub(/ /, '').gsub(/\u0027/, '').gsub(/\+.*/, '+')
+      card = $cards[card_name]
+      # フェイルセーフ
+      next if card == nil
+
+      if card[0] == 'Power' then
+        target = 'power'
+      else
+        if card[1] then
+          target = 'exhaust'
+        else
+          target = 'remain'
+        end
+      end
+
+      # 総枚数
+      result[target]['total_count'] += 1
+
+      # 個別枚数
+      case card[2]
+      when 0
+        result[target]['d0'] += 1
+      when 1
+        result[target]['d1'] += 1
+      else
+        result[target]['d2'] += 1
+      end
+
+      # ドロー性能
+      result[target]['total_draw']  += card[2]
+    end
+
+    # 合計行集計
+    result['total']['d0'] = result['power']['d0'] + result['exhaust']['d0'] + result['remain']['d0']
+    result['total']['d1'] = result['power']['d1'] + result['exhaust']['d1'] + result['remain']['d1']
+    result['total']['d2'] = result['power']['d2'] + result['exhaust']['d2'] + result['remain']['d2']
+    result['total']['total_count'] = result['power']['total_count'] + result['exhaust']['total_count'] + result['remain']['total_count']
+    result['total']['total_draw'] = result['power']['total_draw'] + result['exhaust']['total_draw'] + result['remain']['total_draw']
+    result
   end
 end
 
