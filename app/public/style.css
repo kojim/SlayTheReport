@@ -250,6 +250,66 @@ img.author {
 .description_content {
   white-space: pre-line;
 }
+/* サマリエリア */
+div.report_summary {
+  display: flex;
+  flex-direction: row;
+}
+.report_summary .deck_summary {
+  width: 800px;
+}
+.report_summary .run_info {
+  width: 280px;
+}
+.report_summary .deck_summary > div {
+  display: flex;
+  flex-direction: row;
+}
+.report_summary .deck_summary > div div.deck_balance_chart {
+  display:         flex;
+  justify-content: center;
+  align-items:     center;
+  margin-right:    auto;
+  margin-left:     auto;
+  width:           160px;
+  height:          160px;
+  font-size:       26px;
+  font-weight:     700;
+  border-radius:   50%;
+  margin: 0px 20px 0 20px;
+}
+th.power span {
+  border-left: 16px solid #ff4b00;
+}
+th.exhaust span {
+  border-left: 16px solid #4dc4ff;
+}
+th.remain span {
+  border-left: 16px solid #c9ace6;
+}
+
+/* デッキサマリの表 */
+table.deck_stat {
+  flex-direction: column;
+}
+table.deck_stat th,
+table.deck_stat td {
+  border: 1px solid #ccc;
+}
+table.deck_stat tr th:nth-child(1) {
+  width: 70px;
+  text-align: left;
+}
+table.deck_stat tr th:nth-child(2) {
+  width: 80px;
+}
+table.deck_stat tr th:nth-child(3),
+table.deck_stat tr th:nth-child(4),
+table.deck_stat tr th:nth-child(5),
+table.deck_stat tr th:nth-child(6) {
+  width: 80px;
+}
+
 /* デッキカード画像 */
 .master_deck img {
   width: 100px;

@@ -360,6 +360,9 @@ class Run
       'exhaust' => {'d0' => 0, 'd1' => 0, 'd2' => 0, 'total_count' => 0, 'total_draw' => 0},
       'remain'  => {'d0' => 0, 'd1' => 0, 'd2' => 0, 'total_count' => 0, 'total_draw' => 0},
       'total'   => {'d0' => 0, 'd1' => 0, 'd2' => 0, 'total_count' => 0, 'total_draw' => 0},
+      'power_ratio' => 0,
+      'exhaust_ratio' => 0,
+      'remain_ratio' => 0,
     }
 
     # パワー行、消滅行、残留行集計
@@ -402,6 +405,10 @@ class Run
     result['total']['d2'] = result['power']['d2'] + result['exhaust']['d2'] + result['remain']['d2']
     result['total']['total_count'] = result['power']['total_count'] + result['exhaust']['total_count'] + result['remain']['total_count']
     result['total']['total_draw'] = result['power']['total_draw'] + result['exhaust']['total_draw'] + result['remain']['total_draw']
+
+    result['power_ratio'] = result['power']['total_count'].to_f     / result['total']['total_count'] * 100
+    result['exhaust_ratio'] = result['exhaust']['total_count'].to_f / result['total']['total_count'] * 100
+    result['remain_ratio'] = result['remain']['total_count'].to_f   / result['total']['total_count'] * 100
     result
   end
 end

@@ -93,6 +93,7 @@
     <input type='hidden' name='password' value='<%= h(request["password"])%>'/>
 <% end %>
 
+<%# 記事主要情報(タイトル、一言説明、投稿者)  %>
 <% if @is_edit_mode then %>
   <p>タイトル: <input type='text' name='title' maxlength='20' value='<%= h(@report.title) %>' /></p>
 <% else %>
@@ -108,6 +109,100 @@
 <a href='/users/<%= @report.author %>'>
 <img class='author' src='<%= @icons[@report.author] %>' alt='<%= @report.author %>'/></a>
 <a href='/users/<%= @report.author %>'><%= h(@report.author) %></a>
+
+<div>
+  <% if @is_edit_mode then %>
+    <button type='submit'>submit</button>
+  <% else %>
+    <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-text="<%= h(@report.title) %> by <%= h(@report.author) %>" data-hashtags="SlayTheReport" data-show-count="true">Tweet</a>
+    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+    <% if @twitter != nil && @report.author == @twitter.user.screen_name %>
+      <a href="/mypage/edit/<%= @report.run_id %>">編集</a>
+    <% end %>
+  <% end %>
+</div>
+
+<%# 記事主要情報(タイトル、一言説明、投稿者)  %>
+<div class='report_summary'>
+<div class='deck_summary'>
+<h2>デッキサマリ</h2>
+
+<div>
+  <div class='deck_balance_chart'
+       style='background-image: radial-gradient(#f2f2f2 30%, transparent 31%), conic-gradient(
+         #ff4b00 0% <%= @report.run.deck_stat['power_ratio']%>%,
+         #4dc4ff <%= @report.run.deck_stat['power_ratio']%>% <%= @report.run.deck_stat['power_ratio'] + @report.run.deck_stat['exhaust_ratio'] %>%,
+         #c9ace6 <%= @report.run.deck_stat['power_ratio'] + @report.run.deck_stat['exhaust_ratio'] %>% 100%)'
+       ><%= @report.run.deck_stat['total']['total_count'] %>
+  </div>
+
+<table class='deck_stat'>
+  <thead>
+    <tr>
+      <th></th>
+      <th colspan='4'>枚数</th>
+      <th rowspan='2'>ドロー性能</th>
+    </tr>
+    <tr>
+      <th></th>
+      <th>計</th>
+      <th>0ドロー</th>
+      <th>1ドロー</th>
+      <th>2～ドロー</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th class='power'><span>パワー</span></th>
+      <td><%= @report.run.deck_stat['power']['total_count']%> (<%= @report.run.deck_stat['power_ratio'].round(0)%>%)</td>
+      <td><%= @report.run.deck_stat['power']['d0']%></td>
+      <td><%= @report.run.deck_stat['power']['d1']%></td>
+      <td><%= @report.run.deck_stat['power']['d2']%></td>
+      <td>
+        <%= @report.run.deck_stat['power']['total_draw']%>
+        (<%=(@report.run.deck_stat['power']['total_draw'].to_f/@report.run.deck_stat['total']['total_count']*100).round(0)%>%)
+      </td>
+    </tr>
+    <tr>
+      <th class='exhaust'><span>消滅</span></th>
+      <td><%= @report.run.deck_stat['exhaust']['total_count']%> (<%= @report.run.deck_stat['exhaust_ratio'].round(0)%>%)</td>
+      <td><%= @report.run.deck_stat['exhaust']['d0']%></td>
+      <td><%= @report.run.deck_stat['exhaust']['d1']%></td>
+      <td><%= @report.run.deck_stat['exhaust']['d2']%></td>
+      <td>
+        <%= @report.run.deck_stat['exhaust']['total_draw']%>
+        (<%=(@report.run.deck_stat['exhaust']['total_draw'].to_f/@report.run.deck_stat['total']['total_count']*100).round(0)%>%)
+      </td>
+    </tr>
+    <tr>
+      <th class='remain'><span>残留</span></th>
+      <td><%= @report.run.deck_stat['remain']['total_count']%> (<%= @report.run.deck_stat['remain_ratio'].round(0)%>%)</td>
+      <td><%= @report.run.deck_stat['remain']['d0']%></td>
+      <td><%= @report.run.deck_stat['remain']['d1']%></td>
+      <td><%= @report.run.deck_stat['remain']['d2']%></td>
+      <td>
+        <%= @report.run.deck_stat['remain']['total_draw']%>
+        (<%=(@report.run.deck_stat['remain']['total_draw'].to_f/@report.run.deck_stat['total']['total_count']*100).round(0)%>%)
+      </td>
+    </tr>
+    <tr>
+      <th>計</th>
+      <td><%= @report.run.deck_stat['total']['total_count']%></td>
+      <td><%= @report.run.deck_stat['total']['d0']%></td>
+      <td><%= @report.run.deck_stat['total']['d1']%></td>
+      <td><%= @report.run.deck_stat['total']['d2']%></td>
+      <td>
+        <%= @report.run.deck_stat['total']['total_draw']%>
+        (<%=(@report.run.deck_stat['total']['total_draw'].to_f/@report.run.deck_stat['total']['total_count']*100).round(0)%>%)
+      </td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+<div class='run_info'>
+<h2>プレイ情報</h2>
 
 <% if @is_edit_mode then %>
   <p>runid: <%= h(@report.run_id) %></p>
@@ -131,21 +226,13 @@ else
   }.join(' ')
 end
 %></p>
-
-
-<div>
-  <% if @is_edit_mode then %>
-    <button type='submit'>submit</button>
-  <% else %>
-    <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-text="<%= h(@report.title) %> by <%= h(@report.author) %>" data-hashtags="SlayTheReport" data-show-count="true">Tweet</a>
-    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-    <% if @twitter != nil && @report.author == @twitter.user.screen_name %>
-      <a href="/mypage/edit/<%= @report.run_id %>">編集</a>
-    <% end %>
-  <% end %>
 </div>
 
-<h2>deck(<%=@report.run.master_deck.size%>) </h2>
+
+</div>
+
+
+<h2>デッキ(<%=@report.run.master_deck.size%>) </h2>
 
 <div class='master_deck <%= if @is_edit_mode then 'clickable' else '' end %>'>
 <% @report.run.master_deck.each_with_index do |c,idx| %>
@@ -156,7 +243,7 @@ end
 <% end %>
 </div>
 
-<h2>relics(<%=@report.run.relics.size%>)</h2>
+<h2>レリック(<%=@report.run.relics.size%>)</h2>
 
 <div class='master_relic <%= if @is_edit_mode then 'clickable' else '' end %>'>
 <% @report.run.relics.each_with_index do |c,idx| %>
@@ -167,72 +254,8 @@ end
 <% end %>
 </div>
 
-<h2>deck stat(β版) </h2>
 
-<table class='xxx' border='1'>
-  <thead>
-    <tr>
-      <th></th>
-      <th colspan='4'>枚数</th>
-      <th rowspan='2'>ドロー性能</th>
-    </tr>
-    <tr>
-      <th></th>
-      <th>計</th>
-      <th>0ドロー</th>
-      <th>1ドロー</th>
-      <th>2～ドロー</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>パワー</th>
-      <td><%= @report.run.deck_stat['power']['total_count']%></td>
-      <td><%= @report.run.deck_stat['power']['d0']%></td>
-      <td><%= @report.run.deck_stat['power']['d1']%></td>
-      <td><%= @report.run.deck_stat['power']['d2']%></td>
-      <td>
-        <%= @report.run.deck_stat['power']['total_draw']%>
-        (<%=(@report.run.deck_stat['power']['total_draw'].to_f/@report.run.deck_stat['total']['total_count']*100).round(0)%>%)
-      </td>
-    </tr>
-    <tr>
-      <th>消滅</th>
-      <td><%= @report.run.deck_stat['exhaust']['total_count']%></td>
-      <td><%= @report.run.deck_stat['exhaust']['d0']%></td>
-      <td><%= @report.run.deck_stat['exhaust']['d1']%></td>
-      <td><%= @report.run.deck_stat['exhaust']['d2']%></td>
-      <td>
-        <%= @report.run.deck_stat['exhaust']['total_draw']%>
-        (<%=(@report.run.deck_stat['exhaust']['total_draw'].to_f/@report.run.deck_stat['total']['total_count']*100).round(0)%>%)
-      </td>
-    </tr>
-    <tr>
-      <th>残留</th>
-      <td><%= @report.run.deck_stat['remain']['total_count']%></td>
-      <td><%= @report.run.deck_stat['remain']['d0']%></td>
-      <td><%= @report.run.deck_stat['remain']['d1']%></td>
-      <td><%= @report.run.deck_stat['remain']['d2']%></td>
-      <td>
-        <%= @report.run.deck_stat['remain']['total_draw']%>
-        (<%=(@report.run.deck_stat['remain']['total_draw'].to_f/@report.run.deck_stat['total']['total_count']*100).round(0)%>%)
-      </td>
-    </tr>
-    <tr>
-      <th>計</th>
-      <td><%= @report.run.deck_stat['total']['total_count']%></td>
-      <td><%= @report.run.deck_stat['total']['d0']%></td>
-      <td><%= @report.run.deck_stat['total']['d1']%></td>
-      <td><%= @report.run.deck_stat['total']['d2']%></td>
-      <td>
-        <%= @report.run.deck_stat['total']['total_draw']%>
-        (<%=(@report.run.deck_stat['total']['total_draw'].to_f/@report.run.deck_stat['total']['total_count']*100).round(0)%>%)
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-<h1>Floors</h1>
+<h1>侵攻記録</h1>
 <div class='report_body'>
 
 <div class='content'>
