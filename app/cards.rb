@@ -1,6 +1,6 @@
-# カードタイプ
-# 廃棄
-# ドロー枚数
+# 凡例: [カードタイプ, 消滅カードか否か, ドロー枚数]
+# ドロー枚数の扱いが悩ましいカードについては★でコメントを入れてある。
+
 $cards = {
 
   # ==========================================================
@@ -84,7 +84,7 @@ $cards = {
   "Armaments+"=>            ["Skill",  false, 0], #
   "Flex"=>                  ["Skill",  false, 0], # フレックス
   "Flex+"=>                 ["Skill",  false, 0], #
-  "Havoc"=>                 ["Skill",  false, 0], # 荒廃
+  "Havoc"=>                 ["Skill",  false, 0], # 荒廃(★割り切り: これはドロー扱いとしないのが自然な気がする)
   "Havoc+"=>                ["Skill",  false, 0], #
   "ShrugItOff"=>            ["Skill",  false, 1], # 受け流し
   "ShrugItOff+"=>           ["Skill",  false, 1], #
@@ -330,8 +330,8 @@ $cards = {
   "AfterImage+"=>           ["Power",  true,  0], #
   "Envenom"=>               ["Power",  true,  0], # 猛毒の仕込み
   "Envenom+"=>              ["Power",  true,  0], #
-  "ToolsoftheTrade"=>       ["Power",  true,  1], # 商売道具
-  "ToolsoftheTrade+"=>      ["Power",  true,  1], #
+  "ToolsoftheTrade"=>       ["Power",  true,  2], # 商売道具 (★割り切り: ドロー枚数は1だがカードを使わずに1ドローしているので実質2ドロー分の価値とする)
+  "ToolsoftheTrade+"=>      ["Power",  true,  2], #
   "WraithFormv2"=>          ["Power",  true,  0], # 死霊化
   "WraithFormv2+"=>         ["Power",  true,  0], #
 
