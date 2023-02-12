@@ -406,9 +406,9 @@ class Run
     result['total']['total_count'] = result['power']['total_count'] + result['exhaust']['total_count'] + result['remain']['total_count']
     result['total']['total_draw'] = result['power']['total_draw'] + result['exhaust']['total_draw'] + result['remain']['total_draw']
 
-    result['power_ratio'] = result['power']['total_count'].to_f     / result['total']['total_count'] * 100
-    result['exhaust_ratio'] = result['exhaust']['total_count'].to_f / result['total']['total_count'] * 100
-    result['remain_ratio'] = result['remain']['total_count'].to_f   / result['total']['total_count'] * 100
+    result['power_ratio'] = result['power']['total_count'].to_f     / result['total']['total_count']
+    result['exhaust_ratio'] = result['exhaust']['total_count'].to_f / result['total']['total_count']
+    result['remain_ratio'] = result['remain']['total_count'].to_f   / result['total']['total_count']
     result
   end
 end

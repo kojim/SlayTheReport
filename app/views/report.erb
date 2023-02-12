@@ -122,26 +122,67 @@
   <% end %>
 </div>
 
-<%# 記事主要情報(タイトル、一言説明、投稿者)  %>
+<%# デッキサマリ & プレイ情報 %>
 <div class='report_summary'>
 <div class='deck_summary'>
 <h2>デッキサマリ</h2>
 
 <div>
-  <div class='deck_balance_chart'
-       style='background-image: radial-gradient(#f2f2f2 30%, transparent 31%), conic-gradient(
-         #ff4b00 0% <%= @report.run.deck_stat['power_ratio']%>%,
-         #4dc4ff <%= @report.run.deck_stat['power_ratio']%>% <%= @report.run.deck_stat['power_ratio'] + @report.run.deck_stat['exhaust_ratio'] %>%,
-         #c9ace6 <%= @report.run.deck_stat['power_ratio'] + @report.run.deck_stat['exhaust_ratio'] %>% 100%)'
-       ><%= @report.run.deck_stat['total']['total_count'] %>
-  </div>
+<%# 円グラフ %>
+
+<%
+  out_r = 80
+  out_pr2 = 2 * out_r * Math::PI
+  out_offset = out_pr2 * 0.25
+  in_r = 53
+  in_pr2 = 2 * in_r * Math::PI
+  in_offset      = in_pr2 * 0.25
+  power_len   = out_pr2 * @report.run.deck_stat['power_ratio']
+  exhaust_len = out_pr2 * @report.run.deck_stat['exhaust_ratio']
+  remain_len  = out_pr2 * (1.0 - @report.run.deck_stat['power_ratio'] - @report.run.deck_stat['exhaust_ratio'])
+  draw_len = in_pr2 * [@report.run.deck_stat['total']['total_draw'].to_f/@report.run.deck_stat['total']['total_count'], 1].min
+%>
+<svg class='deck_balance_chart' viewBox='0 0 200 200'>
+    <circle r='30' stroke-width='80' stroke='#eee'/>
+  <% #外周 %>
+  <circle
+    r='<%=out_r%>'
+    stroke='#ff4b00'
+    stroke-width='74'
+    stroke-dasharray='<%=power_len%> <%=exhaust_len + remain_len%>'
+    stroke-dashoffset='<%=out_offset%>'
+    />
+  <circle
+    r='<%=out_r%>'
+    stroke='#4dc4ff'
+    stroke-width='74'
+    stroke-dasharray='0 <%=power_len%> <%=exhaust_len%> <%=remain_len%>'
+    stroke-dashoffset='<%=out_offset%>'
+    />
+  <circle
+    r='<%=out_r%>'
+    stroke='#c9ace6'
+    stroke-width='74'
+    stroke-dasharray='0 <%=power_len + exhaust_len%> <%=remain_len%> 0'
+    stroke-dashoffset='<%=out_offset%>'
+    />
+  <% #内周(ドロー率) %>
+  <circle
+    r='<%=in_r%>'
+    stroke='gold'
+    stroke-width='22'
+    stroke-dasharray='<%=draw_len%> <%= in_pr2 - draw_len%>'
+    stroke-dashoffset='<%=in_offset%>'
+    />
+  <text x='50%' y='50%' text-anchor='middle' dominant-baseline='central' font-size='32'><%=@report.run.master_deck.size%></text>
+</svg>
 
 <table class='deck_stat'>
   <thead>
     <tr>
       <th></th>
       <th colspan='4'>枚数</th>
-      <th rowspan='2'><a href='https://github.com/kojim/SlayTheReport/blob/develop/app/cards.rb'>ドロー性能</a></th>
+      <th rowspan='2' class='draw_spec'><a href='https://github.com/kojim/SlayTheReport/blob/develop/app/cards.rb'>ドロー性能</a></th>
     </tr>
     <tr>
       <th></th>
@@ -154,7 +195,7 @@
   <tbody>
     <tr>
       <th class='power'><span>パワー</span></th>
-      <td><%= @report.run.deck_stat['power']['total_count']%> (<%= @report.run.deck_stat['power_ratio'].round(0)%>%)</td>
+      <td><%= @report.run.deck_stat['power']['total_count']%> (<%= (@report.run.deck_stat['power_ratio']*100).round(0)%>%)</td>
       <td><%= @report.run.deck_stat['power']['d0']%></td>
       <td><%= @report.run.deck_stat['power']['d1']%></td>
       <td><%= @report.run.deck_stat['power']['d2']%></td>
@@ -165,7 +206,7 @@
     </tr>
     <tr>
       <th class='exhaust'><span>消滅</span></th>
-      <td><%= @report.run.deck_stat['exhaust']['total_count']%> (<%= @report.run.deck_stat['exhaust_ratio'].round(0)%>%)</td>
+      <td><%= @report.run.deck_stat['exhaust']['total_count']%> (<%= (@report.run.deck_stat['exhaust_ratio']*100).round(0)%>%)</td>
       <td><%= @report.run.deck_stat['exhaust']['d0']%></td>
       <td><%= @report.run.deck_stat['exhaust']['d1']%></td>
       <td><%= @report.run.deck_stat['exhaust']['d2']%></td>
@@ -176,7 +217,7 @@
     </tr>
     <tr>
       <th class='remain'><span>残留</span></th>
-      <td><%= @report.run.deck_stat['remain']['total_count']%> (<%= @report.run.deck_stat['remain_ratio'].round(0)%>%)</td>
+      <td><%= @report.run.deck_stat['remain']['total_count']%> (<%= (@report.run.deck_stat['remain_ratio']*100).round(0)%>%)</td>
       <td><%= @report.run.deck_stat['remain']['d0']%></td>
       <td><%= @report.run.deck_stat['remain']['d1']%></td>
       <td><%= @report.run.deck_stat['remain']['d2']%></td>

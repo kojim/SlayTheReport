@@ -265,7 +265,7 @@ div.report_summary {
   display: flex;
   flex-direction: row;
 }
-.report_summary .deck_summary > div div.deck_balance_chart {
+.report_summary .deck_summary > div svg.deck_balance_chart {
   display:         flex;
   justify-content: center;
   align-items:     center;
@@ -278,6 +278,11 @@ div.report_summary {
   border-radius:   50%;
   margin: 0px 20px 0 20px;
 }
+.report_summary .deck_summary > div svg.deck_balance_chart circle {
+  fill: none;
+  cx: 50%;
+  cy: 50%;
+}
 th.power span {
   border-left: 16px solid #ff4b00;
 }
@@ -286,6 +291,9 @@ th.exhaust span {
 }
 th.remain span {
   border-left: 16px solid #c9ace6;
+}
+th.draw_spec a {
+  border-left: 16px solid gold;
 }
 
 /* デッキサマリの表 */
@@ -300,13 +308,13 @@ table.deck_stat tr th:nth-child(1) {
   width: 70px;
   text-align: left;
 }
-table.deck_stat tr th:nth-child(2) {
-  width: 80px;
+table.deck_stat tr:nth-child(1) th:nth-child(3) {
+  width: 100px;
 }
-table.deck_stat tr th:nth-child(3),
-table.deck_stat tr th:nth-child(4),
-table.deck_stat tr th:nth-child(5),
-table.deck_stat tr th:nth-child(6) {
+table.deck_stat tr:nth-child(2) th:nth-child(2),
+table.deck_stat tr:nth-child(2) th:nth-child(3),
+table.deck_stat tr:nth-child(2) th:nth-child(4),
+table.deck_stat tr:nth-child(2) th:nth-child(5) {
   width: 80px;
 }
 
