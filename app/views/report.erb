@@ -2,7 +2,7 @@
 <head>
   <%= render(:erb, :_headtags, {}, {:title => "#{h(@report.title)}"}) %>
   <link rel="stylesheet" href="/style.css" />
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script defer src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
   <script>
 <% if @is_edit_mode then %>
     var is_edit_mode = true;
@@ -11,6 +11,7 @@
 <% end %>
   </script>
   <script>
+    window.onload = function(){
     $(function(){
       // キーカード, キーレリック
       var deck_count = 0;
@@ -71,6 +72,7 @@
       });
       $('.map_1').addClass('selected');
     })
+    }
   </script>
 
 <% unless @is_edit_mode then %>
@@ -116,7 +118,7 @@
     <button type='submit'>submit</button>
   <% else %>
     <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-text="<%= h(@report.title) %> by <%= h(@report.author) %>" data-hashtags="SlayTheReport" data-show-count="true">Tweet</a>
-    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+    <script defer src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
     <% if @twitter != nil && @report.author == @twitter.user.screen_name %>
       <a href="/mypage/edit/<%= @report.run_id %>">編集</a>
     <% end %>
@@ -349,12 +351,12 @@ end
     <div class='f_events'>
       <div class='f_event_left'>
         <div class='f_event_summary'>
-          <div class='f_event_image'><%= img(f.image, 250) %></div>
+          <div class='f_event_image'><%= img(f.image, 250, f.floor_id < 10) %></div>
         </div>
         <div class='f_use_potions'>
           <% f.use_potions.each do |c| %>
             <div>
-            <%= img(c, 80) %>
+            <%= img(c, 80, f.floor_id < 10) %>
             use
             </div>
           <% end %>
@@ -375,13 +377,13 @@ end
           <div class='f_chosen_cards bordered_cards'>
             <% if c['picked'] != 'SKIP' && c['picked'] != nil %>
               <div class='picked'>
-                <%= img(c['picked'], 80) %>
+                <%= img(c['picked'], 80, f.floor_id < 10) %>
                 <p>picked</p>
               </div>
             <% end %>
             <% c['not_picked'].each do |np| %>
               <div class='pass'>
-                <%= img(np, 80) %>
+                <%= img(np, 80, f.floor_id < 10) %>
                 <p>pass</p>
               </div>
             <% end %>
@@ -391,7 +393,7 @@ end
         <div class='f_obtain_objects bordered_cards'>
           <% f.obtain_objects.each do |c| %>
             <div>
-              <%= img(c, 80) %>
+              <%= img(c, 80, f.floor_id < 10) %>
               <%=
                 unless ['War Paint', 'Whetstone', 'Bottled Flame', 'Bottled Lightning', 'Bottled Tornado'].include?(c) then
                   @report.run.relic_stats[c]
@@ -403,15 +405,15 @@ end
         </div>
         <% f.upgrade_cards.each do |c| %>
           <div class='f_upgrade_cards bordered_cards'>
-            <%= img(c, 80) %>
+            <%= img(c, 80, f.floor_id < 10) %>
             ⇒
-            <%= img(c+'+1', 80) %>
+            <%= img(c+'+1', 80, f.floor_id < 10) %>
           </div>
         <% end %>
         <div class='f_remove_cards bordered_cards'>
           <% f.remove_cards.each do |c| %>
             <div class='removed'>
-              <%= img(c, 80) %>
+              <%= img(c, 80, f.floor_id < 10) %>
               <p> removed</p>
             </div>
           <% end %>
@@ -419,7 +421,7 @@ end
         <div class='f_bottled_cards bordered_cards'>
           <% f.bottled_cards.each do |c| %>
             <div class='bottled'>
-              <%= img(c, 80) %>
+              <%= img(c, 80, f.floor_id < 10) %>
               <p> bottled</p>
             </div>
           <% end %>
@@ -428,15 +430,15 @@ end
         <div class='f_shop_items bordered_cards'>
           <div>
           <% f.shop_items['cards'].each do |c| %>
-              <%= img(c, 40) %>
+              <%= img(c, 40, f.floor_id < 10) %>
           <% end %>
           </div>
           <div>
           <% f.shop_items['relics'].each do |c| %>
-              <%= img(c, 40) %>
+              <%= img(c, 40, f.floor_id < 10) %>
           <% end %>
           <% f.shop_items['potions'].each do |c| %>
-              <%= img(c, 40) %>
+              <%= img(c, 40, f.floor_id < 10) %>
           <% end %>
           </div>
           <p>pass</p>
@@ -467,7 +469,7 @@ end
 <% @report.run.maps.each_with_index do |act, id| %>
   <div class='tree map_<%=id+1%>'>
   <h4>Act <%=id+1%></h4>
-  <div class='boss' id='map_floor_<%=(id+1)*17-1%>'><%=if @report.run.bosses[id] != nil then img('map_' + @report.run.bosses[id]) else '<br/>' end %></div>
+  <div class='boss' id='map_floor_<%=(id+1)*17-1%>'><%=if @report.run.bosses[id] != nil then img('map_' + @report.run.bosses[id], 200) else '<br/>' end %></div>
   <% act.reverse.each_with_index do |line,f| %>
     <% if f%2 == 0 then %>
       <% floor = 15+17*id-f/2 %>

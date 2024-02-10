@@ -33,12 +33,12 @@
     </tr>
   </thead>
   <tbody>
-  <% @reports.each do |r| %>
+  <% @reports.each_with_index do |r,i| %>
     <tr class='<%=h(r.run.character_chosen)%> selected'>
       <td>
         <div class='align_center'>
           <a href='/users/<%= r.author %>'>
-            <img class='author' src='<%= @icons[r.author] %>' alt='<%= r.author %>'/>
+            <img class='author' src='<%= @icons[r.author] %>' alt='<%= r.author %>' loading='<%= i<15 ? "eager" : "lazy" %>'/>
           </a>
           <div class='title'>
             <a href="/report/<%= r.author %>/<%= r.run_id %>"><%= h(r.title) %></a>
@@ -73,8 +73,8 @@
           </div>
         </div>
       </td>
-      <td><%= r.key_cards.map{|c| img(c)}.join %></td>
-      <td><%= r.key_relics.map{|c| img(c)}.join %></td>
+      <td><%= r.key_cards.map{|c| img(c,200, i<15)}.join %></td>
+      <td><%= r.key_relics.map{|c| img(c,200, i<15)}.join %></td>
     </tr>
   <% end %>
   </tbody>

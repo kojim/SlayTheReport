@@ -2,7 +2,7 @@
 
 require 'json'
 
-def img(raw_key, _size = 200)
+def img(raw_key, _size = 200, is_eager=true)
   map = {
     # events
     'neow' => 'misc/neow.png',
@@ -38,5 +38,6 @@ def img(raw_key, _size = 200)
     key = key.gsub(/\+.*/, 'Plus') if key.include? '+'
     v = "all/#{key}.png"
   end
-  "<img src='https://slaythereport-images.s3.ap-northeast-1.amazonaws.com/#{h(v)}' alt='#{h(v)}' data-rawname=\"#{h(raw_key)}\"/>"
+  loading = is_eager ? "eager" : "lazy"
+  "<img src='https://slaythereport-images.s3.ap-northeast-1.amazonaws.com/#{h(v)}' alt='#{h(v)}' data-rawname=\"#{h(raw_key)}\" loading='#{loading}'/>"
 end
