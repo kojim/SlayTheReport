@@ -1,12 +1,12 @@
 version: '3'
 services:
   sinatra:
-    build: .
+    image: ruby:3.3.0-bookworm
     volumes:
       - ~/SlayTheReport/app:/app
     working_dir: /app
     environment:
-      - DB_MODE=staging
+      - DB_MODE=production
     command: bash start.sh
     ports:
     - 0.0.0.0:80:80

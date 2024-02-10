@@ -1,7 +1,9 @@
 version: '3'
 services:
   sinatra:
-    image: 947597759324.dkr.ecr.ap-northeast-1.amazonaws.com/slaythereport_mountless
+    image: ruby:3.3.0-bookworm
+    volumes:
+      - ~/SlayTheReport/app:/app
     working_dir: /app
     environment:
       - DB_MODE=staging
