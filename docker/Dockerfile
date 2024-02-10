@@ -1,5 +1,3 @@
-FROM ruby:2.7-slim
+FROM ruby:3.3.0-bookworm
 
-RUN apt update
-RUN apt install build-essential -y
 
