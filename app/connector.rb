@@ -37,6 +37,7 @@ class RunDataService
         ':min' => last_modified.min,
         ':max' => last_modified.max,
       },
+      projection_expression: 'author, runid, report_summary, run_summary',
       limit: limit
     )
     resp2.items.map do |e|
