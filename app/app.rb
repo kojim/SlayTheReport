@@ -3,6 +3,7 @@
 require 'rubygems'
 require 'sinatra'
 require 'sinatra/reloader'
+require 'puma'
 require 'aws-sdk'
 require 'twitter'
 require 'oauth'
@@ -323,3 +324,4 @@ get '/debug' do
   @text = 'debug'
   erb :debug
 end
+
