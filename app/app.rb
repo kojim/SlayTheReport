@@ -21,6 +21,7 @@ require_relative './floor'
 require_relative './connector'
 require_relative './connector_mock'
 
+use Rack::Deflater
 $stdout.sync = true
 
 ddb, ddb_author, $twitter_service, salt =
