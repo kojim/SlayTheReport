@@ -414,12 +414,14 @@ h2.floor img {
 }
 .report_body .map .boss img {
   width: 60px;
+  height: 60px;
 }
 .report_body .map img {
   margin: 0;
 }
 .report_body .map img.full {
   width: 18px;
+  height: 18px;
   border: 1px solid white;
 }
 .report_body .map img.half {
