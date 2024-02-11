@@ -162,6 +162,7 @@ table.reports tbody tr td:nth-of-type(1) img.author {
   margin: 3px 3px 0px 3px;
   border-radius: 9999px;
   width: 32px;
+  height: 32px;
   float: left;
 }
 table.reports tbody tr td:nth-of-type(1) div.title {
@@ -185,6 +186,7 @@ table.reports tbody tr td:nth-of-type(2) div {
 table.reports tbody tr td:nth-of-type(2) div img {
   vertical-align: bottom;
   width: 30px;
+  height: 30px;
 }
 /* 3.キーカード列 */
 table.reports thead tr th:nth-of-type(3),
@@ -198,12 +200,17 @@ table.reports tbody tr td:nth-of-type(4) {
   width: 100px;
   flex: none;
 }
-/* キーカード&キーレリック */
-table.reports tbody tr td:nth-of-type(3) img,
+/* キーカード */
+table.reports tbody tr td:nth-of-type(3) img {
+  align-self: flex-start;
+  width: 80px;
+  height: 103px;
+}
+/* キーレリック */
 table.reports tbody tr td:nth-of-type(4) img {
   align-self: flex-start;
   width: 80px;
-  height:auto;
+  height: 80px;
 }
 
 /* 広告 */
@@ -244,8 +251,10 @@ a.all {
 /* -------------*/
 
 /* プレイヤー画像 */
-img.author {
+.content img.author {
   border-radius: 9999px;
+  width: 64px;
+  height: 64px;
 }
 .description_content {
   white-space: pre-line;
@@ -321,12 +330,12 @@ table.deck_stat tr:nth-child(2) th:nth-child(5) {
 /* デッキカード画像 */
 .master_deck img {
   width: 100px;
-  height:auto;
+  height: 129px;
 }
 /* デッキレリック画像 */
 .master_relic img {
   width: 80px;
-  height:auto;
+  height: 80px;
 }
 .master_deck .selected,
 .master_relic .selected {
@@ -350,6 +359,7 @@ h2.floor div {
 }
 h2.floor img {
   width: 35px;
+  height: 35px;
 }
 .report_body {
   display: flex;
@@ -483,12 +493,13 @@ h2.floor img {
 /* 戦闘ターン数 */
 .f_life_gold img.turn {
   width: 25px;
+  height: 25px;
   margin: 0 5px 0 0;
 }
 /* ライフ & ゴールド画像 */
 .f_life_gold img {
   width: 40px;
-  height:auto;
+  height: 40px;
 }
 
 .f_player_choise {
