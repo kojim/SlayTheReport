@@ -39,5 +39,5 @@ def img(raw_key, _size = 200, is_eager=true)
     v = "all/#{key}.png"
   end
   loading = is_eager ? "eager" : "lazy"
-  "<img src='https://slaythereport-images.s3.ap-northeast-1.amazonaws.com/#{h(v)}' alt='#{h(v)}' data-rawname=\"#{h(raw_key)}\" loading='#{loading}'/>"
+  "<img src='https://d16prcifco41ed.cloudfront.net/#{h(v)}' alt='#{h(v)}' data-rawname=\"#{h(raw_key)}\" loading='#{loading}'/>"
 end
