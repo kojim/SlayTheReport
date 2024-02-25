@@ -136,8 +136,8 @@ helpers do
       # Todo: 何かメッセージを出すべきである
     end
 
-    url= $twitter_service.get_icon_url(session[:twitter_token], session[:twitter_secret], author)
-    ddb_author.update_icon(author, url)
+    # url= $twitter_service.get_icon_url(session[:twitter_token], session[:twitter_secret], author)
+    # ddb_author.update_icon(author, url)
 
     redirect return_url
   end
