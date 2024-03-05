@@ -442,6 +442,14 @@ h2.floor img {
   padding: 0px 3px 0px 5px;
   width: 800px;
 }
+/* ダメージ */
+.low_damage {
+  background: linear-gradient(#f9e2e2,#FFF);
+}
+.high_damage {
+  background: linear-gradient(pink,#f9e2e2);
+}
+.f_container {
 .f_events {
   display: flex;
 }

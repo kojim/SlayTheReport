@@ -347,7 +347,16 @@ end
     <% end %>
     </div>
   </h2>
-  <div class='f_container'>
+  <%
+    if f.hp_diff.between?(-20, -9) then
+      damage_class = 'low_damage'
+    elsif f.hp_diff < -20 then
+      damage_class = 'high_damage'
+    else
+      damage_class = ''
+    end
+  %>
+  <div class='f_container <%= damage_class%>'>
     <div class='f_events'>
       <div class='f_event_left'>
         <div class='f_event_summary'>
