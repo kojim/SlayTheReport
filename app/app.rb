@@ -45,6 +45,10 @@ ddb, ddb_author, $twitter_service, salt =
     [RunDataServiceMock.new, 'dummy', TwitterServiceMock.new, 'salt']
   end
 
+before do
+  request.env['HTTP_HOST'] = "slaythereport.kojim.net"
+end
+
 configure do
   use Rack::Session::Cookie
   set :bind, '0.0.0.0' if ENV['DB_MODE'] == 'local'
